@@ -1422,8 +1422,35 @@
         const submitUploadJsonBtn = document.getElementById('submitUploadJsonBtn');
 
         function openUploadJsonModal() {
-            const example = `Generate 100 flashcards for my exam from the uploaded lecture material. Output exactly in the following format, with each card as an object with keys: category, question, answer. Make sure to group all questions from the same lecture into the same category name. Don't include any comments. \n\nExample output:\n[\n  {\n    "category": "Lecture1(Introduction)",\n    "question": "What is computer vision?",\n    "answer": "Computer vision is a field of AI focused on enabling computers to interpret and process visual information from the world."\n  },\n  {\n    "category": "Lecture1(Introduction)",\n    "question": "Name a common application of computer vision.",\n    "answer": "Applications include facial recognition, self-driving cars, medical image analysis, and more."\n  }\n]\n`;
-            if (!uploadJsonTextarea.value.trim()) uploadJsonTextarea.value = example;
+const example = `Generate 20 difficulyflashcards for my exam with difficult questions from the uploaded lecture material.
+Target my understanding of complex topics and how they tie together, not just wrote learning things but testing my true understanding. Give sufficiently detailed answers for an exam. 
+Output exactly in the following JSON format, with each card as an object with keys: category, question, and answer. Group all questions from the same lecture into the same category name.
+
+The "answer" field must contain clean, valid HTML embedded inside a JSON string. Follow these formatting rules strictly:
+- Escape all double quotes (e.g., use \").
+- Do NOT use \n or other escaped newlines unless part of an HTML tag (e.g., <br>).
+- Make full and thoughtful use of HTML formatting to improve clarity and structure:
+  - Use <p> for paragraphs
+  - Use <ul>, <ol>, and <li> for lists
+  - Use <strong> or <em> to emphasize key ideas
+  - Use <code> for inline code or tag names
+- Avoid plain text blobs. Structure answers to be skimmable and readable.
+- Do NOT include comments, markdown, or extra output—only return a valid JSON array.
+
+Example output:
+[
+  {
+    "category": "Lecture1(HTML Basics)",
+    "question": "What is the purpose of the <code>&lt;head&gt;</code> tag in HTML?",
+    "answer": "<p>The <code>&lt;head&gt;</code> tag contains metadata and links to scripts, stylesheets, and other resources needed before rendering the body of the document.</p>"
+  },
+  {
+    "category": "Lecture1(HTML Basics)",
+    "question": "Explain the difference between <code>&lt;div&gt;</code> and semantic tags.",
+    "answer": "<ul><li><strong>&lt;div&gt;:</strong><ul><li>Non-semantic, used purely for layout or styling.</li><li>Flexible, but less informative to assistive technologies.</li></ul></li><li><strong>Semantic tags (e.g., &lt;main&gt;, &lt;nav&gt;, &lt;section&gt;):</strong><ul><li>Semantic meaning improves accessibility and search visibility.</li><li>Encourages cleaner, more maintainable structure.</li></ul></li><li><strong>Trade-off:</strong><ul><li>Divs are easier when layout logic dominates.</li><li>Semantic tags require thoughtful use but offer long-term clarity and benefits.</li></ul></li></ul>"}]`
+
+        
+        if (!uploadJsonTextarea.value.trim()) uploadJsonTextarea.value = example;
             uploadJsonError.textContent = '';
             uploadJsonModalOverlay.style.display = 'flex';
             setTimeout(() => uploadJsonTextarea.focus(), 100);
