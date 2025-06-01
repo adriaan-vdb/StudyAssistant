@@ -383,7 +383,14 @@
     <div class="container">
         <div class="header">
             <h1>🎓 Computer Vision Flashcards</h1>
-            <p>CITS 4402</p>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                <p style="margin: 0;">CITS 4402</p>
+                <label for="flashcardUpload" id="uploadIconLabel" title="Upload Flashcards" style="cursor:pointer;display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.12);border-radius:50%;padding:7px;transition:background 0.2s;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    <input type="file" id="flashcardUpload" accept="application/json" style="display:none;" />
+                </label>
+            </div>
+            <div id="uploadError" style="color:#ffb300; font-size:1rem; margin-top:6px; min-height:1.2em;"></div>
         </div>
 
         <!-- ─────────── FILTERS & MODE TOGGLES ─────────── -->
@@ -1362,6 +1369,41 @@
                     updateDisplay();
                 }
             }
+        }
+
+        // Update JS for upload
+        const flashcardUpload = document.getElementById('flashcardUpload');
+        const uploadError = document.getElementById('uploadError');
+        const uploadIconLabel = document.getElementById('uploadIconLabel');
+        if (flashcardUpload && uploadIconLabel) {
+            uploadIconLabel.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') flashcardUpload.click();
+            });
+            flashcardUpload.addEventListener('change', function(e) {
+                uploadError.textContent = '';
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    try {
+                        const data = JSON.parse(evt.target.result);
+                        if (Array.isArray(data) && data.every(card => card && typeof card === 'object' && 'category' in card && 'question' in card && 'answer' in card)) {
+                            flashcards.length = 0;
+                            data.forEach(card => flashcards.push(card));
+                            filterCards();
+                            uploadError.textContent = 'Flashcards loaded!';
+                            uploadError.style.color = '#4CAF50';
+                        } else {
+                            uploadError.textContent = 'Invalid format: must be an array of {category, question, answer} objects.';
+                            uploadError.style.color = '#ffb300';
+                        }
+                    } catch (err) {
+                        uploadError.textContent = 'Invalid JSON file.';
+                        uploadError.style.color = '#ffb300';
+                    }
+                };
+                reader.readAsText(file);
+            });
         }
     </script>
 
