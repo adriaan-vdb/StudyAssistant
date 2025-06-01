@@ -513,7 +513,15 @@
       <div id="uploadJsonModal" style="background:#262a45;color:#fafafa;max-width:480px;width:95vw;padding:32px 32px 24px 32px;border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.45);position:relative;">
         <button id="closeUploadJsonModal" aria-label="Close upload" style="position:absolute;top:12px;right:12px;background:none;border:none;color:#fff;font-size:1.6rem;cursor:pointer;opacity:0.7;">&times;</button>
         <h2 style="margin-top:0;font-size:1.3rem;">Paste Flashcards JSON</h2>
-        <textarea id="uploadJsonTextarea" rows="10" style="width:100%;border-radius:8px;padding:16px;font-size:1.08rem;background:#15182a;color:#fff;border:none;resize:vertical;margin-top:16px;"></textarea>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;padding:8px 0;">
+          <label for="templateSelect" style="color:#fafafa;font-size:1rem;">Prompt Template:</label>
+          <select id="templateSelect" style="padding:6px 12px;border-radius:6px;font-size:1rem;background:#15182a;color:#fff;border:none;outline:none;">
+            <option value="DeepContent" selected>Exam-Style (HTML, detailed)</option>
+            <option value="MCQs">Multiple Choice</option>
+            <option value="tbc">Basic</option>
+          </select>
+        </div>
+        <textarea id="uploadJsonTextarea" rows="10" style="width:100%;border-radius:8px;padding:16px;font-size:1.08rem;background:#15182a;color:#fff;border:none;resize:vertical;margin-top:16px;max-height:300px;overflow-y:auto;"></textarea>
         <div id="uploadJsonError" style="color:#ffb300; font-size:1rem; margin-top:8px; min-height:1.2em;"></div>
         <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:18px;">
           <button id="cancelUploadJsonBtn" class="btn btn-secondary" style="padding:8px 18px;font-size:1rem;">Cancel</button>
@@ -1059,55 +1067,96 @@
                             },
 
                             /* ───────────── Lecture 11 – Optical Flow, Tracking & 3-D Shape ───────────── */
+
                             {
-                                "category": "Lecture11(OpticalFlow)",
-                                "question": "What is optical flow?",
-                                "answer": "Apparent pixel motion field between two frames representing brightness pattern displacement."
+                                "category": "Lecture11(Optical Flow and Motion)",
+                                "question": "What are the key assumptions underlying optical flow computation, and how do they interact?",
+                                "answer": "<p>Optical flow estimation relies on three major assumptions:</p><ul><li><strong>Brightness constancy:</strong> The intensity of a point remains constant between frames: <code>I(x, y, t) = I(x + u, y + v, t + 1)</code>.</li><li><strong>Small motion:</strong> The motion between frames is small enough to permit linear approximation (via Taylor series expansion).</li><li><strong>Spatial smoothness:</strong> Neighboring pixels are likely to have similar motion vectors due to continuity of surfaces.</li></ul><p>These assumptions interact to constrain the underdetermined optical flow problem and enable estimation of motion fields.</p>"
                             },
                             {
-                                "category": "Lecture11(OpticalFlow)",
-                                "question": "State the brightness constancy assumption.",
-                                "answer": "Pixel intensity of a moving point remains constant between consecutive frames."
+                                "category": "Lecture11(Optical Flow and Motion)",
+                                "question": "Explain the optical flow constraint equation and its significance.",
+                                "answer": "<p>The optical flow constraint equation is derived from brightness constancy and small motion assumptions using a first-order Taylor expansion:</p><p><code>I_x u + I_y v + I_t = 0</code></p><ul><li><code>I_x</code>, <code>I_y</code>: Spatial gradients</li><li><code>I_t</code>: Temporal gradient</li><li><code>u, v</code>: Flow vectors (horizontal and vertical motion)</li></ul><p>This equation provides a linear constraint for each pixel, but is underconstrained, motivating use of additional constraints like smoothness (as in Lucas-Kanade).</p>"
                             },
                             {
-                                "category": "Lecture11(OpticalFlow)",
-                                "question": "Write the optical flow constraint equation.",
-                                "answer": "Ix u + Iy v + It = 0 where (u,v) is flow vector."
+                                "category": "Lecture11(Optical Flow and Motion)",
+                                "question": "What is the aperture problem in motion estimation, and how can it be resolved?",
+                                "answer": "<p><strong>Aperture problem:</strong> When observing motion through a small aperture (like a pixel window), only motion perpendicular to edges can be detected, leading to ambiguity.</p><p>Solution strategies:</p><ul><li>Use corner features where gradients exist in multiple directions.</li><li>Apply methods like <em>Lucas-Kanade</em> that use larger patches assuming constant motion to gather more constraints.</li></ul>"
                             },
                             {
-                                "category": "Lecture11(OpticalFlow)",
-                                "question": "How does the Lucas-Kanade method obtain flow?",
-                                "answer": "Assumes constant flow in a small window; solves least-squares system for (u,v)."
+                                "category": "Lecture11(Optical Flow and Motion)",
+                                "question": "Why is it important for the matrix <code>A<sup>T</sup>A</code> in Lucas-Kanade method to be well-conditioned?",
+                                "answer": "<p>In Lucas-Kanade, we solve:</p><p><code>A<sup>T</sup>A v = A<sup>T</sup>b</code></p><p>If <code>A<sup>T</sup>A</code> is ill-conditioned or nearly singular, the solution becomes unstable and sensitive to noise.</p><p>Good conditioning requires:</p><ul><li>Two strong, independent gradients (non-zero eigenvalues)</li><li><code>λ₁ / λ₂</code> not too large</li></ul><p>This implies corners are better than edges or flat regions for reliable flow estimation.</p>"
                             },
                             {
-                                    "category": "Lecture11(OpticalFlow)",
-                                "question": "Explain the aperture problem.",
-                                "answer": "Local motion along an edge is ambiguous; only motion perpendicular to gradient is observable."
+                                "category": "Lecture11(Optical Flow and Motion)",
+                                "question": "How does coarse-to-fine optical flow estimation overcome the small motion assumption?",
+                                "answer": "<p>Large motions violate the small displacement assumption used in Taylor expansion.</p><p><strong>Coarse-to-fine estimation</strong> uses image pyramids:</p><ol><li>Downsample images to get coarser levels.</li><li>Estimate flow at coarser levels where motion appears smaller.</li><li>Iteratively refine flow at finer levels using upsampled initial estimates.</li></ol><p>This allows robust handling of large displacements.</p>"
                             },
                             {
-                                "category": "Lecture11(OpticalFlow)",
-                                "question": "Why use an image pyramid for large optical flow?",
-                                "answer": "Estimate flow at coarse resolution and refine at finer levels to handle large displacements."
+                                "category": "Lecture11(Optical Flow and Motion)",
+                                "question": "Describe how spatial and temporal gradients are computed in practice for optical flow.",
+                                "answer": "<p>To compute the gradients needed for optical flow constraint equation:</p><ul><li><strong>Spatial gradients (<code>I_x</code>, <code>I_y</code>):</strong><ul><li>Use filters like Sobel, Prewitt, or derivative-of-Gaussian</li></ul></li><li><strong>Temporal gradient (<code>I_t</code>):</strong><ul><li>Use frame differencing between consecutive images</li></ul></li></ul><p>Gradient estimation is critical for accuracy and stability of optical flow methods.</p>"
                             },
                             {
-                                "category": "Lecture11(OpticalFlow)",
-                                "question": "Name three applications of optical flow.",
-                                "answer": "Video stabilization, motion segmentation, slow-motion synthesis, pedestrian detection."
+                                "category": "Lecture11(Optical Flow and Motion)",
+                                "question": "Explain how the Lucas-Kanade method converts an underdetermined optical flow problem into an overdetermined one.",
+                                "answer": "<p>Optical flow constraint provides one equation per pixel with two unknowns (<code>u</code>, <code>v</code>).</p><p><strong>Lucas-Kanade approach:</strong></p><ul><li>Assumes flow is constant over a window (e.g., 5x5 patch)</li><li>This yields 25 equations for 2 unknowns</li><li>Solves using least squares: <code>A<sup>T</sup>A v = A<sup>T</sup>b</code></li></ul><p>This aggregation resolves ambiguity and increases robustness.</p>"
                             },
                             {
-                                "category": "Lecture11(OpticalFlow)",
-                                "question": "What is Kinect's depth sensing principle?",
-                                "answer": "Structured infrared light projection (Kinect v1) or time-of-flight (Kinect v2) to measure depth."
+                                "category": "Lecture11(Optical Flow and Motion)",
+                                "question": "Why do flow algorithms often fail at object boundaries, and what does this imply?",
+                                "answer": "<p>At object boundaries:</p><ul><li>Brightness constancy may be violated due to occlusion or disocclusion.</li><li>Flow is discontinuous, violating smoothness assumption.</li></ul><p><strong>Implication:</strong> Flow estimation is least reliable where motion segmentation would be most informative. This paradox motivates more sophisticated models (e.g., with motion discontinuity priors).</p>"
                             },
                             {
-                                "category": "Lecture11(OpticalFlow)",
-                                "question": "What is a point cloud?",
-                                "answer": "An unorganized set of 3-D points representing sampled surface coordinates."
+                                "category": "Lecture11(Optical Flow and Motion)",
+                                "question": "Contrast motion field and optical flow. Why is the distinction important?",
+                                "answer": "<p><strong>Motion field:</strong> True 3D motion projected to 2D image plane, depends on scene geometry and camera motion.</p><p><strong>Optical flow:</strong> Apparent motion of brightness patterns, inferred from image sequences.</p><p>The difference matters because:</p><ul><li>Optical flow may be misleading due to lighting changes or non-rigid motion.</li><li>Motion field is often unobservable, but more physically meaningful.</li></ul>"
                             },
                             {
-                                "category": "Lecture11(OpticalFlow)",
-                                "question": "How is a mesh generated from a point cloud?",
-                                "answer": "Connect neighboring points into triangles/polygons to approximate surface."
+                                "category": "Lecture11(Optical Flow and Motion)",
+                                "question": "Give two real-world applications of optical flow in different domains.",
+                                "answer": "<ul><li><strong>Video compression:</strong><ul><li>Motion estimation is used to encode frame differences efficiently using motion vectors.</li></ul></li><li><strong>Biological imaging:</strong><ul><li>Used to track cell or heart wall motion in medical videos for diagnostics.</li></ul></li></ul><p>These highlight the diverse utility of motion estimation in both engineered and scientific domains.</p>"
+                            },
+                            {
+                                "category": "Lecture11(Optical Flow and Motion)",
+                                "question": "Explain how a laser stripe scanner estimates 3D shape using a single camera.",
+                                "answer": "<p><strong>Laser stripe scanning:</strong> Projects a laser line orthogonal to epipolar lines.</p><p>As the stripe moves:</p><ul><li>Camera captures position of the line in image space</li><li>Using known geometry (e.g., triangulation), the depth at each pixel along the stripe is computed</li></ul><p>This builds up a dense 3D surface model from multiple stripe positions.</p>"
+                            },
+                            {
+                                "category": "Lecture11(Optical Flow and Motion)",
+                                "question": "How does structured light differ from laser stripe scanning in 3D reconstruction?",
+                                "answer": "<p><strong>Structured light:</strong> Projects multiple patterns (stripes, dots) onto the object surface.</p><p><strong>Differences from laser stripe:</strong></p><ul><li>Simultaneous projection of many points (vs. sequential stripe sweep)</li><li>Uses coding (e.g., time, color, spatial) to disambiguate pattern correspondence</li><li>Enables faster and denser 3D acquisition</li></ul><p>Example: Kinect 1 uses structured IR dot patterns to estimate depth.</p>"
+                            },
+                            {
+                                "category": "Lecture11(Optical Flow and Motion)",
+                                "question": "Describe how Kinect 2 uses time-of-flight for depth sensing.",
+                                "answer": "<p><strong>Time-of-flight (ToF) scanning:</strong> Fires a modulated laser beam and measures the time (or phase shift) it takes to reflect back.</p><p>Kinect 2 uses ToF to:</p><ul><li>Compute distance from each pixel to the object surface</li><li>Produce high-resolution depth maps</li></ul><p>Compared to Kinect 1 (structured light), Kinect 2 has improved spatial and depth resolution.</p>"
+                            },
+                            {
+                                "category": "Lecture11(Optical Flow and Motion)",
+                                "question": "What is a pointcloud, and how is it converted into a surface mesh?",
+                                "answer": "<p>A <strong>pointcloud</strong> is a set of 3D points (<code>X, Y, Z</code>) typically stored as a <code>3 x N</code> matrix.</p><p>Conversion to surface mesh:</p><ul><li>Find nearest neighbors</li><li>Connect them into triangles or polygons</li><li>Render using shading for surface appearance</li></ul><p>Mesh representation allows realistic rendering and further geometric analysis.</p>"
+                            },
+                            {
+                                "category": "Lecture11(Optical Flow and Motion)",
+                                "question": "Why is surface normal estimation important in 3D rendering?",
+                                "answer": "<p>Surface normals are vectors perpendicular to the surface at each point.</p><p><strong>Importance:</strong></p><ul><li>Used in lighting models (e.g., Phong shading) for realistic rendering</li><li>Required for estimating curvature, segmenting objects, and aligning surfaces</li></ul><p>Normals are computed from mesh triangle orientations or local pointcloud neighborhoods.</p>"
+                            },
+                            {
+                                "category": "Lecture11(Optical Flow and Motion)",
+                                "question": "How can Kinect's depth data be used for full 3D object reconstruction?",
+                                "answer": "<p>Steps for full 3D reconstruction using Kinect:</p><ol><li><strong>Rotate object</strong> or sensor to capture from multiple angles</li><li><strong>Capture depth maps</strong> at 30 fps</li><li><strong>Register</strong> all views into a common frame</li><li><strong>Integrate</strong> point clouds to form complete 3D model</li></ol><p>Software like OpenCV, MATLAB, or Kinect SDK is used for this pipeline.</p>"
+                            },
+                            {
+                                "category": "Lecture11(Optical Flow and Motion)",
+                                "question": "How is motion information used to segment objects in a scene?",
+                                "answer": "<p>Two motion-based segmentation methods:</p><ul><li><strong>Background subtraction:</strong> Assumes static background; detects moving foreground using temporal differences.</li><li><strong>Motion segmentation:</strong> Groups pixels into clusters with coherent motion patterns, useful in dynamic scenes with multiple objects.</li></ul><p>Motion cues reveal object boundaries even when visual appearance is similar.</p>"
+                            },
+                            {
+                                "category": "Lecture11(Optical Flow and Motion)",
+                                "question": "What makes corners ideal features for motion tracking and flow estimation?",
+                                "answer": "<p><strong>Corners</strong> have high spatial variation in both directions, providing strong image gradients.</p><p>Benefits:</p><ul><li>Resolve aperture problem</li><li>Yield well-conditioned <code>A<sup>T</sup>A</code> matrices in Lucas-Kanade</li><li>Enable precise and stable tracking</li></ul><p>Hence, feature tracking algorithms (e.g., KLT) often prioritize corner-like structures.</p>"
                             },
 
                             /* ───────────── Lecture 12 – Deep Learning (CNNs) ───────────── */
@@ -1137,7 +1186,7 @@
                                 "answer": "Internal covariate shift; it normalizes layer inputs to stabilize and accelerate training."
                             },
                             {
-                                        "category": "Lecture12(DeepLearning)",
+                                 "category": "Lecture12(DeepLearning)",
                                 "question": "What do early CNN layers typically learn?",
                                 "answer": "Low-level features such as edges and simple textures."
                             },
@@ -1423,7 +1472,7 @@
 
         function openUploadJsonModal() {
 const example = `Generate 20 flashcards for my exam with difficult questions from the uploaded lecture material.
-Target my understanding of complex topics and how they tie together, not just wrote learning things but testing my true understanding. Give sufficiently detailed answers for an exam. 
+Target my understanding of complex topics and how they tie together, not just rote learning but testing my true understanding. Give sufficiently detailed answers for an exam. 
 Output exactly in the following JSON format, with each card as an object with keys: category, question, and answer. Group all questions from the same lecture into the same category name.
 
 The "answer" field must contain clean, valid HTML embedded inside a JSON string. Follow these formatting rules strictly:
@@ -1531,6 +1580,30 @@ Example output:
             window.addEventListener('keydown', function(e) {
                 if (infoModalOverlay.style.display === 'flex' && e.key === 'Escape') closeInfo();
             });
+        }
+
+        const templateExamples = {
+            DeepContent: `Generate 20 flashcards for my exam with difficult questions from the uploaded lecture material.\nTarget my understanding of complex topics and how they tie together, not just rote learning but testing my true understanding. Give sufficiently detailed answers for an exam. \nOutput exactly in the following JSON format, with each card as an object with keys: category, question, and answer. Group all questions from the same lecture into the same category name.\n\nThe "answer" field must contain clean, valid HTML embedded inside a JSON string. Follow these formatting rules strictly:\n- Escape all double quotes (e.g., use \").\n- Do NOT use \n or other escaped newlines unless part of an HTML tag (e.g., <br>).\n- Make full and thoughtful use of HTML formatting to improve clarity and structure:\n  - Use <p> for paragraphs\n  - Use <ul>, <ol>, and <li> for lists\n  - Use <strong> or <em> to emphasize key ideas\n  - Use <code> for inline code or tag names\n- Avoid plain text blobs. Structure answers to be skimmable and readable.\n- Do NOT include comments, markdown, or extra output—only return a valid JSON array.\n\nExample output:\n[\n  {\n    "category": "Lecture1(HTML Basics)",\n    "question": "What is the purpose of the <code>&lt;head&gt;</code> tag in HTML?",\n    "answer": "<p>The <code>&lt;head&gt;</code> tag contains metadata and links to scripts, stylesheets, and other resources needed before rendering the body of the document.</p>"\n  },\n  {\n    "category": "Lecture1(HTML Basics)",\n    "question": "Explain the difference between <code>&lt;div&gt;</code> and semantic tags.",\n    "answer": "<ul><li><strong>&lt;div&gt;:</strong><ul><li>Non-semantic, used purely for layout or styling.</li><li>Flexible, but less informative to assistive technologies.</li></ul></li><li><strong>Semantic tags (e.g., &lt;main&gt;, &lt;nav&gt;, &lt;section&gt;):</strong><ul><li>Semantic meaning improves accessibility and search visibility.</li><li>Encourages cleaner, more maintainable structure.</li></ul></li><li><strong>Trade-off:</strong><ul><li>Divs are easier when layout logic dominates.</li><li>Semantic tags require thoughtful use but offer long-term clarity and benefits.</li></ul></li></ul>"}]`,
+            MCQs: `Generate 20 difficult flashcards for my exam with tricky multiple choice style questions from the uploaded lecture material.\nTarget my understanding of complex topics and how they tie together, not just rote learning but testing my true understanding. Give sufficiently detailed answers for an exam. \nOutput exactly in the following JSON format, with each card as an object with keys: category, question, and answer. Group all questions from the same lecture into the same category name.\n\nThe "answer" field must contain clean, valid HTML embedded inside a JSON string. Follow these formatting rules strictly:\n- Escape all double quotes (e.g., use \").\n- Do NOT use \n or other escaped newlines unless part of an HTML tag (e.g., <br>).\n- Make full and thoughtful use of HTML formatting to improve clarity and structure:\n  - Use <p> for paragraphs\n  - Use <ul>, <ol>, and <li> for lists\n  - Use <strong> or <em> to emphasize key ideas\n  - Use <code> for inline code or tag names\n- Avoid plain text blobs. Structure answers to be skimmable and readable.\n- Do NOT include comments, markdown, or extra output—only return a valid JSON array.\n\nExample output:\n[\n  {\n    "category": "Lecture1(HTML Basics)",\n    "question": "What is the purpose of the <code>&lt;head&gt;</code> tag in HTML?",\n    "answer": "<p>The <code>&lt;head&gt;</code> tag contains metadata and links to scripts, stylesheets, and other resources needed before rendering the body of the document.</p>"\n  },\n  {\n    "category": "Lecture1(HTML Basics)",\n    "question": "Explain the difference between <code>&lt;div&gt;</code> and semantic tags.",\n    "answer": "<ul><li><strong>&lt;div&gt;:</strong><ul><li>Non-semantic, used purely for layout or styling.</li><li>Flexible, but less informative to assistive technologies.</li></ul></li><li><strong>Semantic tags (e.g., &lt;main&gt;, &lt;nav&gt;, &lt;section&gt;):</strong><ul><li>Semantic meaning improves accessibility and search visibility.</li><li>Encourages cleaner, more maintainable structure.</li></ul></li><li><strong>Trade-off:</strong><ul><li>Divs are easier when layout logic dominates.</li><li>Semantic tags require thoughtful use but offer long-term clarity and benefits.</li></ul></li></ul>"}]`,
+            tbc: `Generate 5 flashcards for my exam with difficult questions from the uploaded lecture material.\nTarget my understanding of complex topics and how they tie together, not just rote learning but testing my true understanding. Give sufficiently detailed answers for an exam. \nOutput exactly in the following JSON format, with each card as an object with keys: category, question, and answer. Group all questions from the same lecture into the same category name.\n\nThe "answer" field must contain clean, valid HTML embedded inside a JSON string. Follow these formatting rules strictly:\n- Escape all double quotes (e.g., use \").\n- Do NOT use \n or other escaped newlines unless part of an HTML tag (e.g., <br>).\n- Make full and thoughtful use of HTML formatting to improve clarity and structure:\n  - Use <p> for paragraphs\n  - Use <ul>, <ol>, and <li> for lists\n  - Use <strong> or <em> to emphasize key ideas\n  - Use <code> for inline code or tag names\n- Avoid plain text blobs. Structure answers to be skimmable and readable.\n- Do NOT include comments, markdown, or extra output—only return a valid JSON array.\n\nExample output:\n[\n  {\n    "category": "Lecture1(HTML Basics)",\n    "question": "What is the purpose of the <code>&lt;head&gt;</code> tag in HTML?",\n    "answer": "<p>The <code>&lt;head&gt;</code> tag contains metadata and links to scripts, stylesheets, and other resources needed before rendering the body of the document.</p>"\n  },\n  {\n    "category": "Lecture1(HTML Basics)",\n    "question": "Explain the difference between <code>&lt;div&gt;</code> and semantic tags.",\n    "answer": "<ul><li><strong>&lt;div&gt;:</strong><ul><li>Non-semantic, used purely for layout or styling.</li><li>Flexible, but less informative to assistive technologies.</li></ul></li><li><strong>Semantic tags (e.g., &lt;main&gt;, &lt;nav&gt;, &lt;section&gt;):</strong><ul><li>Semantic meaning improves accessibility and search visibility.</li><li>Encourages cleaner, more maintainable structure.</li></ul></li><li><strong>Trade-off:</strong><ul><li>Divs are easier when layout logic dominates.</li><li>Semantic tags require thoughtful use but offer long-term clarity and benefits.</li></ul></li></ul>"}]`,
+        };
+
+        const templateSelect = document.getElementById('templateSelect');
+        if (templateSelect) {
+          templateSelect.addEventListener('change', function() {
+            uploadJsonTextarea.value = templateExamples[this.value] || '';
+          });
+          // Set default template on modal open
+          function setDefaultTemplate() {
+            templateSelect.value = 'DeepContent';
+            uploadJsonTextarea.value = templateExamples['DeepContent'] || '';
+          }
+          // Patch openUploadJsonModal to set default template
+          const origOpenUploadJsonModal = openUploadJsonModal;
+          window.openUploadJsonModal = function() {
+            setDefaultTemplate();
+            origOpenUploadJsonModal();
+          };
         }
     </script>
 
