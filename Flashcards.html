@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Vision Flashcards</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+            font-size: 1.6rem;
+        }
+        .p {
+            font-size: 4rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #2196F3, #1976D2);
+            color: white;
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+        }
+
+        .btn-warning {
+            background: linear-gradient(45deg, #FF9800, #F57C00);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .flashcard-container {
+            perspective: 1000px;
+            margin-bottom: 30px;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 400px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+            top: 0;
+            left: 0;
+            transition: opacity 0.05s linear;
+        }
+
+        .card-front {
+            background: #fff;
+            color: #222;
+            border: 2px solid #e0e0e0;
+            opacity: 1;
+            z-index: 2;
+        }
+
+        .card-back {
+            background: #fff;
+            color: #222;
+            border: 4px solid #4CAF50;
+            opacity: 0;
+            z-index: 1;
+        }
+        .flashcard.flipped .card-front {
+            opacity: 0;
+        }
+        .flashcard.flipped .card-back {
+            opacity: 1;
+        }
+
+        .card-content h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .card-content p, .card-content ul, .card-content div {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .card-content ul {
+            padding-left: 20px;
+        }
+
+        .card-content li {
+            margin-bottom: 8px;
+        }
+
+        .progress {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 4px;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            height: 20px;
+            border-radius: 6px;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            color: white;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .category-tag {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .formula {
+            background: rgba(0,0,0,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .flashcard {
+                height: 350px;
+            }
+            
+            .card-face {
+                padding: 20px;
+            }
+            
+            .card-content h2 {
+                font-size: 1.5rem;
+            }
+            
+            .controls {
+                gap: 10px;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+
+        .filter-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            margin-bottom: 18px;
+            background: rgba(255,255,255,0.10);
+            border-radius: 12px;
+            padding: 10px 18px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .filter-label {
+            color: #fff;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-right: 4px;
+        }
+        #categoryFilter {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: none;
+            font-size: 1rem;
+            background: #262a45;
+            color: #fff;
+            outline: none;
+            min-width: 160px;
+        }
+        .mode-toggle {
+            display: flex;
+            gap: 6px;
+            margin-left: 18px;
+        }
+        .mode-btn {
+            padding: 7px 18px;
+            border: none;
+            border-radius: 18px;
+            font-size: 1rem;
+            font-weight: 600;
+            background: #41446b;
+            color: #fff;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: background 0.2s, opacity 0.2s;
+        }
+        .mode-btn.active {
+            background: linear-gradient(45deg, #2196F3, #1976D2);
+            opacity: 1;
+            box-shadow: 0 2px 10px rgba(33,150,243,0.15);
+        }
+        #restartBtn {
+            min-width: 100px;
+        }
+        @media (max-width: 768px) {
+            .filter-section {
+                flex-direction: column;
+                gap: 10px;
+                padding: 8px 8px;
+            }
+            .mode-toggle {
+                margin-left: 0;
+            }
+        }
+
+        /* palette overlay */
+        #qpOverlay{
+            position:fixed;inset:0;backdrop-filter:blur(2px);
+            background:rgba(0,0,0,.35);display:none;z-index:999;
+        }
+        /* palette window */
+        #qpBox{
+            position:absolute;left:50%;top:12%;transform:translateX(-50%);
+            width:min(900px,98%);max-width:900px;background:#262a45;border-radius:14px;
+            box-shadow:0 12px 32px rgba(0,0,0,.45);padding:28px 28px 20px 28px;color:#fafafa;
+            min-height: 340px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        /* input */
+        #qpInput{
+            width:100%;padding:10px 12px;font-size:16px;
+            border:none;border-radius:6px;background:#15182a;color:#fff;
+            outline:none;
+        }
+        /* results list */
+        #qpResults{margin:12px 0 0;max-height:340px;overflow:auto}
+        .qp-item{
+            padding:8px 12px;border-radius:6px;cursor:pointer;
+            display:flex;justify-content:space-between;gap:8px;
+        }
+        .qp-item:hover,.qp-item.active{background:#41446b}
+        .qp-num{opacity:.6;font-size:14px}
+        .qp-cat{font-size:12px;opacity:.6}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 Computer Vision Flashcards</h1>
+            <p>CITS 4402</p>
+        </div>
+
+        <!-- ─────────── FILTERS & MODE TOGGLES ─────────── -->
+        <div class="filter-section">
+            <label for="categoryFilter" class="filter-label">Category:</label>
+            <select id="categoryFilter"></select>
+            <div class="mode-toggle">
+                <button id="orderedBtn" class="mode-btn active">Ordered</button>
+                <button id="shuffledBtn" class="mode-btn">Shuffled</button>
+            </div>
+        </div>
+        <!-- ─────────── END FILTERS & MODE TOGGLES ─────────── -->
+
+        <div class="category-tag" id="categoryTag">Loading...</div>
+
+        <div class="progress">
+            <div class="progress-bar" id="progressBar" style="width: 0%">0%</div>
+        </div>
+
+        <div class="stats">
+            <div class="stat">
+                <span class="stat-number" id="currentCard">1</span>
+                <span>Current</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number" id="totalCards">0</span>
+                <span>Total</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number" id="correctAnswers">0</span>
+                <span>Correct</span>
+            </div>
+        </div>
+
+        <div class="flashcard-container">
+            <div class="flashcard" id="flashcard">
+                <div class="card-face card-front">
+                    <div class="card-content" id="frontContent">
+                        <h2>Click to start studying!</h2>
+                        <p>Press "Next Card" to begin your Computer Vision review session.</p>
+                    </div>
+                </div>
+                <div class="card-face card-back">
+                    <div class="card-content" id="backContent">
+                        <h2>Answer</h2>
+                        <p>Click the card to flip it back, or use the navigation buttons.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-secondary" onclick="previousCard()">← Previous</button>
+            <button class="btn btn-primary" onclick="flipCard()">Flip Card</button>
+            <button class="btn btn-secondary" onclick="nextCard()">Next →</button>
+            <button class="btn btn-warning" id="restartBtn" onclick="restartCards()">🔄 Restart</button>
+            <button class="btn btn-warning" onclick="markCorrect()">✓ Got It!</button>
+        </div>
+    </div>
+
+    <!-- ─────────── HELP / SHORT-CUT HINTS ─────────── -->
+<style>
+    #helpBox{margin-top:18px;font-size:14px;color:#eee;text-align:left}
+    #helpBox summary{cursor:pointer;font-weight:600;outline:none}
+    #helpBox kbd{background:#44485f;color:#fff;padding:2px 6px;border-radius:4px;font-size:12px}
+    #helpBox ul{margin:6px 0 0 18px;padding:0}
+    #helpBox li{line-height:1.55}
+
+ 
+    #helpBox {
+  margin-top: 18px;
+  font-size: 14px;
+  color: #eee;
+  text-align: center; /* center the container content */
+    }
+
+    #helpBox details {
+    display: inline-block;
+    margin: 0 auto; /* center the box */
+    max-width: 420px;
+    background: rgba(255, 255, 255, 0.07);
+    padding: 10px 14px;
+    border-radius: 8px;
+    text-align: left; /* keep inner content left-aligned */
+    }
+</style>
+    
+    <div id="helpBox">
+      <details>
+        <summary>💡 Keyboard & Quick-Find Short-cuts</summary>
+        <ul>
+          <li><kbd>←</kbd>  Previous card</li>
+          <li><kbd>→</kbd> / <kbd>Space</kbd>  Next card</li>
+          <li><kbd>↑</kbd> / <kbd>↓</kbd>  Flip card</li>
+          <li><kbd>Enter</kbd>  Mark <em>Correct</em></li>
+          <li><kbd>⌘</kbd>+<kbd>K</kbd> / <kbd>Ctrl</kbd>+<kbd>K</kbd>  Open <strong>Quick-Find</strong> palette</li>
+          <li> Type <code>#57</code> → jump to card&nbsp;57</li>
+          <li> Type keywords → live search by question/answer/category</li>
+          <li><kbd>Esc</kbd>  Close Quick-Find</li>
+        </ul>
+      </details>
+    </div>
+    <!-- ─────────── END HELP ─────────── -->
+    
+
+    <script>
+
+        // Flashcards
+        // USE CHATGPT TO GENERATE THE FLASHCARDS
+        /*
+        CHAT GPT Prompt:
+        Generate [number] flashcards for the uploaded lectures
+        The flashcards should be in the following format:
+        {
+            "category": "Lecture2(ImageBasics)",
+            "question": "What is a greyscale image?",
+            "answer": "A greyscale image is a 2D matrix where each element corresponds to a pixel. Each pixel holds an 8-bit gray-level value ranging from 0 (black) to 255 (white). The matrix indices (i, j) map to the spatial location of the pixel."
+        },
+        For each lecture, the category should be the same.
+        */
+
+        const flashcards = [
+         /* ───────────── Lecture 2 – Image Basics, Thresholding & Morphology ───────────── */
+            
+                            {
+                                "category": "Lecture2(ImageBasics)",
+                                "question": "How is a greyscale image represented in computer vision?",
+                                "answer": "A greyscale image is represented as a 2D matrix (array) where each element corresponds to a pixel. Each pixel holds an 8-bit gray-level value ranging from 0 (black) to 255 (white). The matrix indices (i, j) map to the spatial location of the pixel."
+                            },
+                            {
+                                "category": "Lecture2(ImageBasics)",
+                                "question": "What does a resolution of 512 × 512 pixels indicate?",
+                                "answer": "It indicates that the image has 512 rows and 512 columns, totaling 262,144 pixels. This defines the spatial resolution, which affects the level of detail that can be represented."
+                            },
+                            {
+                                "category": "Lecture2(ImageBasics)",
+                                "question": "How much memory is required to store a 512×512 8-bit image?",
+                                "answer": "A 512×512 image with 8-bit depth requires 512 × 512 × 8 = 2,097,152 bits or approximately 256 KB (kilobytes) of storage."
+                            },
+                            {
+                                "category": "Lecture2(ImageBasics)",
+                                "question": "What are the visual effects of downsampling an image?",
+                                "answer": "Downsampling reduces spatial resolution, leading to pixelisation, where individual pixels become visible, and loss of image details, especially along edges and fine textures."
+                            },
+                            {
+                                "category": "Lecture2(ImageBasics)",
+                                "question": "What is an image histogram and what does it describe?",
+                                "answer": "An image histogram is a graphical representation of the distribution of gray levels (intensities) in the image. It shows how many pixels have each possible intensity value from 0 to 255. It is used for analyzing contrast, brightness, and dynamic range."
+                            },
+                            {
+                                "category": "Lecture2(ImageBasics)",
+                                "question": "What is the difference between a greyscale and binary image?",
+                                "answer": "A greyscale image uses 8-bit pixel values ranging from 0 to 255 to represent shades of gray. A binary image uses only two values, typically 0 and 1 (or black and white), to indicate the presence or absence of features."
+                            },
+                            {
+                                "category": "Lecture2(ImageBasics)",
+                                "question": "What is image binarization, and where is it used?",
+                                "answer": "Image binarization is the process of converting a greyscale image to a binary image using a threshold. Pixels above the threshold are set to white (1), and those below are set to black (0). It is used in applications like Optical Character Recognition (OCR), document processing, and license plate recognition."
+                            },
+                            {
+                                "category": "Lecture2(ImageBasics)",
+                                "question": "What is global thresholding in image processing?",
+                                "answer": "Global thresholding applies a single threshold value to the entire image to segment foreground from background. It is effective only when the lighting and background are uniform throughout the image."
+                            },
+                            {
+                                "category": "Lecture2(ImageBasics)",
+                                "question": "What is local (adaptive) thresholding and when is it used?",
+                                "answer": "Local or adaptive thresholding calculates a threshold for each small region of the image, based on local pixel statistics (mean, standard deviation). It is used in images with non-uniform illumination or shadows."
+                            },
+                            {
+                                "category": "Lecture2(ImageBasics)",
+                                "question": "What is Otsu's method and what does it optimize?",
+                                "answer": "Otsu's method is a global thresholding algorithm that automatically chooses the optimal threshold by maximizing the inter-class variance (i.e., the variance between foreground and background classes)."
+                            },
+                            {
+                                "category": "Lecture2(ImageBasics)",
+                                "question": "What is Niblack's method in thresholding?",
+                                "answer": "Niblack's method is a local adaptive thresholding technique that sets the threshold at each pixel as: mean ± k × standard deviation, computed over a sliding window. It is useful for detecting features in variable lighting conditions."
+                            },
+                            {
+                                "category": "Lecture2(ImageBasics)",
+                                "question": "What is morphological image processing?",
+                                "answer": "Morphological image processing applies set-based operations using structuring elements to process the shapes in binary images. It is used to remove noise, fill gaps, and extract structures."
+                            },
+                            {
+                                "category": "Lecture2(ImageBasics)",
+                                "question": "What is dilation in morphology and what does it do?",
+                                "answer": "Dilation is a morphological operation that expands object boundaries. A pixel is set to 1 if at least one pixel under the structuring element is 1. It is used to grow or thicken objects."
+                            },
+                            {
+                                "category": "Lecture2(ImageBasics)",
+                                "question": "What is erosion in morphology and what does it do?",
+                                "answer": "Erosion shrinks objects by setting a pixel to 1 only if all pixels under the structuring element are 1. It removes small objects and erodes boundaries."
+                            },
+                            {
+                                "category": "Lecture2(ImageBasics)",
+                                "question": "What is the opening operation in morphology?",
+                                "answer": "Opening is erosion followed by dilation. It removes small noise elements while preserving the shape and size of larger structures in the image."
+                            },
+                            {
+                                "category": "Lecture2(ImageBasics)",
+                                "question": "What is the closing operation in morphology?",
+                                "answer": "Closing is dilation followed by erosion. It fills small holes, connects close components, and bridges gaps between objects."
+                            },
+                            {
+                                "category": "Lecture2(ImageBasics)",
+                                "question": "What is the 4-connected neighborhood (N4)?",
+                                "answer": "The 4-connected neighborhood defines connectivity using vertical and horizontal adjacent pixels only — i.e., up, down, left, and right. Diagonals are not included."
+                            },
+                            {
+                                "category": "Lecture2(ImageBasics)",
+                                "question": "List four common features extracted from binary images.",
+                                "answer": "Common binary image features include: (1) Area (number of foreground pixels), (2) Bounding Box (minimum enclosing rectangle), (3) Perimeter (boundary length), and (4) Compactness (shape roundness or area-to-perimeter ratio)."
+                            },
+                            {
+                                "category": "Lecture2(ImageBasics)",
+                                "question": "Why is rotation invariance important for shape features?",
+                                "answer": "Rotation invariance ensures that the extracted shape features remain constant even if the object is rotated. This is crucial for consistent recognition in different orientations."
+                            },
+                            {
+                                "category": "Lecture2(ImageBasics)",
+                                "question": "What is the gradient vector of an image surface?",
+                                "answer": "The gradient vector ∇I = [∂I/∂x, ∂I/∂y] points in the direction of the steepest intensity increase. It is used in edge detection to find boundaries and in surface analysis."
+                            },
+                            {
+                                "category": "Lecture2(ImageBasics)",
+                                "question": "What is a surface normal vector in image processing?",
+                                "answer": "The normal vector is perpendicular to the surface and defined as (−∂I/∂x, −∂I/∂y, 1) in 3D space. It describes the orientation of the image surface at a point and is useful in shading and 3D reconstruction."
+                            },
+
+                            /* ───────────── Lecture 3 – Fourier Transform & Frequency Analysis ───────────── */
+                            {
+                                "category": "Lecture3(FourierTransform)",
+                                "question": "What is a signal in computer vision context?",
+                                "answer": "A signal is any physical phenomenon that can be modeled as a function of time or position to some real- or vector-valued domain and is used to carry information. In computer vision, a greyscale image is treated as a 2-D signal."
+                            },
+                            {
+                                "category": "Lecture3(FourierTransform)",
+                                "question": "What's the difference between analog and digital signals?",
+                                "answer": "• Analog signals: continuous domain and continuous range\n• Digital signals: discrete domain and discrete range\n• Images are digital signals with discrete pixels and intensities."
+                            },
+                            {
+                                "category": "Lecture3(FourierTransform)",
+                                "question": "How do 1-D and 2-D signals differ in vision processing?",
+                                "answer": "1-D signals vary over time (e.g., audio); 2-D signals vary over 2D space (images) and require 2-D operations like 2-D convolution."
+                            },
+                            {
+                                "category": "Lecture3(FourierTransform)",
+                                "question": "What is a kernel in image processing?",
+                                "answer": "A small matrix (mask) used to convolve with an image to perform operations such as blurring, sharpening or edge detection."
+                            },
+                            {
+                                "category": "Lecture3(FourierTransform)",
+                                "question": "What defines a linear filter?",
+                                "answer": "It satisfies additivity and homogeneity: T(f+g)=T(f)+T(g) and T(af)=a·T(f)."
+                            },
+                            {
+                                "category": "Lecture3(FourierTransform)",
+                                "question": "Provide an example of a non-linear filter.",
+                                "answer": "Median filter or gamma correction; they violate linearity because output is not linear combination of inputs."
+                            },
+                            {
+                                "category": "Lecture3(FourierTransform)",
+                                "question": "State the 2-D convolution formula.",
+                                "answer": "(f∗g)(x,y)=ΣuΣv f(u,v) g(x-u, y-v)."
+                            },
+                            {
+                                "category": "Lecture3(FourierTransform)",
+                                "question": "How does correlation differ from convolution?",
+                                "answer": "In correlation the kernel is not flipped; convolution flips the kernel both horizontally and vertically before sliding."
+                            },
+                            {
+                                "category": "Lecture3(FourierTransform)",
+                                "question": "Why perform Fourier Transform in image analysis?",
+                                "answer": "To analyze frequency content, design frequency-domain filters, perform efficient convolution, compression and pattern detection."
+                            },
+                            {
+                                "category": "Lecture3(FourierTransform)",
+                                "question": "When is Fourier Series used?",
+                                "answer": "For periodic continuous signals to represent them as sums of sines and cosines."
+                            },
+                            {
+                                "category": "Lecture3(FourierTransform)",
+                                "question": "What is a discrete spectrum?",
+                                "answer": "A set of isolated frequency components (impulses) produced by a periodic signal's Fourier series."
+                            },
+                            {
+                                "category": "Lecture3(FourierTransform)",
+                                "question": "Name three key properties of the Fourier Transform.",
+                                "answer": "Linearity, shift (translation) property, and convolution theorem."
+                            },
+                            {
+                                "category": "Lecture3(FourierTransform)",
+                                "question": "State the Nyquist sampling criterion.",
+                                "answer": "Sampling frequency must be at least twice the highest signal frequency to avoid aliasing."
+                            },
+                            {
+                                "category": "Lecture3(FourierTransform)",
+                                "question": "Why can frequencies above Nyquist cause aliasing?",
+                                "answer": "They fold back into lower frequencies after sampling, distorting the reconstructed signal."
+                            },
+                            {
+                                "category": "Lecture3(FourierTransform)",
+                                "question": "What is the computational complexity of FFT compared to DFT?",
+                                "answer": "FFT: O(N log N); naive DFT: O(N²)."
+                            },
+                            {
+                                "category": "Lecture3(FourierTransform)",
+                                "question": "Which carries more structural information, phase or magnitude?",
+                                "answer": "Phase; swapping phase retains image structure whereas swapping magnitude only alters contrast."
+                            },
+                            {
+                                "category": "Lecture3(FourierTransform)",
+                                "question": "How is low-pass filtering done in frequency domain?",
+                                "answer": "Multiply Fourier spectrum by a mask that preserves low frequencies near origin and attenuates high frequencies."
+                            },
+                            {
+                                "category": "Lecture3(FourierTransform)",
+                                "question": "Name a common low-pass filter in frequency domain.",
+                                "answer": "Ideal, Butterworth or Gaussian low-pass filter."
+                            },
+                            {
+                                "category": "Lecture3(FourierTransform)",
+                                "question": "Why use fftshift before visualizing the spectrum?",
+                                "answer": "Centers the zero frequency component, making the spectrum easier to interpret."
+                            },
+                            {
+                                "category": "Lecture3(FourierTransform)",
+                                "question": "Which functions help rescale FFT magnitude for display?",
+                                "answer": "Log or square-root scaling to compress large dynamic range."
+                            },
+
+                            /* ───────────── Lecture 4 – Single-Pixel Ops, Histogram Eq & Spatial Filtering ───────────── */
+                            {
+                                "category": "Lecture4(Enhancement)",
+                                "question": "Give two examples of single-pixel intensity transformations.",
+                                "answer": "Negative transformation and gamma (power-law) correction."
+                            },
+                            {
+                                "category": "Lecture4(Enhancement)",
+                                "question": "What is the goal of contrast stretching?",
+                                "answer": "Expand intensity range to utilize full dynamic range and improve visibility of details."
+                            },
+                            {
+                                "category": "Lecture4(Enhancement)",
+                                "question": "What does histogram equalization achieve?",
+                                "answer": "Flattens the histogram to produce a uniform distribution, enhancing global contrast."
+                            },
+                            {
+                                "category": "Lecture4(Enhancement)",
+                                "question": "Why is Gaussian preferred for smoothing?",
+                                "answer": "It removes high-frequency noise while preserving edges better due to no ringing artifacts."
+                            },
+                            {
+                                "category": "Lecture4(Enhancement)",
+                                "question": "What is high-boost filtering used for?",
+                                "answer": "To sharpen images by adding a scaled high-pass filtered version to the original image."
+                            },
+                            {
+                                "category": "Lecture4(Enhancement)",
+                                "question": "Why is median filter effective for salt-and-pepper noise?",
+                                "answer": "It replaces each pixel with median of neighborhood, removing isolated outliers without blurring edges."
+                            },
+                            {
+                                "category": "Lecture4(Enhancement)",
+                                "question": "Why must anti-aliasing be applied before subsampling?",
+                                "answer": "To suppress high frequencies that would alias after down-sampling."
+                            },
+                            {
+                                "category": "Lecture4(Enhancement)",
+                                "question": "Name two similarity measures for template matching.",
+                                "answer": "Sum of Squared Differences (SSD) and Normalized Cross-Correlation (NCC)."
+                            },
+
+                            /* ───────────── Lecture 5 – Edge Detection ───────────── */
+                            {
+                                "category": "Lecture5(EdgeDetection)",
+                                "question": "What is an edge in an image?",
+                                "answer": "A location of rapid intensity change corresponding to boundaries of objects or features."
+                            },
+                            {
+                                "category": "Lecture5(EdgeDetection)",
+                                "question": "List four physical causes of edges.",
+                                "answer": "Depth discontinuity, surface normal discontinuity, surface color discontinuity, illumination discontinuity."
+                            },
+                            {
+                                "category": "Lecture5(EdgeDetection)",
+                                "question": "Name three finite-difference schemes for 1-D gradient.",
+                                "answer": "Forward difference, backward difference, central difference."
+                            },
+                            {
+                                "category": "Lecture5(EdgeDetection)",
+                                "question": "What are the 3×3 Sobel kernels?",
+                                "answer": "Gx = [[+1 0 -1],[+2 0 -2],[+1 0 -1]]; Gy = [[+1 +2 +1],[0 0 0],[-1 -2 -1]]."
+                            },
+                            {
+                                "category": "Lecture5(EdgeDetection)",
+                                "question": "How does Prewitt differ from Sobel?",
+                                "answer": "Prewitt uses uniform weights (1) whereas Sobel uses center weight 2 for better smoothing."
+                            },
+                            {
+                                "category": "Lecture5(EdgeDetection)",
+                                "question": "What is the Laplacian of Gaussian (LoG) used for?",
+                                "answer": "Detect zero-crossings that correspond to edges by combining smoothing and second-derivative."
+                            },
+                            {
+                                "category": "Lecture5(EdgeDetection)",
+                                "question": "What three criteria define an optimal edge detector according to Canny?",
+                                "answer": "Good detection (low error rate), good localization, and single response to a single edge."
+                            },
+                            {
+                                "category": "Lecture5(EdgeDetection)",
+                                "question": "Outline the Canny edge detection pipeline.",
+                                "answer": "1) Gaussian smoothing 2) Gradient magnitude & orientation 3) Non-maximal suppression 4) Hysteresis thresholding."
+                            },
+                            {
+                                "category": "Lecture5(EdgeDetection)",
+                                "question": "Why use two thresholds in Canny?",
+                                "answer": "High threshold finds strong edges; low threshold links weak edges connected to strong ones, reducing breaks."
+                            },
+                            {
+                                "category": "Lecture5(EdgeDetection)",
+                                "question": "How does increasing Gaussian σ affect Canny output?",
+                                "answer": "More smoothing reduces noise but blurs edges, decreasing localization accuracy."
+                            },
+
+                            /* ───────────── Lecture 6 – Object Recognition & PCA ───────────── */
+                            {
+                                "category": "Lecture6(ObjectRecognition)",
+                                "question": "Differentiate between identification and categorization.",
+                                "answer": "Identification matches to a specific instance; categorization assigns to a class label."
+                            },
+                            {
+                                    "category": "Lecture6(ObjectRecognition)",
+                                "question": "How does detection differ from recognition?",
+                                "answer": "Detection localizes instances of a class; recognition determines identity or class once detected."
+                            },
+                            {
+                                "category": "Lecture6(ObjectRecognition)",
+                                "question": "Name four challenges in visual recognition.",
+                                "answer": "Appearance variation, viewpoint changes, illumination, background clutter, scale, occlusion."
+                            },
+                            {
+                                "category": "Lecture6(ObjectRecognition)",
+                                "question": "List stages of a typical object recognition pipeline.",
+                                "answer": "1) Feature extraction 2) Training (learn classifier) 3) Testing (classification/prediction)."
+                            },
+                            {
+                                "category": "Lecture6(ObjectRecognition)",
+                                "question": "What does PCA achieve in object recognition?",
+                                "answer": "Projects high-dimensional image data onto lower-dimensional orthogonal basis maximizing variance; used for shape/appearance modeling."
+                            },
+                            {
+                                "category": "Lecture6(ObjectRecognition)",
+                                "question": "How are Eigenfaces used in face recognition?",
+                                "answer": "Faces are projected onto PCA subspace; recognition done by nearest neighbor in eigenface coefficients."
+                            },
+                            {
+                                "category": "Lecture6(ObjectRecognition)",
+                                "question": "What is a color histogram?",
+                                "answer": "Distribution of pixel colors in chosen color space (e.g., HSV), used as descriptor for object recognition."
+                            },
+                            {
+                                "category": "Lecture6(ObjectRecognition)",
+                                "question": "Why convert RGB to HSV or CIE-XYZ for color matching?",
+                                "answer": "Decouples chromaticity from intensity, making descriptors more robust to lighting changes."
+                            },
+                            {
+                                "category": "Lecture6(ObjectRecognition)",
+                                "question": "Describe the k-Nearest Neighbor classifier.",
+                                "answer": "Classifies a sample by majority vote of its k closest training samples in feature space."
+                            },
+                            {
+                                "category": "Lecture6(ObjectRecognition)",
+                                "question": "What is the goal of an SVM?",
+                                "answer": "Find the maximum-margin hyperplane that separates classes; can be extended with kernels for nonlinear separation."
+                            },
+
+                            /* ───────────── Lecture 7 – Feature Detection & Extraction ───────────── */
+                            {
+                                "category": "Lecture7(Features)",
+                                "question": "Why are features preferred over raw pixels for matching?",
+                                "answer": "Features are repeatable, robust to illumination and viewpoint changes, and more compact."
+                            },
+                            {
+                                "category": "Lecture7(Features)",
+                                "question": "List three properties of good features.",
+                                "answer": "Repeatability, saliency/distinctiveness, compactness/efficiency."
+                            },
+                            {
+                                            "category": "Lecture7(Features)",
+                                "question": "What are the two steps in feature extraction?",
+                                "answer": "1) Detect keypoints 2) Compute descriptors around those keypoints."
+                            },
+                            {
+                                "category": "Lecture7(Features)",
+                                "question": "How does the Harris corner detector work?",
+                                "answer": "Computes matrix of image gradients in a window; large eigenvalues indicate corners; corner response R=det(M)-k·trace²(M)."
+                            },
+                            {
+                                "category": "Lecture7(Features)",
+                                "question": "Which detector provides scale invariance and how?",
+                                "answer": "SIFT detects extrema in Difference-of-Gaussian scale space, selecting keypoints with assigned scale."
+                            },
+                            {
+                                "category": "Lecture7(Features)",
+                                "question": "What makes Haar features fast to compute?",
+                                "answer": "Integral images allow rectangular sum computation in constant time, enabling real-time detection."
+                            },
+                            {
+                                "category": "Lecture7(Features)",
+                                "question": "What does a HOG descriptor encode?",
+                                "answer": "Histogram of gradient orientations in local cells, capturing edge structure robust to illumination."
+                            },
+                            {
+                                "category": "Lecture7(Features)",
+                                "question": "What is Local Binary Pattern (LBP)?",
+                                "answer": "Binary code representing local texture: threshold neighbors against center pixel and form a bit string."
+                            },
+
+                            /* ───────────── Lecture 8 – Camera Calibration ───────────── */
+                            {
+                                "category": "Lecture8(Calibration)",
+                                "question": "Why is camera calibration useful?",
+                                "answer": "It estimates intrinsic and extrinsic parameters allowing metric measurements, 3-D reconstruction, and distortion correction."
+                            },
+                            {
+                                "category": "Lecture8(Calibration)",
+                                "question": "List the five intrinsic camera parameters.",
+                                "answer": "Focal length fx, focal length fy, principal point (cx, cy), and skew s."
+                            },
+                            {
+                                "category": "Lecture8(Calibration)",
+                                "question": "What do the six extrinsic parameters represent?",
+                                "answer": "3D rotation (3 parameters) and translation (3 parameters) of camera with respect to world coordinates."
+                            },
+                            {
+                                "category": "Lecture8(Calibration)",
+                                "question": "Describe the pinhole camera model.",
+                                "answer": "Projects 3D points onto 2D image plane via straight lines through a single center of projection (camera center)."
+                            },
+                            {
+                                "category": "Lecture8(Calibration)",
+                                "question": "What is the form of the full camera projection matrix P?",
+                                "answer": "P = K [ R | t ] where K is intrinsic 3×3, R is 3×3 rotation, t is translation 3×1."
+                            },
+                            {
+                                        "category": "Lecture8(Calibration)",
+                                "question": "Write the perspective projection of 3-D point (X,Y,Z).",
+                                "answer": "In homogeneous: s [u v 1]ᵀ = K [ R | t ] [X Y Z 1]ᵀ."
+                            },
+                            {
+                                "category": "Lecture8(Calibration)",
+                                "question": "What is solved in the Direct Linear Transformation (DLT) method?",
+                                "answer": "Linear system Aq=0 for projection matrix parameters using many point correspondences."
+                            },
+                            {
+                                "category": "Lecture8(Calibration)",
+                                "question": "Name two types of radial distortion.",
+                                "answer": "Barrel distortion (magnification decreases with radius) and pincushion distortion (magnification increases with radius)."
+                            },
+
+                            /* ───────────── Lecture 9 – Projective Geometry ───────────── */
+                            {
+                                "category": "Lecture9(ProjectiveGeometry)",
+                                "question": "What is a vanishing point?",
+                                "answer": "Image point where projections of parallel lines in 3-D intersect under perspective projection."
+                            },
+                            {
+                                "category": "Lecture9(ProjectiveGeometry)",
+                                "question": "How is the horizon line related to vanishing points?",
+                                "answer": "The horizon is the vanishing line formed by intersection of all horizontal vanishing points from ground plane."
+                            },
+                            {
+                                "category": "Lecture9(ProjectiveGeometry)",
+                                "question": "Why use homogeneous coordinates?",
+                                "answer": "Enable representation of points at infinity and unification of translation with matrix multiplication."
+                            },
+                            {
+                                "category": "Lecture9(ProjectiveGeometry)",
+                                "question": "Why is cross-ratio important?",
+                                "answer": "It is a projective invariant preserved under perspective transformation, used for measurement."
+                            },
+                            {
+                                "category": "Lecture9(ProjectiveGeometry)",
+                                "question": "What is a homography?",
+                                "answer": "A 3×3 non-singular matrix mapping points between two views of the same plane up to scale."
+                            },
+                            {
+                                "category": "Lecture9(ProjectiveGeometry)",
+                                "question": "What is the goal of image rectification?",
+                                "answer": "Apply homographies to make corresponding epipolar lines horizontal and align image planes."
+                            },
+
+                            /* ───────────── Lecture 10 – Stereo Reconstruction ───────────── */
+                            {
+                                "category": "Lecture10(Stereo)",
+                                "question": "Why is depth ambiguous in a single image?",
+                                "answer": "All 3-D points along a viewing ray project to the same 2-D pixel, making depth indeterminate."
+                            },
+                            {
+                                "category": "Lecture10(Stereo)",
+                                "question": "What does a random dot stereogram demonstrate?",
+                                "answer": "That disparity differences alone can convey depth perception without recognizable objects."
+                            },
+                            {
+                                        "category": "Lecture10(Stereo)",
+                                "question": "Define an epipolar line.",
+                                "answer": "The image locus of intersection of the epipolar plane with the image plane; correspondence must lie on this line."
+                            },
+                            {
+                                "category": "Lecture10(Stereo)",
+                                "question": "What relates normalized image coordinates of a calibrated stereo pair?",
+                                "answer": "Essential matrix E such that x'ᵀ E x = 0."
+                            },
+                            {
+                                "category": "Lecture10(Stereo)",
+                                "question": "What is the fundamental matrix?",
+                                "answer": "F is a 3×3 rank-2 matrix relating homogeneous pixel coordinates of uncalibrated cameras: x'ᵀ F x = 0."
+                            },
+                            {
+                                "category": "Lecture10(Stereo)",
+                                "question": "What does the eight-point algorithm compute?",
+                                "answer": "Estimates the fundamental matrix from at least eight point correspondences."
+                            },
+                            {
+                                "category": "Lecture10(Stereo)",
+                                "question": "Why perform stereo rectification?",
+                                "answer": "To simplify correspondence search to 1-D horizontal disparity by aligning epipolar lines."
+                            },
+                            {
+                                "category": "Lecture10(Stereo)",
+                                "question": "How is depth Z computed from disparity d?",
+                                "answer": "Z = (f · B) / d where f is focal length and B is baseline."
+                            },
+                            {
+                                "category": "Lecture10(Stereo)",
+                                "question": "How does a laser stripe scanner recover 3-D shape?",
+                                "answer": "Projects known stripe pattern; deformation in camera image gives triangulation for surface points."
+                            },
+
+                            /* ───────────── Lecture 11 – Optical Flow, Tracking & 3-D Shape ───────────── */
+                            {
+                                "category": "Lecture11(OpticalFlow)",
+                                "question": "What is optical flow?",
+                                "answer": "Apparent pixel motion field between two frames representing brightness pattern displacement."
+                            },
+                            {
+                                "category": "Lecture11(OpticalFlow)",
+                                "question": "State the brightness constancy assumption.",
+                                "answer": "Pixel intensity of a moving point remains constant between consecutive frames."
+                            },
+                            {
+                                "category": "Lecture11(OpticalFlow)",
+                                "question": "Write the optical flow constraint equation.",
+                                "answer": "Ix u + Iy v + It = 0 where (u,v) is flow vector."
+                            },
+                            {
+                                "category": "Lecture11(OpticalFlow)",
+                                "question": "How does the Lucas-Kanade method obtain flow?",
+                                "answer": "Assumes constant flow in a small window; solves least-squares system for (u,v)."
+                            },
+                            {
+                                    "category": "Lecture11(OpticalFlow)",
+                                "question": "Explain the aperture problem.",
+                                "answer": "Local motion along an edge is ambiguous; only motion perpendicular to gradient is observable."
+                            },
+                            {
+                                "category": "Lecture11(OpticalFlow)",
+                                "question": "Why use an image pyramid for large optical flow?",
+                                "answer": "Estimate flow at coarse resolution and refine at finer levels to handle large displacements."
+                            },
+                            {
+                                "category": "Lecture11(OpticalFlow)",
+                                "question": "Name three applications of optical flow.",
+                                "answer": "Video stabilization, motion segmentation, slow-motion synthesis, pedestrian detection."
+                            },
+                            {
+                                "category": "Lecture11(OpticalFlow)",
+                                "question": "What is Kinect's depth sensing principle?",
+                                "answer": "Structured infrared light projection (Kinect v1) or time-of-flight (Kinect v2) to measure depth."
+                            },
+                            {
+                                "category": "Lecture11(OpticalFlow)",
+                                "question": "What is a point cloud?",
+                                "answer": "An unorganized set of 3-D points representing sampled surface coordinates."
+                            },
+                            {
+                                "category": "Lecture11(OpticalFlow)",
+                                "question": "How is a mesh generated from a point cloud?",
+                                "answer": "Connect neighboring points into triangles/polygons to approximate surface."
+                            },
+
+                            /* ───────────── Lecture 12 – Deep Learning (CNNs) ───────────── */
+                            {
+                                "category": "Lecture12(DeepLearning)",
+                                "question": "Why replace fully connected layers with convolutions for images?",
+                                "answer": "Exploits spatial locality, weight sharing, and greatly reduces parameters."
+                            },
+                            {
+                                "category": "Lecture12(DeepLearning)",
+                                "question": "What are learned parameters in a conv layer?",
+                                "answer": "Filter (kernel) weights and optional bias for each output channel."
+                            },
+                            {
+                                "category": "Lecture12(DeepLearning)",
+                                "question": "Why is ReLU popular in CNNs?",
+                                "answer": "Introduces non-linearity, mitigates vanishing gradients, and is computationally cheap (max(0,x))."
+                            },
+                            {
+                                "category": "Lecture12(DeepLearning)",
+                                "question": "What benefits does max pooling provide?",
+                                "answer": "Down-samples feature maps, introduces translation invariance, reduces computation."
+                            },
+                            {
+                                "category": "Lecture12(DeepLearning)",
+                                "question": "What problem does batch normalization address?",
+                                "answer": "Internal covariate shift; it normalizes layer inputs to stabilize and accelerate training."
+                            },
+                            {
+                                        "category": "Lecture12(DeepLearning)",
+                                "question": "What do early CNN layers typically learn?",
+                                "answer": "Low-level features such as edges and simple textures."
+                            },
+                            {
+                                "category": "Lecture12(DeepLearning)",
+                                "question": "What key factors made AlexNet successful on ImageNet 2012?",
+                                "answer": "Deep CNN architecture, ReLU activations, dropout, data augmentation, GPU training."
+                            },
+                            {
+                                "category": "Lecture12(DeepLearning)",
+                                "question": "What is a hallmark of VGGNet architecture?",
+                                "answer": "Uses uniform 3×3 conv filters stacked deep, doubling channels after each max pool."
+                            },
+                            {
+                                "category": "Lecture12(DeepLearning)",
+                                "question": "How does GoogLeNet reduce parameters?",
+                                "answer": "Uses 'bottleneck' 1×1 convolutions before 3×3/5×5 filters and parallel branch concatenation."
+                            },
+                            {
+                                "category": "Lecture12(DeepLearning)",
+                                "question": "What is the core idea of ResNet?",
+                                "answer": "Learn residual functions via identity shortcut connections to ease optimization of very deep networks."
+                            },
+                            {
+                                "category": "Lecture12(DeepLearning)",
+                                "question": "When is Group Normalization preferable to BatchNorm?",
+                                "answer": "For small batch sizes where batch statistics are unreliable."
+                            },
+                            {
+                                "category": "Lecture12(DeepLearning)",
+                                "question": "Outline a typical deep-learning vision pipeline.",
+                                "answer": "Input image → convolution+ReLU+pool ×N → flatten → fully connected → softmax output."
+                            },
+        
+        ];
+
+        // ─────────── FILTERING & MODE STATE ───────────
+        let currentIndex = 0;
+        let isFlipped = false;
+        let correctCount = 0;
+        let mode = 'ordered'; // 'ordered' or 'shuffled'
+        let selectedCategory = 'All Categories';
+        let filteredCards = [];
+        let orderedCards = [...flashcards];
+        let shuffledCards = [];
+
+        // Populate category dropdown
+        function populateCategoryDropdown() {
+            const select = document.getElementById('categoryFilter');
+            const categories = Array.from(new Set(flashcards.map(f => f.category)));
+            categories.sort();
+            select.innerHTML = '<option>All Categories</option>' +
+                categories.map(cat => `<option>${cat}</option>`).join('');
+        }
+
+        // Filter cards by category
+        function filterCards() {
+            if (selectedCategory === 'All Categories') {
+                orderedCards = [...flashcards];
+            } else {
+                orderedCards = flashcards.filter(f => f.category === selectedCategory);
+            }
+            shuffledCards = shuffleArray([...orderedCards]);
+            filteredCards = (mode === 'shuffled') ? shuffledCards : orderedCards;
+            currentIndex = 0;
+            correctCount = 0;
+            updateDisplay();
+        }
+
+        // Shuffle helper
+        function shuffleArray(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // Mode switching
+        function setMode(newMode) {
+            if (mode === newMode) return;
+            mode = newMode;
+            document.getElementById('orderedBtn').classList.toggle('active', mode === 'ordered');
+            document.getElementById('shuffledBtn').classList.toggle('active', mode === 'shuffled');
+            filteredCards = (mode === 'shuffled') ? shuffledCards : orderedCards;
+            currentIndex = 0;
+            correctCount = 0;
+            updateDisplay();
+        }
+
+        // Restart button logic
+        function restartCards() {
+            if (mode === 'shuffled') {
+                shuffledCards = shuffleArray([...orderedCards]);
+                filteredCards = shuffledCards;
+            } else {
+                filteredCards = orderedCards;
+            }
+            currentIndex = 0;
+            correctCount = 0;
+            updateDisplay();
+        }
+
+        // Update display
+        function updateDisplay() {
+            if (filteredCards.length === 0) {
+                document.getElementById('frontContent').innerHTML = '<h2>No cards</h2><p>No flashcards in this category.</p>';
+                document.getElementById('backContent').innerHTML = '';
+                document.getElementById('categoryTag').textContent = '';
+                document.getElementById('currentCard').textContent = '0';
+                document.getElementById('totalCards').textContent = '0';
+                document.getElementById('correctAnswers').textContent = correctCount;
+                document.getElementById('progressBar').style.width = '0%';
+                document.getElementById('progressBar').textContent = '0%';
+                return;
+            }
+            const card = filteredCards[currentIndex];
+            document.getElementById('frontContent').innerHTML = `
+                <h2>Question ${currentIndex + 1}</h2>
+                <p>${card.question}</p>
+            `;
+            document.getElementById('backContent').innerHTML = `
+                <h2>Answer</h2>
+                <div style="text-align: left;">${card.answer.replace(/\n/g, '<br>')}</div>
+            `;
+            document.getElementById('categoryTag').textContent = card.category;
+            document.getElementById('currentCard').textContent = currentIndex + 1;
+            document.getElementById('totalCards').textContent = filteredCards.length;
+            document.getElementById('correctAnswers').textContent = correctCount;
+            const progress = ((currentIndex + 1) / filteredCards.length) * 100;
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = progress + '%';
+            progressBar.textContent = Math.round(progress) + '%';
+            if (isFlipped) {
+                document.getElementById('flashcard').classList.remove('flipped');
+                isFlipped = false;
+            }
+        }
+
+        function flipCard() {
+            if (filteredCards.length === 0) return;
+            const flashcard = document.getElementById('flashcard');
+            flashcard.classList.toggle('flipped');
+            isFlipped = !isFlipped;
+        }
+
+        function nextCard() {
+            if (filteredCards.length === 0) return;
+            if (currentIndex < filteredCards.length - 1) {
+                currentIndex++;
+                updateDisplay();
+            } else {
+                alert('🎉 Congratulations! You\'ve completed all flashcards!\n\nScore: ' + correctCount + '/' + filteredCards.length);
+            }
+        }
+
+        function previousCard() {
+            if (filteredCards.length === 0) return;
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateDisplay();
+            }
+        }
+
+        function markCorrect() {
+            if (filteredCards.length === 0) return;
+            correctCount++;
+            updateDisplay();
+            setTimeout(nextCard, 500);
+        }
+
+        // Event listeners
+        document.getElementById('flashcard').addEventListener('click', flipCard);
+        document.getElementById('categoryFilter').addEventListener('change', function(e) {
+            selectedCategory = e.target.value;
+            filterCards();
+        });
+        document.getElementById('orderedBtn').addEventListener('click', function() { setMode('ordered'); });
+        document.getElementById('shuffledBtn').addEventListener('click', function() { setMode('shuffled'); });
+
+        document.addEventListener('keydown', function(event) {
+            if (qpOverlay && qpOverlay.style.display === 'block') return;
+            if (filteredCards.length === 0) return;
+            switch(event.key) {
+                case 'ArrowLeft':
+                    previousCard();
+                    break;
+                case 'ArrowRight':
+                    nextCard();
+                    break;
+                case ' ':
+                    flipCard();
+                    break;
+                case 'ArrowUp':
+                case 'ArrowDown':
+                    flipCard();
+                    break;
+                case 'Enter':
+                    markCorrect();
+                    break;
+            }
+        });
+
+        // Initialize
+        window.addEventListener('DOMContentLoaded', function() {
+            populateCategoryDropdown();
+            filterCards();
+            document.getElementById('orderedBtn').classList.add('active');
+            document.getElementById('shuffledBtn').classList.remove('active');
+        });
+    </script>
+
+    <!-- ─────────── QUICK-FIND COMMAND-PALETTE ─────────── -->
+<style>
+    /* palette overlay */
+    #qpOverlay{
+        position:fixed;inset:0;backdrop-filter:blur(2px);
+        background:rgba(0,0,0,.35);display:none;z-index:999;
+    }
+    /* palette window */
+    #qpBox{
+        position:absolute;left:50%;top:12%;transform:translateX(-50%);
+        width:min(900px,98%);max-width:900px;background:#262a45;border-radius:14px;
+        box-shadow:0 12px 32px rgba(0,0,0,.45);padding:28px 28px 20px 28px;color:#fafafa;
+        min-height: 340px;
+        max-height: 600px;
+        overflow-y: auto;
+    }
+    /* input */
+    #qpInput{
+        width:100%;padding:10px 12px;font-size:16px;
+        border:none;border-radius:6px;background:#15182a;color:#fff;
+        outline:none;
+    }
+    /* results list */
+    #qpResults{margin:12px 0 0;max-height:340px;overflow:auto}
+    .qp-item{
+        padding:8px 12px;border-radius:6px;cursor:pointer;
+        display:flex;justify-content:space-between;gap:8px;
+    }
+    .qp-item:hover,.qp-item.active{background:#41446b}
+    .qp-num{opacity:.6;font-size:14px}
+    .qp-cat{font-size:12px;opacity:.6}
+    </style>
+    
+    <div id="qpOverlay">
+      <div id="qpBox">
+          <input id="qpInput" placeholder="Type #number or keywords …">
+          <div id="qpResults"></div>
+      </div>
+    </div>
+    
+    <script>
+    /* ---------- Quick-Find Palette ---------- */
+    const qpOverlay  = document.getElementById('qpOverlay');
+    const qpInput    = document.getElementById('qpInput');
+    const qpResults  = document.getElementById('qpResults');
+    let   qpItems    = [];         // DOM nodes for results
+    let   qpActiveIx = -1;         // keyboard highlight index
+    
+    /* open palette (Ctrl/⌘+K) */
+    function openPalette(){
+        buildResults("");          // empty query shows first N cards
+        qpOverlay.style.display='block';
+        qpInput.focus(); 
+    }
+    function closePalette(){
+        qpOverlay.style.display='none';
+        qpInput.value="";
+        qpResults.innerHTML="";
+        qpActiveIx=-1;
+    }
+    
+    /* fuzzy search helper */
+    function matches(card, q){
+        const s=(card.question+" "+card.category+" "+card.answer).toLowerCase();
+        return s.includes(q);
+    }
+    
+    /* build results list */
+    function buildResults(query){
+        qpResults.innerHTML="";
+        qpItems=[]; qpActiveIx=-1;
+        let results=[];
+        if(/^#?\d+$/.test(query)){          // number search
+            const idx=parseInt(query.replace('#',''))-1;
+            if(idx>=0 && idx<filteredCards.length) results.push({idx,card:filteredCards[idx]});
+        }else{
+            const q=query.toLowerCase();
+            filteredCards.forEach((c,i)=>{ if(matches(c,q)) results.push({idx:i,card:c}); });
+        }
+        if(results.length===0){ qpResults.innerHTML="<div style='opacity:.6;padding:8px'>No match</div>"; return;}
+        results.forEach((r,i)=>{
+            const div=document.createElement('div');
+            div.className='qp-item';
+            div.innerHTML=`<span><strong>${r.card.question.slice(0,60)}</strong><br><span class="qp-cat">${r.card.category}</span></span><span class="qp-num">#${r.idx+1}</span>`;
+            div.onclick=()=>jumpTo(r.idx);
+            qpResults.appendChild(div);
+            qpItems.push(div);
+            if(i===0){div.classList.add('active'); qpActiveIx=0;}
+        });
+    }
+    
+    /* jump to card */
+    function jumpTo(idx){
+        currentIndex=idx;
+        updateDisplay();
+        closePalette();
+    }
+    
+    /* handle palette key events */
+    qpInput.addEventListener('input', e=>buildResults(e.target.value));
+    qpInput.addEventListener('keydown', e=>{
+        const max=qpItems.length-1;
+        if(e.key==="ArrowDown"){ e.preventDefault(); if(qpActiveIx<max){qpItems[qpActiveIx]?.classList.remove('active'); qpActiveIx++; qpItems[qpActiveIx].classList.add('active'); qpItems[qpActiveIx].scrollIntoView({block:'nearest'});} }
+        if(e.key==="ArrowUp"){   e.preventDefault(); if(qpActiveIx>0){qpItems[qpActiveIx]?.classList.remove('active'); qpActiveIx--; qpItems[qpActiveIx].classList.add('active'); qpItems[qpActiveIx].scrollIntoView({block:'nearest'});} }
+        if(e.key==="Enter"){     e.preventDefault(); if(qpActiveIx>-1) qpItems[qpActiveIx].click(); }
+        if(e.key==="Escape"){ closePalette(); }
+    });
+    
+    /* global shortcut listener */
+    document.addEventListener('keydown',e=>{
+        // Always trigger for Cmd/Ctrl+K, even if focus is on input, select, or button
+        if ((e.metaKey||e.ctrlKey) && e.key.toLowerCase()==='k') {
+            e.preventDefault();
+            e.stopPropagation();
+            openPalette();
+            return false;
+        }
+    }, true); // Use capture phase to ensure it fires before other handlers
+    
+    /* click outside to close */
+    qpOverlay.addEventListener('click',e=>{ if(e.target===qpOverlay) closePalette(); });
+    
+    /* allow long-press on title (mobile) */
+    document.querySelector('h1, h2')?.addEventListener('contextmenu',e=>{e.preventDefault(); openPalette();});
+
+    // Block other shortcuts when palette is open, but allow typing in the input
+    document.addEventListener('keydown', function(e) {
+        if (qpOverlay.style.display === 'block' && e.target !== qpInput) {
+            // Allow navigation/close keys, block others
+            const allowed = ['ArrowUp','ArrowDown','Enter','Escape'];
+            if (!allowed.includes(e.key)) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+        }
+    }, true);
+    </script>
+    <!-- ─────────── END COMMAND-PALETTE ─────────── -->
+    
+</body>
