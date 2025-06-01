@@ -15,7 +15,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 0 20px 20px 20px;
             color: #333;
             font-size: 1.6rem;
         }
@@ -26,23 +26,26 @@
         .container {
             max-width: 800px;
             margin: 0 auto;
+            margin-top: 0;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 6px;
             color: white;
+            padding-top: 18px;
+            padding-bottom: 0;
         }
 
         .header h1 {
             font-size: 2.5rem;
-            margin-bottom: 10px;
+            margin-bottom: 4px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
-        .header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
+        .header > div, .header p {
+            margin-top: 0;
+            margin-bottom: 0;
         }
 
         .controls {
@@ -116,6 +119,7 @@
             top: 0;
             left: 0;
             transition: opacity 0.05s linear;
+            pointer-events: auto !important;
         }
 
         .card-front {
@@ -166,7 +170,7 @@
             padding: 4px;
             margin-bottom: 20px;
             cursor: pointer;
-            user-select: none;
+            /* user-select: none; removed to prevent inheritance issues */
             position: relative;
             width: 100%;
         }
@@ -261,6 +265,7 @@
             justify-content: center;
             gap: 18px;
             margin-bottom: 18px;
+            margin-top: 0;
             background: rgba(255,255,255,0.10);
             border-radius: 12px;
             padding: 10px 18px;
@@ -377,6 +382,19 @@
         }
         .qp-item:hover,.qp-item.active{background:#41446b}
         .qp-num{opacity:.6;font-size:14px}
+
+        .card-content, .card-content * {
+            user-select: text !important;
+        }
+        #backContent, #backContent * {
+            user-select: text !important;
+            pointer-events: auto !important;
+        }
+
+        /* Force answer text selectable */
+        .card-back, .card-back *, #backContent, #backContent * {
+            user-select: auto !important;
+        }
     </style>
 </head>
 <body>
@@ -387,8 +405,11 @@
                 <p style="margin: 0;">CITS 4402</p>
                 <label for="flashcardUpload" id="uploadIconLabel" title="Upload Flashcards" style="cursor:pointer;display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.12);border-radius:50%;padding:7px;transition:background 0.2s;">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                    <input type="file" id="flashcardUpload" accept="application/json" style="display:none;" />
+                    <input type="file" id="flashcardUpload" accept="application/json,.json" style="display:none;" />
                 </label>
+                <button id="infoIconBtn" aria-label="Show info/help" title="Show info/help" style="cursor:pointer;display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.12);border:none;border-radius:50%;padding:7px;transition:background 0.2s;outline:none;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="8"/></svg>
+                </button>
             </div>
             <div id="uploadError" style="color:#ffb300; font-size:1rem; margin-top:6px; min-height:1.2em;"></div>
         </div>
@@ -451,37 +472,12 @@
         </div>
     </div>
 
-    <!-- ─────────── HELP / SHORT-CUT HINTS ─────────── -->
-<style>
-    #helpBox{margin-top:18px;font-size:14px;color:#eee;text-align:left}
-    #helpBox summary{cursor:pointer;font-weight:600;outline:none}
-    #helpBox kbd{background:#44485f;color:#fff;padding:2px 6px;border-radius:4px;font-size:12px}
-    #helpBox ul{margin:6px 0 0 18px;padding:0}
-    #helpBox li{line-height:1.55}
-
- 
-    #helpBox {
-  margin-top: 18px;
-  font-size: 14px;
-  color: #eee;
-  text-align: center; /* center the container content */
-    }
-
-    #helpBox details {
-    display: inline-block;
-    margin: 0 auto; /* center the box */
-    max-width: 420px;
-    background: rgba(255, 255, 255, 0.07);
-    padding: 10px 14px;
-    border-radius: 8px;
-    text-align: left; /* keep inner content left-aligned */
-    }
-</style>
-    
-    <div id="helpBox">
-      <details>
-        <summary>💡 Keyboard & Quick-Find Short-cuts</summary>
-        <ul>
+    <!-- Info Modal Overlay -->
+    <div id="infoModalOverlay" style="display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,0.45);backdrop-filter:blur(2px);justify-content:center;align-items:center;">
+      <div id="infoModal" style="background:#262a45;color:#fafafa;max-width:420px;width:90vw;padding:32px 28px 22px 28px;border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.45);position:relative;">
+        <button id="closeInfoModal" aria-label="Close info" style="position:absolute;top:12px;right:12px;background:none;border:none;color:#fff;font-size:1.6rem;cursor:pointer;opacity:0.7;">&times;</button>
+        <h2 style="margin-top:0;font-size:1.5rem;">💡 How to Use</h2>
+        <ul style="margin:12px 0 0 0;padding:0 0 0 18px;font-size:1.08rem;line-height:1.7;">
           <li><kbd>←</kbd>  Previous card</li>
           <li><kbd>→</kbd> / <kbd>Space</kbd>  Next card</li>
           <li><kbd>↑</kbd> / <kbd>↓</kbd>  Flip card</li>
@@ -489,12 +485,14 @@
           <li><kbd>⌘</kbd>+<kbd>K</kbd> / <kbd>Ctrl</kbd>+<kbd>K</kbd>  Open <strong>Quick-Find</strong> palette</li>
           <li> Type <code>#57</code> → jump to card&nbsp;57</li>
           <li> Type keywords → live search by question/answer/category</li>
-          <li><kbd>Esc</kbd>  Close Quick-Find</li>
+          <li><kbd>Esc</kbd>  Close Quick-Find or this info popup</li>
+          <li><strong>Upload your own flashcards:</strong> Click the <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg> icon and select a <code>.json</code> file in the required format to instantly replace all cards.</li>
+          <li>You can <strong>select the text on a flashcard</strong> and copy it into an LLM for further explanation.</li>
+          <li>You can <strong>click or drag anywhere on the progress bar</strong> to jump to a specific card.</li>
         </ul>
-      </details>
+        <div style="margin-top:18px;font-size:0.98rem;opacity:0.8;">Flashcard JSON format:<br><code>[ { "category": "Lecture2(ImageBasics)", "question": "...", "answer": "..." }, ... ]</code></div>
+      </div>
     </div>
-    <!-- ─────────── END HELP ─────────── -->
-    
 
     <script>
 
@@ -1284,7 +1282,29 @@
         }
 
         // Event listeners
-        document.getElementById('flashcard').addEventListener('click', flipCard);
+        // Only allow click-to-flip on mobile
+        function isMobile() {
+            return window.innerWidth <= 768;
+        }
+        const flashcardElem = document.getElementById('flashcard');
+        function setFlashcardClickListener() {
+            if (isMobile()) {
+                flashcardElem.addEventListener('click', flipCard);
+                flashcardElem.style.cursor = 'pointer';
+            } else {
+                flashcardElem.removeEventListener('click', flipCard);
+                flashcardElem.style.cursor = 'default';
+            }
+        }
+        window.addEventListener('resize', setFlashcardClickListener);
+        window.addEventListener('DOMContentLoaded', function() {
+            populateCategoryDropdown();
+            filterCards();
+            document.getElementById('orderedBtn').classList.add('active');
+            document.getElementById('shuffledBtn').classList.remove('active');
+            setFlashcardClickListener();
+        });
+
         document.getElementById('categoryFilter').addEventListener('change', function(e) {
             selectedCategory = e.target.value;
             filterCards();
@@ -1313,14 +1333,6 @@
                     markCorrect();
                     break;
             }
-        });
-
-        // Initialize
-        window.addEventListener('DOMContentLoaded', function() {
-            populateCategoryDropdown();
-            filterCards();
-            document.getElementById('orderedBtn').classList.add('active');
-            document.getElementById('shuffledBtn').classList.remove('active');
         });
 
         // --- Drag-to-scroll for progress bar ---
@@ -1383,6 +1395,11 @@
                 uploadError.textContent = '';
                 const file = e.target.files[0];
                 if (!file) return;
+                if (!file.name.endsWith('.json')) {
+                    uploadError.textContent = 'Please upload a .json file.';
+                    uploadError.style.color = '#ffb300';
+                    return;
+                }
                 const reader = new FileReader();
                 reader.onload = function(evt) {
                     try {
@@ -1403,6 +1420,37 @@
                     }
                 };
                 reader.readAsText(file);
+            });
+        }
+
+        // Remove old helpBox and related code
+
+        // JS: Info modal logic
+        const infoIconBtn = document.getElementById('infoIconBtn');
+        const infoModalOverlay = document.getElementById('infoModalOverlay');
+        const closeInfoModal = document.getElementById('closeInfoModal');
+        if (infoIconBtn && infoModalOverlay && closeInfoModal) {
+            function openInfoModal() {
+                infoModalOverlay.style.display = 'flex';
+                closeInfoModal.focus();
+            }
+            function closeInfo() {
+                infoModalOverlay.style.display = 'none';
+                infoIconBtn.focus();
+            }
+            infoIconBtn.addEventListener('click', openInfoModal);
+            infoIconBtn.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    openInfoModal();
+                }
+            });
+            closeInfoModal.addEventListener('click', closeInfo);
+            infoModalOverlay.addEventListener('click', function(e) {
+                if (e.target === infoModalOverlay) closeInfo();
+            });
+            window.addEventListener('keydown', function(e) {
+                if (infoModalOverlay.style.display === 'flex' && e.key === 'Escape') closeInfo();
             });
         }
     </script>
