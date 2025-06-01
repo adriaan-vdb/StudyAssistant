@@ -15,7 +15,9 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+            /* background: linear-gradient(45deg, #3144a1 0%, #792dc4 100%); */
+            background: linear-gradient(45deg, #000000 0%, #000000 100%);
             min-height: 100vh;
             padding: 0 20px 20px 20px;
             color: #333;
@@ -427,24 +429,25 @@
         </div>
         <!-- ─────────── END FILTERS & MODE TOGGLES ─────────── -->
 
-        <div class="category-tag" id="categoryTag">Loading...</div>
-
         <div class="progress">
             <div class="progress-bar" id="progressBar" style="width: 0%">0%</div>
         </div>
 
-        <div class="stats">
-            <div class="stat">
-                <span class="stat-number" id="currentCard">1</span>
-                <span>Current</span>
-            </div>
-            <div class="stat">
-                <span class="stat-number" id="totalCards">0</span>
-                <span>Total</span>
-            </div>
-            <div class="stat">
-                <span class="stat-number" id="correctAnswers">0</span>
-                <span>Correct</span>
+        <div class="stats-row" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+            <div class="category-tag" id="categoryTag">Loading...</div>
+            <div class="stats" style="display: flex; justify-content: flex-end; gap: 30px; min-width: 320px;">
+                <div class="stat">
+                    <span class="stat-number" id="currentCard">1</span>
+                    <span>Current</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number" id="totalCards">0</span>
+                    <span>Total</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number" id="correctAnswers">0</span>
+                    <span>Correct</span>
+                </div>
             </div>
         </div>
 
