@@ -475,21 +475,37 @@
     <div id="infoModalOverlay" style="display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,0.45);backdrop-filter:blur(2px);justify-content:center;align-items:center;">
       <div id="infoModal" style="background:#262a45;color:#fafafa;max-width:50vw;width:50vw;max-height:50vh;padding:32px 28px 22px 28px;border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.45);position:relative;overflow:auto;">
         <button id="closeInfoModal" aria-label="Close info" style="position:absolute;top:12px;right:12px;background:none;border:none;color:#fff;font-size:1.6rem;cursor:pointer;opacity:0.7;">&times;</button>
-        <h2 style="margin-top:0;font-size:1.5rem;">💡 How to Use</h2>
+        <h2 style="margin-top:0;font-size:1.5rem;">💡 How to Use This Flashcard App</h2>
         <ul style="margin:12px 0 0 0;padding:0 0 0 18px;font-size:1.08rem;line-height:1.7;">
-          <li><kbd>←</kbd>  Previous card</li>
-          <li><kbd>→</kbd> / <kbd>Space</kbd>  Next card</li>
-          <li><kbd>↑</kbd> / <kbd>↓</kbd>  Flip card</li>
-          <li><kbd>Enter</kbd>  Mark <em>Correct</em></li>
-          <li><kbd>⌘</kbd>+<kbd>K</kbd> / <kbd>Ctrl</kbd>+<kbd>K</kbd>  Open <strong>Quick-Find</strong> palette</li>
-          <li> Type <code>#57</code> → jump to card&nbsp;57</li>
-          <li> Type keywords → live search by question/answer/category</li>
-          <li><kbd>Esc</kbd>  Close Quick-Find or this info popup</li>
-          <li><strong>Upload your own flashcards:</strong> Click the <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg> icon and select a <code>.json</code> file in the required format to instantly replace all cards.</li>
-          <li>You can <strong>select the text on a flashcard</strong> and copy it into an LLM for further explanation.</li>
-          <li>You can <strong>click or drag anywhere on the progress bar</strong> to jump to a specific card.</li>
+          <li><strong>Flashcard Navigation:</strong>
+            <ul style="margin:4px 0 8px 0;padding-left:18px;font-size:1rem;">
+              <li><kbd>←</kbd> Previous card</li>
+              <li><kbd>→</kbd> or <kbd>Space</kbd> Next card</li>
+              <li><kbd>↑</kbd> / <kbd>↓</kbd> Flip card (show/hide answer)</li>
+              <li><kbd>Enter</kbd> Mark current card as <em>Correct</em></li>
+              <li>On <strong>mobile</strong>: tap the card to flip</li>
+              <li>On <strong>desktop</strong>: use buttons or keyboard (clicking the card does not flip)</li>
+            </ul>
+          </li>
+          <li><strong>Progress Bar:</strong> Click or drag anywhere on the progress bar above the cards to instantly jump to any card in the current set.</li>
+          <li><strong>Category Filtering:</strong> Use the <b>Category</b> dropdown to study cards from a specific lecture/topic, or select "All Categories" to review everything.</li>
+          <li><strong>Ordered & Shuffled Modes:</strong> Switch between studying cards in their original order or in a random order using the <b>Ordered</b> and <b>Shuffled</b> buttons. The <b>Restart</b> button resets your session and reshuffles if in shuffled mode.</li>
+          <li><strong>Quick-Find Command Palette:</strong>
+            <ul style="margin:4px 0 8px 0;padding-left:18px;font-size:1rem;">
+              <li>Open with <kbd>⌘</kbd>+<kbd>K</kbd> (Mac) or <kbd>Ctrl</kbd>+<kbd>K</kbd> (Windows/Linux)</li>
+              <li>Type <code>#57</code> to jump to card 57</li>
+              <li>Type keywords to live-search by question, answer, or category</li>
+              <li>Use <kbd>↑</kbd>/<kbd>↓</kbd> to navigate results, <kbd>Enter</kbd> to jump, <kbd>Esc</kbd> to close</li>
+            </ul>
+          </li>
+          <li><strong>Uploading Custom Flashcards:</strong> Click the <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg> icon next to the title to upload your own flashcards in JSON format. This will <b>replace all current cards</b> and update the category list. Paste or upload a valid JSON array of objects with <code>category</code>, <code>question</code>, and <code>answer</code> fields. Invalid files will show an error.</li>
+          <li><strong>Text Selection:</strong> You can select and copy any text from the question or answer sides of a flashcard, including formulas and lists, for use in other apps or LLMs.</li>
+          <li><strong>Responsive Design:</strong> The app is fully responsive and works on both desktop and mobile devices. Controls and interactions adapt to your device.</li>
+          <li><strong>Accessibility:</strong> All controls are keyboard accessible. Modals and palettes can be closed with <kbd>Esc</kbd> or by clicking outside.</li>
+          <li><strong>Session Stats:</strong> The stats panel below the progress bar shows your current card number, total cards, and how many you have marked as correct.</li>
+          <li><strong>Flashcard Format:</strong> Example JSON for upload:<br><code>[ { "category": "Lecture2(ImageBasics)", "question": "...", "answer": "..." }, ... ]</code></li>
         </ul>
-        <div style="margin-top:18px;font-size:0.98rem;opacity:0.8;">Flashcard JSON format:<br><code>[ { "category": "Lecture2(ImageBasics)", "question": "...", "answer": "..." }, ... ]</code></div>
+        <div style="margin-top:18px;font-size:0.98rem;opacity:0.8;">For best results, generate flashcards using the provided format. All features work instantly after upload—no refresh needed.</div>
       </div>
     </div>
 
