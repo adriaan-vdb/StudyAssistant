@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Computer Vision Flashcards</title>
+    <title>Custom Flashcards</title>
     <style>
         * {
             margin: 0;
@@ -400,12 +400,11 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎓 Computer Vision Flashcards</h1>
+            <h1>🎓 Custom UNI Flashcards</h1>
             <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
                 <p style="margin: 0;">CITS 4402</p>
-                <label for="flashcardUpload" id="uploadIconLabel" title="Upload Flashcards" style="cursor:pointer;display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.12);border-radius:50%;padding:7px;transition:background 0.2s;">
+                <label id="uploadIconLabel" title="Paste Flashcards JSON" style="cursor:pointer;display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.12);border-radius:50%;padding:7px;transition:background 0.2s;">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                    <input type="file" id="flashcardUpload" accept="application/json,.json" style="display:none;" />
                 </label>
                 <button id="infoIconBtn" aria-label="Show info/help" title="Show info/help" style="cursor:pointer;display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.12);border:none;border-radius:50%;padding:7px;transition:background 0.2s;outline:none;">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="8"/></svg>
@@ -451,7 +450,7 @@
                 <div class="card-face card-front">
                     <div class="card-content" id="frontContent">
                         <h2>Click to start studying!</h2>
-                        <p>Press "Next Card" to begin your Computer Vision review session.</p>
+                        <p>Press "Next Card" to begin your review session.</p>
                     </div>
                 </div>
                 <div class="card-face card-back">
@@ -491,6 +490,19 @@
           <li>You can <strong>click or drag anywhere on the progress bar</strong> to jump to a specific card.</li>
         </ul>
         <div style="margin-top:18px;font-size:0.98rem;opacity:0.8;">Flashcard JSON format:<br><code>[ { "category": "Lecture2(ImageBasics)", "question": "...", "answer": "..." }, ... ]</code></div>
+      </div>
+    </div>
+
+    <div id="uploadJsonModalOverlay" style="display:none;position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,0.45);backdrop-filter:blur(2px);justify-content:center;align-items:center;">
+      <div id="uploadJsonModal" style="background:#262a45;color:#fafafa;max-width:480px;width:95vw;padding:32px 32px 24px 32px;border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.45);position:relative;">
+        <button id="closeUploadJsonModal" aria-label="Close upload" style="position:absolute;top:12px;right:12px;background:none;border:none;color:#fff;font-size:1.6rem;cursor:pointer;opacity:0.7;">&times;</button>
+        <h2 style="margin-top:0;font-size:1.3rem;">Paste Flashcards JSON</h2>
+        <textarea id="uploadJsonTextarea" rows="10" style="width:100%;border-radius:8px;padding:16px;font-size:1.08rem;background:#15182a;color:#fff;border:none;resize:vertical;margin-top:16px;"></textarea>
+        <div id="uploadJsonError" style="color:#ffb300; font-size:1rem; margin-top:8px; min-height:1.2em;"></div>
+        <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:18px;">
+          <button id="cancelUploadJsonBtn" class="btn btn-secondary" style="padding:8px 18px;font-size:1rem;">Cancel</button>
+          <button id="submitUploadJsonBtn" class="btn btn-primary" style="padding:8px 18px;font-size:1rem;">Load Flashcards</button>
+        </div>
       </div>
     </div>
 
@@ -1383,47 +1395,71 @@
             }
         }
 
-        // Update JS for upload
-        const flashcardUpload = document.getElementById('flashcardUpload');
-        const uploadError = document.getElementById('uploadError');
+        // --- Upload JSON Modal Logic ---
         const uploadIconLabel = document.getElementById('uploadIconLabel');
-        if (flashcardUpload && uploadIconLabel) {
+        const uploadJsonModalOverlay = document.getElementById('uploadJsonModalOverlay');
+        const uploadJsonModal = document.getElementById('uploadJsonModal');
+        const closeUploadJsonModal = document.getElementById('closeUploadJsonModal');
+        const uploadJsonTextarea = document.getElementById('uploadJsonTextarea');
+        const uploadJsonError = document.getElementById('uploadJsonError');
+        const cancelUploadJsonBtn = document.getElementById('cancelUploadJsonBtn');
+        const submitUploadJsonBtn = document.getElementById('submitUploadJsonBtn');
+
+        function openUploadJsonModal() {
+            const example = `Generate flashcards for my exam from the uploaded lecture material. Output exactly in the following format, with each card as an object with keys: category, question, answer.\n\nExample output:\n[\n  {\n    "category": "Lecture1(Introduction)",\n    "question": "What is computer vision?",\n    "answer": "Computer vision is a field of AI focused on enabling computers to interpret and process visual information from the world."\n  },\n  {\n    "category": "Lecture1(Introduction)",\n    "question": "Name a common application of computer vision.",\n    "answer": "Applications include facial recognition, self-driving cars, medical image analysis, and more."\n  }\n]\n`;
+            if (!uploadJsonTextarea.value.trim()) uploadJsonTextarea.value = example;
+            uploadJsonError.textContent = '';
+            uploadJsonModalOverlay.style.display = 'flex';
+            setTimeout(() => uploadJsonTextarea.focus(), 100);
+        }
+        function closeUploadJson() {
+            uploadJsonModalOverlay.style.display = 'none';
+            uploadIconLabel.focus();
+        }
+        if (uploadIconLabel && uploadJsonModalOverlay && closeUploadJsonModal && uploadJsonTextarea && uploadJsonError && cancelUploadJsonBtn && submitUploadJsonBtn) {
+            uploadIconLabel.addEventListener('click', openUploadJsonModal);
             uploadIconLabel.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' || e.key === ' ') flashcardUpload.click();
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    openUploadJsonModal();
+                }
             });
-            flashcardUpload.addEventListener('change', function(e) {
-                uploadError.textContent = '';
-                const file = e.target.files[0];
-                if (!file) return;
-                if (!file.name.endsWith('.json')) {
-                    uploadError.textContent = 'Please upload a .json file.';
-                    uploadError.style.color = '#ffb300';
+            closeUploadJsonModal.addEventListener('click', closeUploadJson);
+            cancelUploadJsonBtn.addEventListener('click', closeUploadJson);
+            uploadJsonModalOverlay.addEventListener('click', function(e) {
+                if (e.target === uploadJsonModalOverlay) closeUploadJson();
+            });
+            window.addEventListener('keydown', function(e) {
+                if (uploadJsonModalOverlay.style.display === 'flex' && e.key === 'Escape') closeUploadJson();
+            });
+            submitUploadJsonBtn.addEventListener('click', function() {
+                uploadJsonError.textContent = '';
+                let text = uploadJsonTextarea.value.trim();
+                if (!text) {
+                    uploadJsonError.textContent = 'Paste your flashcards JSON.';
                     return;
                 }
-                const reader = new FileReader();
-                reader.onload = function(evt) {
-                    try {
-                        const data = JSON.parse(evt.target.result);
-                        if (Array.isArray(data) && data.every(card => card && typeof card === 'object' && 'category' in card && 'question' in card && 'answer' in card)) {
-                            flashcards.length = 0;
-                            data.forEach(card => flashcards.push(card));
-                            filterCards();
-                            uploadError.textContent = 'Flashcards loaded!';
-                            uploadError.style.color = '#4CAF50';
-                        } else {
-                            uploadError.textContent = 'Invalid format: must be an array of {category, question, answer} objects.';
-                            uploadError.style.color = '#ffb300';
-                        }
-                    } catch (err) {
-                        uploadError.textContent = 'Invalid JSON file.';
-                        uploadError.style.color = '#ffb300';
+                try {
+                    const data = JSON.parse(text);
+                    if (Array.isArray(data) && data.every(card => card && typeof card === 'object' && 'category' in card && 'question' in card && 'answer' in card)) {
+                        flashcards.length = 0;
+                        data.forEach(card => flashcards.push(card));
+                        selectedCategory = 'All Categories';
+                        populateCategoryDropdown();
+                        filterCards();
+                        uploadJsonError.style.color = '#4CAF50';
+                        uploadJsonError.textContent = 'Flashcards loaded!';
+                        setTimeout(closeUploadJson, 700);
+                    } else {
+                        uploadJsonError.textContent = 'Invalid format: must be an array of {category, question, answer} objects.';
+                        uploadJsonError.style.color = '#ffb300';
                     }
-                };
-                reader.readAsText(file);
+                } catch (err) {
+                    uploadJsonError.textContent = 'Invalid JSON.';
+                    uploadJsonError.style.color = '#ffb300';
+                }
             });
         }
-
-        // Remove old helpBox and related code
 
         // JS: Info modal logic
         const infoIconBtn = document.getElementById('infoIconBtn');
