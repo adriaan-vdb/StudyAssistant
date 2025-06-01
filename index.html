@@ -98,7 +98,8 @@
 
         .flashcard {
             width: 100%;
-            height: 400px;
+            min-height: 45vh;
+            /* height: 400px; */
             position: relative;
             cursor: pointer;
         }
@@ -238,7 +239,7 @@
             }
             
             .flashcard {
-                height: 350px;
+                height: 400px;
             }
             
             .card-face {
@@ -560,8 +561,8 @@
 },
 {
 "category": "Lecture02(Binary Image Analysis)",
-"question": "Describe Otsu’s thresholding method and explain how it determines the optimal threshold.",
-"answer": "<p><strong>Otsu's method</strong> is a global thresholding algorithm that finds the threshold minimizing intra-class variance (within foreground and background).</p><ol><li>Compute histogram and intensity probabilities.</li><li>For every possible threshold <code>t</code>, compute class probabilities <code>w1</code>, <code>w2</code> and means <code>μ1</code>, <code>μ2</code>.</li><li>Calculate between-class variance <code>σ²_b(t) = w1(t) * w2(t) * (μ1 - μ2)²</code>.</li><li>Select the threshold <code>t</code> that maximizes <code>σ²_b</code>.</li></ol><p>Otsu’s method is suitable for images with bimodal histograms and operates on global statistics.</p>"
+"question": "Describe Otsu's thresholding method and explain how it determines the optimal threshold.",
+"answer": "<p><strong>Otsu's method</strong> is a global thresholding algorithm that finds the threshold minimizing intra-class variance (within foreground and background).</p><ol><li>Compute histogram and intensity probabilities.</li><li>For every possible threshold <code>t</code>, compute class probabilities <code>w1</code>, <code>w2</code> and means <code>μ1</code>, <code>μ2</code>.</li><li>Calculate between-class variance <code>σ²_b(t) = w1(t) * w2(t) * (μ1 - μ2)²</code>.</li><li>Select the threshold <code>t</code> that maximizes <code>σ²_b</code>.</li></ol><p>Otsu's method is suitable for images with bimodal histograms and operates on global statistics.</p>"
 },
 {
 "category": "Lecture02(Binary Image Analysis)",
@@ -570,8 +571,8 @@
 },
 {
 "category": "Lecture02(Binary Image Analysis)",
-"question": "How does Niblack’s method work and how does it compare to Sauvola’s method?",
-"answer": "<p><strong>Niblack’s method</strong> calculates a local threshold <code>t</code> using:</p><p><code>t = μ - kσ</code>, where:</p><ul><li><code>μ</code>: local mean (e.g., in a 15×15 window)</li><li><code>σ</code>: local standard deviation</li><li><code>k</code>: typically -0.2</li></ul><p><strong>Sauvola’s method</strong> refines this to:</p><p><code>t = μ * (1 + k(σ/r - 1))</code>, where:</p><ul><li><code>k</code>: e.g., 0.5</li><li><code>r</code>: dynamic range of standard deviation (e.g., 128)</li></ul><p><strong>Comparison:</strong> Sauvola is more adaptive, especially in noisy and highly variable lighting.</p>"
+"question": "How does Niblack's method work and how does it compare to Sauvola's method?",
+"answer": "<p><strong>Niblack's method</strong> calculates a local threshold <code>t</code> using:</p><p><code>t = μ - kσ</code>, where:</p><ul><li><code>μ</code>: local mean (e.g., in a 15×15 window)</li><li><code>σ</code>: local standard deviation</li><li><code>k</code>: typically -0.2</li></ul><p><strong>Sauvola's method</strong> refines this to:</p><p><code>t = μ * (1 + k(σ/r - 1))</code>, where:</p><ul><li><code>k</code>: e.g., 0.5</li><li><code>r</code>: dynamic range of standard deviation (e.g., 128)</li></ul><p><strong>Comparison:</strong> Sauvola is more adaptive, especially in noisy and highly variable lighting.</p>"
 },
 {
 "category": "Lecture02(Binary Image Analysis)",
@@ -1434,6 +1435,15 @@
                 document.getElementById('flashcard').classList.remove('flipped');
                 isFlipped = false;
             }
+            adjustFlashcardHeight();
+        }
+
+        function adjustFlashcardHeight () {
+            const wrapper   = document.getElementById('flashcard');
+            const frontH    = document.getElementById('frontContent').scrollHeight;
+            const backH     = document.getElementById('backContent').scrollHeight;
+            const targetH   = Math.max(frontH, backH) + 60; // add buffer
+            wrapper.style.height = targetH + 'px';
         }
 
         function flipCard() {
@@ -1441,6 +1451,7 @@
             const flashcard = document.getElementById('flashcard');
             flashcard.classList.toggle('flipped');
             isFlipped = !isFlipped;
+            adjustFlashcardHeight();
         }
 
         function nextCard() {
