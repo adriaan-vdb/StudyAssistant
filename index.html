@@ -323,28 +323,55 @@
         }
         /* palette window */
         #qpBox{
-            position:absolute;left:50%;top:12%;transform:translateX(-50%);
+            position:absolute;left:50%;top:4%;transform:translateX(-50%);
             width:min(900px,98%);max-width:900px;background:#262a45;border-radius:14px;
             box-shadow:0 12px 32px rgba(0,0,0,.45);padding:28px 28px 20px 28px;color:#fafafa;
-            min-height: 340px;
-            max-height: 600px;
-            overflow-y: auto;
+            min-height: 200px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
+
         /* input */
         #qpInput{
             width:100%;padding:10px 12px;font-size:16px;
             border:none;border-radius:6px;background:#15182a;color:#fff;
             outline:none;
+            flex: 0 0 auto;
         }
         /* results list */
-        #qpResults{margin:12px 0 0;max-height:340px;overflow:auto}
+        #qpResults{
+            margin:12px 0 0;
+            flex: 1 1 auto;
+            min-height: 0;
+            max-height: none;
+            overflow-y: auto;
+        }
         .qp-item{
             padding:8px 12px;border-radius:6px;cursor:pointer;
             display:flex;justify-content:space-between;gap:8px;
+            align-items: flex-start;
+        }
+        .qp-item .qp-main {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .qp-item strong {
+            display: block;
+            font-size: 1.5rem;
+            word-break: break-word;
+            white-space: normal;
+        }
+        .qp-cat {
+            font-size: 12px;
+            opacity: .6;
+            margin-bottom: 4px;
         }
         .qp-item:hover,.qp-item.active{background:#41446b}
         .qp-num{opacity:.6;font-size:14px}
-        .qp-cat{font-size:12px;opacity:.6}
     </style>
 </head>
 <body>
@@ -1294,29 +1321,49 @@
     }
     /* palette window */
     #qpBox{
-        position:absolute;left:50%;top:12%;transform:translateX(-50%);
+        position:absolute;left:50%;top:4%;transform:translateX(-50%);
         width:min(900px,98%);max-width:900px;background:#262a45;border-radius:14px;
         box-shadow:0 12px 32px rgba(0,0,0,.45);padding:28px 28px 20px 28px;color:#fafafa;
-        min-height: 340px;
-        max-height: 600px;
-        overflow-y: auto;
+        min-height: 200px;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
     }
     /* input */
     #qpInput{
         width:100%;padding:10px 12px;font-size:16px;
         border:none;border-radius:6px;background:#15182a;color:#fff;
         outline:none;
+        flex: 0 0 auto;
     }
     /* results list */
-    #qpResults{margin:12px 0 0;max-height:340px;overflow:auto}
+    #qpResults{margin:12px 0 0;flex: 1 1 auto;min-height: 0;max-height: none;overflow-y: auto}
     .qp-item{
-        padding:8px 12px;border-radius:6px;cursor:pointer;
+        padding:4px 8px;border-radius:6px;cursor:pointer;
         display:flex;justify-content:space-between;gap:8px;
+        align-items: flex-start;
+    }
+    .qp-item .qp-main {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+    }
+    .qp-item strong {
+        display: block;
+        font-size: 1.1rem;
+        word-break: break-word;
+        white-space: normal;
+    }
+    .qp-cat {
+        font-size: 12px;
+        opacity: .6;
+        margin-bottom: 4px;
     }
     .qp-item:hover,.qp-item.active{background:#41446b}
     .qp-num{opacity:.6;font-size:14px}
-    .qp-cat{font-size:12px;opacity:.6}
-    </style>
+</style>
     
     <div id="qpOverlay">
       <div id="qpBox">
@@ -1368,7 +1415,13 @@
         results.forEach((r,i)=>{
             const div=document.createElement('div');
             div.className='qp-item';
-            div.innerHTML=`<span><strong>${r.card.question.slice(0,60)}</strong><br><span class="qp-cat">${r.card.category}</span></span><span class="qp-num">#${r.idx+1}</span>`;
+            div.innerHTML=`
+                <span class="qp-main">
+                    <strong>${r.card.question}</strong>
+                    <span class="qp-cat">${r.card.category}</span>
+                </span>
+                <span class="qp-num">#${r.idx+1}</span>
+            `;
             div.onclick=()=>jumpTo(r.idx);
             qpResults.appendChild(div);
             qpItems.push(div);
