@@ -473,7 +473,7 @@
 
     <!-- Info Modal Overlay -->
     <div id="infoModalOverlay" style="display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,0.45);backdrop-filter:blur(2px);justify-content:center;align-items:center;">
-      <div id="infoModal" style="background:#262a45;color:#fafafa;max-width:420px;width:90vw;padding:32px 28px 22px 28px;border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.45);position:relative;">
+      <div id="infoModal" style="background:#262a45;color:#fafafa;max-width:50vw;width:50vw;max-height:50vh;padding:32px 28px 22px 28px;border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.45);position:relative;overflow:auto;">
         <button id="closeInfoModal" aria-label="Close info" style="position:absolute;top:12px;right:12px;background:none;border:none;color:#fff;font-size:1.6rem;cursor:pointer;opacity:0.7;">&times;</button>
         <h2 style="margin-top:0;font-size:1.5rem;">💡 How to Use</h2>
         <ul style="margin:12px 0 0 0;padding:0 0 0 18px;font-size:1.08rem;line-height:1.7;">
@@ -1406,7 +1406,7 @@
         const submitUploadJsonBtn = document.getElementById('submitUploadJsonBtn');
 
         function openUploadJsonModal() {
-            const example = `Generate flashcards for my exam from the uploaded lecture material. Output exactly in the following format, with each card as an object with keys: category, question, answer. Make sure to group all questions from the same lecture into the same category name.\n\nExample output:\n[\n  {\n    "category": "Lecture1(Introduction)",\n    "question": "What is computer vision?",\n    "answer": "Computer vision is a field of AI focused on enabling computers to interpret and process visual information from the world."\n  },\n  {\n    "category": "Lecture1(Introduction)",\n    "question": "Name a common application of computer vision.",\n    "answer": "Applications include facial recognition, self-driving cars, medical image analysis, and more."\n  }\n]\n`;
+            const example = `Generate 100 flashcards for my exam from the uploaded lecture material. Output exactly in the following format, with each card as an object with keys: category, question, answer. Make sure to group all questions from the same lecture into the same category name. Don't include any comments. \n\nExample output:\n[\n  {\n    "category": "Lecture1(Introduction)",\n    "question": "What is computer vision?",\n    "answer": "Computer vision is a field of AI focused on enabling computers to interpret and process visual information from the world."\n  },\n  {\n    "category": "Lecture1(Introduction)",\n    "question": "Name a common application of computer vision.",\n    "answer": "Applications include facial recognition, self-driving cars, medical image analysis, and more."\n  }\n]\n`;
             if (!uploadJsonTextarea.value.trim()) uploadJsonTextarea.value = example;
             uploadJsonError.textContent = '';
             uploadJsonModalOverlay.style.display = 'flex';
