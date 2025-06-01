@@ -547,681 +547,777 @@
         */
 
         const flashcards = [
-         /* ───────────── Lecture 2 – Image Basics, Thresholding & Morphology ───────────── */
-            
-                            {
-                                "category": "Lecture2(ImageBasics)",
-                                "question": "How is a greyscale image represented in computer vision?",
-                                "answer": "A greyscale image is represented as a 2D matrix (array) where each element corresponds to a pixel. Each pixel holds an 8-bit gray-level value ranging from 0 (black) to 255 (white). The matrix indices (i, j) map to the spatial location of the pixel."
-                            },
-                            {
-                                "category": "Lecture2(ImageBasics)",
-                                "question": "What does a resolution of 512 × 512 pixels indicate?",
-                                "answer": "It indicates that the image has 512 rows and 512 columns, totaling 262,144 pixels. This defines the spatial resolution, which affects the level of detail that can be represented."
-                            },
-                            {
-                                "category": "Lecture2(ImageBasics)",
-                                "question": "How much memory is required to store a 512×512 8-bit image?",
-                                "answer": "A 512×512 image with 8-bit depth requires 512 × 512 × 8 = 2,097,152 bits or approximately 256 KB (kilobytes) of storage."
-                            },
-                            {
-                                "category": "Lecture2(ImageBasics)",
-                                "question": "What are the visual effects of downsampling an image?",
-                                "answer": "Downsampling reduces spatial resolution, leading to pixelisation, where individual pixels become visible, and loss of image details, especially along edges and fine textures."
-                            },
-                            {
-                                "category": "Lecture2(ImageBasics)",
-                                "question": "What is an image histogram and what does it describe?",
-                                "answer": "An image histogram is a graphical representation of the distribution of gray levels (intensities) in the image. It shows how many pixels have each possible intensity value from 0 to 255. It is used for analyzing contrast, brightness, and dynamic range."
-                            },
-                            {
-                                "category": "Lecture2(ImageBasics)",
-                                "question": "What is the difference between a greyscale and binary image?",
-                                "answer": "A greyscale image uses 8-bit pixel values ranging from 0 to 255 to represent shades of gray. A binary image uses only two values, typically 0 and 1 (or black and white), to indicate the presence or absence of features."
-                            },
-                            {
-                                "category": "Lecture2(ImageBasics)",
-                                "question": "What is image binarization, and where is it used?",
-                                "answer": "Image binarization is the process of converting a greyscale image to a binary image using a threshold. Pixels above the threshold are set to white (1), and those below are set to black (0). It is used in applications like Optical Character Recognition (OCR), document processing, and license plate recognition."
-                            },
-                            {
-                                "category": "Lecture2(ImageBasics)",
-                                "question": "What is global thresholding in image processing?",
-                                "answer": "Global thresholding applies a single threshold value to the entire image to segment foreground from background. It is effective only when the lighting and background are uniform throughout the image."
-                            },
-                            {
-                                "category": "Lecture2(ImageBasics)",
-                                "question": "What is local (adaptive) thresholding and when is it used?",
-                                "answer": "Local or adaptive thresholding calculates a threshold for each small region of the image, based on local pixel statistics (mean, standard deviation). It is used in images with non-uniform illumination or shadows."
-                            },
-                            {
-                                "category": "Lecture2(ImageBasics)",
-                                "question": "What is Otsu's method and what does it optimize?",
-                                "answer": "Otsu's method is a global thresholding algorithm that automatically chooses the optimal threshold by maximizing the inter-class variance (i.e., the variance between foreground and background classes)."
-                            },
-                            {
-                                "category": "Lecture2(ImageBasics)",
-                                "question": "What is Niblack's method in thresholding?",
-                                "answer": "Niblack's method is a local adaptive thresholding technique that sets the threshold at each pixel as: mean ± k × standard deviation, computed over a sliding window. It is useful for detecting features in variable lighting conditions."
-                            },
-                            {
-                                "category": "Lecture2(ImageBasics)",
-                                "question": "What is morphological image processing?",
-                                "answer": "Morphological image processing applies set-based operations using structuring elements to process the shapes in binary images. It is used to remove noise, fill gaps, and extract structures."
-                            },
-                            {
-                                "category": "Lecture2(ImageBasics)",
-                                "question": "What is dilation in morphology and what does it do?",
-                                "answer": "Dilation is a morphological operation that expands object boundaries. A pixel is set to 1 if at least one pixel under the structuring element is 1. It is used to grow or thicken objects."
-                            },
-                            {
-                                "category": "Lecture2(ImageBasics)",
-                                "question": "What is erosion in morphology and what does it do?",
-                                "answer": "Erosion shrinks objects by setting a pixel to 1 only if all pixels under the structuring element are 1. It removes small objects and erodes boundaries."
-                            },
-                            {
-                                "category": "Lecture2(ImageBasics)",
-                                "question": "What is the opening operation in morphology?",
-                                "answer": "Opening is erosion followed by dilation. It removes small noise elements while preserving the shape and size of larger structures in the image."
-                            },
-                            {
-                                "category": "Lecture2(ImageBasics)",
-                                "question": "What is the closing operation in morphology?",
-                                "answer": "Closing is dilation followed by erosion. It fills small holes, connects close components, and bridges gaps between objects."
-                            },
-                            {
-                                "category": "Lecture2(ImageBasics)",
-                                "question": "What is the 4-connected neighborhood (N4)?",
-                                "answer": "The 4-connected neighborhood defines connectivity using vertical and horizontal adjacent pixels only — i.e., up, down, left, and right. Diagonals are not included."
-                            },
-                            {
-                                "category": "Lecture2(ImageBasics)",
-                                "question": "List four common features extracted from binary images.",
-                                "answer": "Common binary image features include: (1) Area (number of foreground pixels), (2) Bounding Box (minimum enclosing rectangle), (3) Perimeter (boundary length), and (4) Compactness (shape roundness or area-to-perimeter ratio)."
-                            },
-                            {
-                                "category": "Lecture2(ImageBasics)",
-                                "question": "Why is rotation invariance important for shape features?",
-                                "answer": "Rotation invariance ensures that the extracted shape features remain constant even if the object is rotated. This is crucial for consistent recognition in different orientations."
-                            },
-                            {
-                                "category": "Lecture2(ImageBasics)",
-                                "question": "What is the gradient vector of an image surface?",
-                                "answer": "The gradient vector ∇I = [∂I/∂x, ∂I/∂y] points in the direction of the steepest intensity increase. It is used in edge detection to find boundaries and in surface analysis."
-                            },
-                            {
-                                "category": "Lecture2(ImageBasics)",
-                                "question": "What is a surface normal vector in image processing?",
-                                "answer": "The normal vector is perpendicular to the surface and defined as (−∂I/∂x, −∂I/∂y, 1) in 3D space. It describes the orientation of the image surface at a point and is useful in shading and 3D reconstruction."
-                            },
+/* ───────────── Lecture 2 – Image Basics, Thresholding & Morphology ───────────── */
+{
+    "category": "Lecture2(Binary Image Analysis)",
+    "question": "Which of the following best explains why Otsu's thresholding minimizes intra-class variance?",
+    "answer": "<p>Otsu's method selects a threshold that <strong>minimizes the within-class variance</strong>, which is the weighted sum of variances of the foreground and background.</p><ul><li><strong>A:</strong> It minimizes the absolute difference between pixel intensities.</li><li><strong>B:</strong> It maximizes the number of edge pixels.</li><li><strong>C:</strong> It maximizes the <em>between-class</em> variance, which is equivalent to minimizing the <em>within-class</em> variance. ✅</li><li><strong>D:</strong> It equalizes the histogram of the image.</li></ul><p><strong>Correct Answer:</strong> C</p>"
+},
+{
+    "category": "Lecture2(Binary Image Analysis)",
+    "question": "Why might local thresholding be preferred over global thresholding in certain applications?",
+    "answer": "<p>Local thresholding is more effective when:</p><ul><li><strong>A:</strong> The image has uniform illumination.</li><li><strong>B:</strong> The histogram is bimodal and well-separated.</li><li><strong>C:</strong> The image has significant local variations in lighting. ✅</li><li><strong>D:</strong> The image contains only one object of interest.</li></ul><p><strong>Correct Answer:</strong> C</p>"
+},
+{
+    "category": "Lecture2(Binary Image Analysis)",
+    "question": "Which operation is defined as dilation followed by erosion using the same structuring element?",
+    "answer": "<ul><li><strong>A:</strong> Opening</li><li><strong>B:</strong> Closing ✅</li><li><strong>C:</strong> Erosion</li><li><strong>D:</strong> Distance Transform</li></ul><p><p><strong>Correct Answer:</strong> B</p><p>Closing smooths contours, fuses narrow breaks, and fills small holes.</p>"
+},
+{
+    "category": "Lecture2(Binary Image Analysis)",
+    "question": "In the context of connected component analysis, when do two adjacent foreground pixels share a label in a 4-neighbourhood system?",
+    "answer": "<ul><li><strong>A:</strong> If they share a corner</li><li><strong>B:</strong> If they are vertically or horizontally adjacent ✅</li><li><strong>C:</strong> If they share either a corner or edge</li><li><strong>D:</strong> Only if they are diagonally adjacent</li></ul><p><p><strong>Correct Answer:</strong> B</p><p>In 4-neighbourhood, connectivity is based on horizontal and vertical adjacency only.</p>"
+},
+{
+    "category": "Lecture2(Binary Image Analysis)",
+    "question": "Which morphological operation removes small protrusions and breaks narrow connections in a binary shape?",
+    "answer": "<ul><li><strong>A:</strong> Erosion</li><li><strong>B:</strong> Dilation</li><li><strong>C:</strong> Opening ✅</li><li><strong>D:</strong> Closing</li></ul><p><strong>Correct Answer:</strong> C</p><p>Opening is erosion followed by dilation, and it smooths shapes by removing small noise elements.</p>"
+},
+{
+    "category": "Lecture2(Binary Image Analysis)",
+    "question": "What property of Otsu's method ensures it works without prior knowledge of class distributions?",
+    "answer": "<ul><li><strong>A:</strong> It uses a trained model for classification</li><li><strong>B:</strong> It assumes Gaussian distributions</li><li><strong>C:</strong> It performs exhaustive search over all thresholds ✅</li><li><strong>D:</strong> It uses clustering of intensity values</li></ul><p><strong>Correct Answer:</strong> C</p><p>Otsu’s method tests each possible threshold to find the one that maximizes between-class variance.</p>"
+},
+{
+    "category": "Lecture2(Binary Image Analysis)",
+    "question": "In morphological processing, what effect does erosion have on a binary shape?",
+    "answer": "<ul><li><strong>A:</strong> It expands the shape</li><li><strong>B:</strong> It smooths and connects broken parts</li><li><strong>C:</strong> It shrinks the shape and removes small details ✅</li><li><strong>D:</strong> It fills small gaps inside the shape</li></ul><p><strong>Correct Answer:</strong> C</p>"
+},
+{
+    "category": "Lecture2(Binary Image Analysis)",
+    "question": "Which feature is <strong>not</strong> guaranteed to be invariant under rotation for connected components?",
+    "answer": "<ul><li><strong>A:</strong> Area</li><li><strong>B:</strong> Compactness</li><li><strong>C:</strong> Bounding box ✅</li><li><strong>D:</strong> Translation</li></ul><p><strong>Correct Answer:</strong> C</p><p>The bounding box changes with rotation, unlike area or compactness (if appropriately defined).</p>"
+},
+{
+    "category": "Lecture2(Binary Image Analysis)",
+    "question": "Which distance measure uses diagonal neighbours in the distance transform?",
+    "answer": "<ul><li><strong>A:</strong> L0</li><li><strong>B:</strong> L1 (Manhattan)</li><li><strong>C:</strong> L2 (Euclidean)</li><li><strong>D:</strong> L∞</li><li><strong>E:</strong> Both L2 and 8-neighbourhood methods ✅</li></ul><p><strong>Correct Answer:</strong> E</p><p>8-neighbourhood and L2 incorporate diagonal connectivity.</p>"
+},
+{
+    "category": "Lecture2(Binary Image Analysis)",
+    "question": "Which gradient vector is perpendicular to a given 2D gradient <code>[gₓ, gᵧ]</code>?",
+    "answer": "<ul><li><strong>A:</strong> [−gₓ, −gᵧ]</li><li><strong>B:</strong> [gᵧ, −gₓ] ✅</li><li><strong>C:</strong> [−gᵧ, gₓ]</li><li><strong>D:</strong> [gₓ, gᵧ]</li></ul><p><strong>Correct Answer:</strong> B</p><p>This direction is orthogonal and represents contours of constant elevation.</p>"
+},
+{
+    "category": "Lecture2(Binary Image Analysis)",
+    "question": "Which combination of operations best describes the boundary extraction process in morphology?",
+    "answer": "<ul><li><strong>A:</strong> Original image minus its erosion ✅</li><li><strong>B:</strong> Erosion minus dilation</li><li><strong>C:</strong> Closing minus opening</li><li><strong>D:</strong> Dilation minus erosion</li></ul><p><strong>Correct Answer:</strong> A</p><p>Boundary = A − (A ⊖ B), where ⊖ denotes erosion.</p>"
+},
+{
+    "category": "Lecture2(Binary Image Analysis)",
+    "question": "In gradient analysis of grayscale images, what does a zero-gradient vector indicate?",
+    "answer": "<ul><li><strong>A:</strong> Edge</li><li><strong>B:</strong> Region of high curvature</li><li><strong>C:</strong> Peak or valley ✅</li><li><strong>D:</strong> Contour line</li></ul><p><strong>Correct Answer:</strong> C</p><p>At peaks or valleys, there's no ascent in any direction—hence gradient is zero.</p>"
+},
+{
+    "category": "Lecture2(Binary Image Analysis)",
+    "question": "Why is the distance transform useful in image analysis?",
+    "answer": "<ul><li><strong>A:</strong> It smooths intensity values</li><li><strong>B:</strong> It computes contour gradients</li><li><strong>C:</strong> It encodes distances from each foreground pixel to the nearest background pixel ✅</li><li><strong>D:</strong> It labels connected components</li></ul><p><strong>Correct Answer:</strong> C</p>"
+},
+{
+    "category": "Lecture2(Binary Image Analysis)",
+    "question": "Which of the following operations is the inverse of dilation?",
+    "answer": "<ul><li><strong>A:</strong> Opening</li><li><strong>B:</strong> Erosion ✅</li><li><strong>C:</strong> Closing</li><li><strong>D:</strong> Boundary extraction</li></ul><p><strong>Correct Answer:</strong> B</p><p>Erosion shrinks shapes, which is the opposite of dilation.</p>"
+},
+{
+    "category": "Lecture2(Binary Image Analysis)",
+    "question": "Which structuring element size would be most appropriate for removing tiny objects without altering larger ones?",
+    "answer": "<ul><li><strong>A:</strong> Very small (e.g., 1×1)</li><li><strong>B:</strong> Moderate (e.g., 3×3)</li><li><strong>C:</strong> Large enough to cover unwanted noise but smaller than main objects ✅</li><li><strong>D:</strong> As large as the image itself</li></ul><p><strong>Correct Answer:</strong> C</p>"
+},
+{
+    "category": "Lecture2(Binary Image Analysis)",
+    "question": "Which combination of features would best distinguish different shapes in a binary image?",
+    "answer": "<ul><li><strong>A:</strong> Area only</li><li><strong>B:</strong> Bounding box and centroid</li><li><strong>C:</strong> Compactness and boundary length ✅</li><li><strong>D:</strong> Threshold level and pixel intensity</li></ul><p><strong>Correct Answer:</strong> C</p><p>Compactness captures shape roundness, and boundary length reflects complexity.</p>"
+},
+{
+    "category": "Lecture2(Binary Image Analysis)",
+    "question": "What challenge does varying illumination present in thresholding?",
+    "answer": "<ul><li><strong>A:</strong> Makes object boundaries clearer</li><li><strong>B:</strong> Enhances histogram contrast</li><li><strong>C:</strong> Causes inconsistent threshold results across regions ✅</li><li><strong>D:</strong> Has no effect on thresholding</li></ul><p><strong>Correct Answer:</strong> C</p>"
+},
+{
+    "category": "Lecture2(Binary Image Analysis)",
+    "question": "What is the effect of using too large a structuring element during erosion?",
+    "answer": "<ul><li><strong>A:</strong> Small features are preserved</li><li><strong>B:</strong> Entire object may disappear ✅</li><li><strong>C:</strong> Shape becomes more defined</li><li><strong>D:</strong> No visible effect</li></ul><p><strong>Correct Answer:</strong> B</p>"
+},
+{
+    "category": "Lecture2(Binary Image Analysis)",
+    "question": "Which thresholding method adapts based on both local mean and standard deviation?",
+    "answer": "<ul><li><strong>A:</strong> Otsu's method</li><li><strong>B:</strong> Global thresholding</li><li><strong>C:</strong> Sauvola's method ✅</li><li><strong>D:</strong> Manual thresholding</li></ul><p><strong>Correct Answer:</strong> C</p>"
+},
+{
+    "category": "Lecture2(Binary Image Analysis)",
+    "question": "Which aspect of the 2D gradient vector indicates the direction of constant intensity?",
+    "answer": "<ul><li><strong>A:</strong> The vector [−gₓ, −gᵧ]</li><li><strong>B:</strong> The vector [gₓ, gᵧ]</li><li><strong>C:</strong> The vector perpendicular to [gₓ, gᵧ] ✅</li><li><strong>D:</strong> The negative gradient direction</li></ul><p><strong>Correct Answer:</strong> C</p><p>This direction is tangent to the intensity contours.</p>"
+},
 
-                            /* ───────────── Lecture 3 – Fourier Transform & Frequency Analysis ───────────── */
-                            {
-                                "category": "Lecture3(FourierTransform)",
-                                "question": "What is a signal in computer vision context?",
-                                "answer": "A signal is any physical phenomenon that can be modeled as a function of time or position to some real- or vector-valued domain and is used to carry information. In computer vision, a greyscale image is treated as a 2-D signal."
-                            },
-                            {
-                                "category": "Lecture3(FourierTransform)",
-                                "question": "What's the difference between analog and digital signals?",
-                                "answer": "• Analog signals: continuous domain and continuous range\n• Digital signals: discrete domain and discrete range\n• Images are digital signals with discrete pixels and intensities."
-                            },
-                            {
-                                "category": "Lecture3(FourierTransform)",
-                                "question": "How do 1-D and 2-D signals differ in vision processing?",
-                                "answer": "1-D signals vary over time (e.g., audio); 2-D signals vary over 2D space (images) and require 2-D operations like 2-D convolution."
-                            },
-                            {
-                                "category": "Lecture3(FourierTransform)",
-                                "question": "What is a kernel in image processing?",
-                                "answer": "A small matrix (mask) used to convolve with an image to perform operations such as blurring, sharpening or edge detection."
-                            },
-                            {
-                                "category": "Lecture3(FourierTransform)",
-                                "question": "What defines a linear filter?",
-                                "answer": "It satisfies additivity and homogeneity: T(f+g)=T(f)+T(g) and T(af)=a·T(f)."
-                            },
-                            {
-                                "category": "Lecture3(FourierTransform)",
-                                "question": "Provide an example of a non-linear filter.",
-                                "answer": "Median filter or gamma correction; they violate linearity because output is not linear combination of inputs."
-                            },
-                            {
-                                "category": "Lecture3(FourierTransform)",
-                                "question": "State the 2-D convolution formula.",
-                                "answer": "(f∗g)(x,y)=ΣuΣv f(u,v) g(x-u, y-v)."
-                            },
-                            {
-                                "category": "Lecture3(FourierTransform)",
-                                "question": "How does correlation differ from convolution?",
-                                "answer": "In correlation the kernel is not flipped; convolution flips the kernel both horizontally and vertically before sliding."
-                            },
-                            {
-                                "category": "Lecture3(FourierTransform)",
-                                "question": "Why perform Fourier Transform in image analysis?",
-                                "answer": "To analyze frequency content, design frequency-domain filters, perform efficient convolution, compression and pattern detection."
-                            },
-                            {
-                                "category": "Lecture3(FourierTransform)",
-                                "question": "When is Fourier Series used?",
-                                "answer": "For periodic continuous signals to represent them as sums of sines and cosines."
-                            },
-                            {
-                                "category": "Lecture3(FourierTransform)",
-                                "question": "What is a discrete spectrum?",
-                                "answer": "A set of isolated frequency components (impulses) produced by a periodic signal's Fourier series."
-                            },
-                            {
-                                "category": "Lecture3(FourierTransform)",
-                                "question": "Name three key properties of the Fourier Transform.",
-                                "answer": "Linearity, shift (translation) property, and convolution theorem."
-                            },
-                            {
-                                "category": "Lecture3(FourierTransform)",
-                                "question": "State the Nyquist sampling criterion.",
-                                "answer": "Sampling frequency must be at least twice the highest signal frequency to avoid aliasing."
-                            },
-                            {
-                                "category": "Lecture3(FourierTransform)",
-                                "question": "Why can frequencies above Nyquist cause aliasing?",
-                                "answer": "They fold back into lower frequencies after sampling, distorting the reconstructed signal."
-                            },
-                            {
-                                "category": "Lecture3(FourierTransform)",
-                                "question": "What is the computational complexity of FFT compared to DFT?",
-                                "answer": "FFT: O(N log N); naive DFT: O(N²)."
-                            },
-                            {
-                                "category": "Lecture3(FourierTransform)",
-                                "question": "Which carries more structural information, phase or magnitude?",
-                                "answer": "Phase; swapping phase retains image structure whereas swapping magnitude only alters contrast."
-                            },
-                            {
-                                "category": "Lecture3(FourierTransform)",
-                                "question": "How is low-pass filtering done in frequency domain?",
-                                "answer": "Multiply Fourier spectrum by a mask that preserves low frequencies near origin and attenuates high frequencies."
-                            },
-                            {
-                                "category": "Lecture3(FourierTransform)",
-                                "question": "Name a common low-pass filter in frequency domain.",
-                                "answer": "Ideal, Butterworth or Gaussian low-pass filter."
-                            },
-                            {
-                                "category": "Lecture3(FourierTransform)",
-                                "question": "Why use fftshift before visualizing the spectrum?",
-                                "answer": "Centers the zero frequency component, making the spectrum easier to interpret."
-                            },
-                            {
-                                "category": "Lecture3(FourierTransform)",
-                                "question": "Which functions help rescale FFT magnitude for display?",
-                                "answer": "Log or square-root scaling to compress large dynamic range."
-                            },
 
-                            /* ───────────── Lecture 4 – Single-Pixel Ops, Histogram Eq & Spatial Filtering ───────────── */
-                            {
-                                "category": "Lecture4(Enhancement)",
-                                "question": "Give two examples of single-pixel intensity transformations.",
-                                "answer": "Negative transformation and gamma (power-law) correction."
-                            },
-                            {
-                                "category": "Lecture4(Enhancement)",
-                                "question": "What is the goal of contrast stretching?",
-                                "answer": "Expand intensity range to utilize full dynamic range and improve visibility of details."
-                            },
-                            {
-                                "category": "Lecture4(Enhancement)",
-                                "question": "What does histogram equalization achieve?",
-                                "answer": "Flattens the histogram to produce a uniform distribution, enhancing global contrast."
-                            },
-                            {
-                                "category": "Lecture4(Enhancement)",
-                                "question": "Why is Gaussian preferred for smoothing?",
-                                "answer": "It removes high-frequency noise while preserving edges better due to no ringing artifacts."
-                            },
-                            {
-                                "category": "Lecture4(Enhancement)",
-                                "question": "What is high-boost filtering used for?",
-                                "answer": "To sharpen images by adding a scaled high-pass filtered version to the original image."
-                            },
-                            {
-                                "category": "Lecture4(Enhancement)",
-                                "question": "Why is median filter effective for salt-and-pepper noise?",
-                                "answer": "It replaces each pixel with median of neighborhood, removing isolated outliers without blurring edges."
-                            },
-                            {
-                                "category": "Lecture4(Enhancement)",
-                                "question": "Why must anti-aliasing be applied before subsampling?",
-                                "answer": "To suppress high frequencies that would alias after down-sampling."
-                            },
-                            {
-                                "category": "Lecture4(Enhancement)",
-                                "question": "Name two similarity measures for template matching.",
-                                "answer": "Sum of Squared Differences (SSD) and Normalized Cross-Correlation (NCC)."
-                            },
+/* ───────────── Lecture 3 – Fourier Transform & Frequency Analysis ───────────── */
+{
+    "category": "Lecture3(FourierTransform)",
+    "question": "What is a signal in computer vision context?",
+    "answer": "A signal is any physical phenomenon that can be modeled as a function of time or position to some real- or vector-valued domain and is used to carry information. In computer vision, a greyscale image is treated as a 2-D signal."
+},
+{
+    "category": "Lecture3(FourierTransform)",
+    "question": "What's the difference between analog and digital signals?",
+    "answer": "• Analog signals: continuous domain and continuous range\n• Digital signals: discrete domain and discrete range\n• Images are digital signals with discrete pixels and intensities."
+},
+{
+    "category": "Lecture3(FourierTransform)",
+    "question": "How do 1-D and 2-D signals differ in vision processing?",
+    "answer": "1-D signals vary over time (e.g., audio); 2-D signals vary over 2D space (images) and require 2-D operations like 2-D convolution."
+},
+{
+    "category": "Lecture3(FourierTransform)",
+    "question": "What is a kernel in image processing?",
+    "answer": "A small matrix (mask) used to convolve with an image to perform operations such as blurring, sharpening or edge detection."
+},
+{
+    "category": "Lecture3(FourierTransform)",
+    "question": "What defines a linear filter?",
+    "answer": "It satisfies additivity and homogeneity: T(f+g)=T(f)+T(g) and T(af)=a·T(f)."
+},
+{
+    "category": "Lecture3(FourierTransform)",
+    "question": "Provide an example of a non-linear filter.",
+    "answer": "Median filter or gamma correction; they violate linearity because output is not linear combination of inputs."
+},
+{
+    "category": "Lecture3(FourierTransform)",
+    "question": "State the 2-D convolution formula.",
+    "answer": "(f∗g)(x,y)=ΣuΣv f(u,v) g(x-u, y-v)."
+},
+{
+    "category": "Lecture3(FourierTransform)",
+    "question": "How does correlation differ from convolution?",
+    "answer": "In correlation the kernel is not flipped; convolution flips the kernel both horizontally and vertically before sliding."
+},
+{
+    "category": "Lecture3(FourierTransform)",
+    "question": "Why perform Fourier Transform in image analysis?",
+    "answer": "To analyze frequency content, design frequency-domain filters, perform efficient convolution, compression and pattern detection."
+},
+{
+    "category": "Lecture3(FourierTransform)",
+    "question": "When is Fourier Series used?",
+    "answer": "For periodic continuous signals to represent them as sums of sines and cosines."
+},
+{
+    "category": "Lecture3(FourierTransform)",
+    "question": "What is a discrete spectrum?",
+    "answer": "A set of isolated frequency components (impulses) produced by a periodic signal's Fourier series."
+},
+{
+    "category": "Lecture3(FourierTransform)",
+    "question": "Name three key properties of the Fourier Transform.",
+    "answer": "Linearity, shift (translation) property, and convolution theorem."
+},
+{
+    "category": "Lecture3(FourierTransform)",
+    "question": "State the Nyquist sampling criterion.",
+    "answer": "Sampling frequency must be at least twice the highest signal frequency to avoid aliasing."
+},
+{
+    "category": "Lecture3(FourierTransform)",
+    "question": "Why can frequencies above Nyquist cause aliasing?",
+    "answer": "They fold back into lower frequencies after sampling, distorting the reconstructed signal."
+},
+{
+    "category": "Lecture3(FourierTransform)",
+    "question": "What is the computational complexity of FFT compared to DFT?",
+    "answer": "FFT: O(N log N); naive DFT: O(N²)."
+},
+{
+    "category": "Lecture3(FourierTransform)",
+    "question": "Which carries more structural information, phase or magnitude?",
+    "answer": "Phase; swapping phase retains image structure whereas swapping magnitude only alters contrast."
+},
+{
+    "category": "Lecture3(FourierTransform)",
+    "question": "How is low-pass filtering done in frequency domain?",
+    "answer": "Multiply Fourier spectrum by a mask that preserves low frequencies near origin and attenuates high frequencies."
+},
+{
+    "category": "Lecture3(FourierTransform)",
+    "question": "Name a common low-pass filter in frequency domain.",
+    "answer": "Ideal, Butterworth or Gaussian low-pass filter."
+},
+{
+    "category": "Lecture3(FourierTransform)",
+    "question": "Why use fftshift before visualizing the spectrum?",
+    "answer": "Centers the zero frequency component, making the spectrum easier to interpret."
+},
+{
+    "category": "Lecture3(FourierTransform)",
+    "question": "Which functions help rescale FFT magnitude for display?",
+    "answer": "Log or square-root scaling to compress large dynamic range."
+},
 
-                            /* ───────────── Lecture 5 – Edge Detection ───────────── */
-                            {
-                                "category": "Lecture5(EdgeDetection)",
-                                "question": "What is an edge in an image?",
-                                "answer": "A location of rapid intensity change corresponding to boundaries of objects or features."
-                            },
-                            {
-                                "category": "Lecture5(EdgeDetection)",
-                                "question": "List four physical causes of edges.",
-                                "answer": "Depth discontinuity, surface normal discontinuity, surface color discontinuity, illumination discontinuity."
-                            },
-                            {
-                                "category": "Lecture5(EdgeDetection)",
-                                "question": "Name three finite-difference schemes for 1-D gradient.",
-                                "answer": "Forward difference, backward difference, central difference."
-                            },
-                            {
-                                "category": "Lecture5(EdgeDetection)",
-                                "question": "What are the 3×3 Sobel kernels?",
-                                "answer": "Gx = [[+1 0 -1],[+2 0 -2],[+1 0 -1]]; Gy = [[+1 +2 +1],[0 0 0],[-1 -2 -1]]."
-                            },
-                            {
-                                "category": "Lecture5(EdgeDetection)",
-                                "question": "How does Prewitt differ from Sobel?",
-                                "answer": "Prewitt uses uniform weights (1) whereas Sobel uses center weight 2 for better smoothing."
-                            },
-                            {
-                                "category": "Lecture5(EdgeDetection)",
-                                "question": "What is the Laplacian of Gaussian (LoG) used for?",
-                                "answer": "Detect zero-crossings that correspond to edges by combining smoothing and second-derivative."
-                            },
-                            {
-                                "category": "Lecture5(EdgeDetection)",
-                                "question": "What three criteria define an optimal edge detector according to Canny?",
-                                "answer": "Good detection (low error rate), good localization, and single response to a single edge."
-                            },
-                            {
-                                "category": "Lecture5(EdgeDetection)",
-                                "question": "Outline the Canny edge detection pipeline.",
-                                "answer": "1) Gaussian smoothing 2) Gradient magnitude & orientation 3) Non-maximal suppression 4) Hysteresis thresholding."
-                            },
-                            {
-                                "category": "Lecture5(EdgeDetection)",
-                                "question": "Why use two thresholds in Canny?",
-                                "answer": "High threshold finds strong edges; low threshold links weak edges connected to strong ones, reducing breaks."
-                            },
-                            {
-                                "category": "Lecture5(EdgeDetection)",
-                                "question": "How does increasing Gaussian σ affect Canny output?",
-                                "answer": "More smoothing reduces noise but blurs edges, decreasing localization accuracy."
-                            },
+/* ───────────── Lecture 4 – Single-Pixel Ops, Histogram Eq & Spatial Filtering ───────────── */
+{
+    "category": "Lecture4(Enhancement)",
+    "question": "Give two examples of single-pixel intensity transformations.",
+    "answer": "Negative transformation and gamma (power-law) correction."
+},
+{
+    "category": "Lecture4(Enhancement)",
+    "question": "What is the goal of contrast stretching?",
+    "answer": "Expand intensity range to utilize full dynamic range and improve visibility of details."
+},
+{
+    "category": "Lecture4(Enhancement)",
+    "question": "What does histogram equalization achieve?",
+    "answer": "Flattens the histogram to produce a uniform distribution, enhancing global contrast."
+},
+{
+    "category": "Lecture4(Enhancement)",
+    "question": "Why is Gaussian preferred for smoothing?",
+    "answer": "It removes high-frequency noise while preserving edges better due to no ringing artifacts."
+},
+{
+    "category": "Lecture4(Enhancement)",
+    "question": "What is high-boost filtering used for?",
+    "answer": "To sharpen images by adding a scaled high-pass filtered version to the original image."
+},
+{
+    "category": "Lecture4(Enhancement)",
+    "question": "Why is median filter effective for salt-and-pepper noise?",
+    "answer": "It replaces each pixel with median of neighborhood, removing isolated outliers without blurring edges."
+},
+{
+    "category": "Lecture4(Enhancement)",
+    "question": "Why must anti-aliasing be applied before subsampling?",
+    "answer": "To suppress high frequencies that would alias after down-sampling."
+},
+{
+    "category": "Lecture4(Enhancement)",
+    "question": "Name two similarity measures for template matching.",
+    "answer": "Sum of Squared Differences (SSD) and Normalized Cross-Correlation (NCC)."
+},
 
-                            /* ───────────── Lecture 6 – Object Recognition & PCA ───────────── */
-                            {
-                                "category": "Lecture6(ObjectRecognition)",
-                                "question": "Differentiate between identification and categorization.",
-                                "answer": "Identification matches to a specific instance; categorization assigns to a class label."
-                            },
-                            {
-                                    "category": "Lecture6(ObjectRecognition)",
-                                "question": "How does detection differ from recognition?",
-                                "answer": "Detection localizes instances of a class; recognition determines identity or class once detected."
-                            },
-                            {
-                                "category": "Lecture6(ObjectRecognition)",
-                                "question": "Name four challenges in visual recognition.",
-                                "answer": "Appearance variation, viewpoint changes, illumination, background clutter, scale, occlusion."
-                            },
-                            {
-                                "category": "Lecture6(ObjectRecognition)",
-                                "question": "List stages of a typical object recognition pipeline.",
-                                "answer": "1) Feature extraction 2) Training (learn classifier) 3) Testing (classification/prediction)."
-                            },
-                            {
-                                "category": "Lecture6(ObjectRecognition)",
-                                "question": "What does PCA achieve in object recognition?",
-                                "answer": "Projects high-dimensional image data onto lower-dimensional orthogonal basis maximizing variance; used for shape/appearance modeling."
-                            },
-                            {
-                                "category": "Lecture6(ObjectRecognition)",
-                                "question": "How are Eigenfaces used in face recognition?",
-                                "answer": "Faces are projected onto PCA subspace; recognition done by nearest neighbor in eigenface coefficients."
-                            },
-                            {
-                                "category": "Lecture6(ObjectRecognition)",
-                                "question": "What is a color histogram?",
-                                "answer": "Distribution of pixel colors in chosen color space (e.g., HSV), used as descriptor for object recognition."
-                            },
-                            {
-                                "category": "Lecture6(ObjectRecognition)",
-                                "question": "Why convert RGB to HSV or CIE-XYZ for color matching?",
-                                "answer": "Decouples chromaticity from intensity, making descriptors more robust to lighting changes."
-                            },
-                            {
-                                "category": "Lecture6(ObjectRecognition)",
-                                "question": "Describe the k-Nearest Neighbor classifier.",
-                                "answer": "Classifies a sample by majority vote of its k closest training samples in feature space."
-                            },
-                            {
-                                "category": "Lecture6(ObjectRecognition)",
-                                "question": "What is the goal of an SVM?",
-                                "answer": "Find the maximum-margin hyperplane that separates classes; can be extended with kernels for nonlinear separation."
-                            },
+/* ───────────── Lecture 5 – Edge Detection ───────────── */
+{
+    "category": "Lecture5(EdgeDetection)",
+    "question": "What is an edge in an image?",
+    "answer": "A location of rapid intensity change corresponding to boundaries of objects or features."
+},
+{
+    "category": "Lecture5(EdgeDetection)",
+    "question": "List four physical causes of edges.",
+    "answer": "Depth discontinuity, surface normal discontinuity, surface color discontinuity, illumination discontinuity."
+},
+{
+    "category": "Lecture5(EdgeDetection)",
+    "question": "Name three finite-difference schemes for 1-D gradient.",
+    "answer": "Forward difference, backward difference, central difference."
+},
+{
+    "category": "Lecture5(EdgeDetection)",
+    "question": "What are the 3×3 Sobel kernels?",
+    "answer": "Gx = [[+1 0 -1],[+2 0 -2],[+1 0 -1]]; Gy = [[+1 +2 +1],[0 0 0],[-1 -2 -1]]."
+},
+{
+    "category": "Lecture5(EdgeDetection)",
+    "question": "How does Prewitt differ from Sobel?",
+    "answer": "Prewitt uses uniform weights (1) whereas Sobel uses center weight 2 for better smoothing."
+},
+{
+    "category": "Lecture5(EdgeDetection)",
+    "question": "What is the Laplacian of Gaussian (LoG) used for?",
+    "answer": "Detect zero-crossings that correspond to edges by combining smoothing and second-derivative."
+},
+{
+    "category": "Lecture5(EdgeDetection)",
+    "question": "What three criteria define an optimal edge detector according to Canny?",
+    "answer": "Good detection (low error rate), good localization, and single response to a single edge."
+},
+{
+    "category": "Lecture5(EdgeDetection)",
+    "question": "Outline the Canny edge detection pipeline.",
+    "answer": "1) Gaussian smoothing 2) Gradient magnitude & orientation 3) Non-maximal suppression 4) Hysteresis thresholding."
+},
+{
+    "category": "Lecture5(EdgeDetection)",
+    "question": "Why use two thresholds in Canny?",
+    "answer": "High threshold finds strong edges; low threshold links weak edges connected to strong ones, reducing breaks."
+},
+{
+    "category": "Lecture5(EdgeDetection)",
+    "question": "How does increasing Gaussian σ affect Canny output?",
+    "answer": "More smoothing reduces noise but blurs edges, decreasing localization accuracy."
+},
 
-                            /* ───────────── Lecture 7 – Feature Detection & Extraction ───────────── */
-                            {
-                                "category": "Lecture7(Features)",
-                                "question": "Why are features preferred over raw pixels for matching?",
-                                "answer": "Features are repeatable, robust to illumination and viewpoint changes, and more compact."
-                            },
-                            {
-                                "category": "Lecture7(Features)",
-                                "question": "List three properties of good features.",
-                                "answer": "Repeatability, saliency/distinctiveness, compactness/efficiency."
-                            },
-                            {
-                                            "category": "Lecture7(Features)",
-                                "question": "What are the two steps in feature extraction?",
-                                "answer": "1) Detect keypoints 2) Compute descriptors around those keypoints."
-                            },
-                            {
-                                "category": "Lecture7(Features)",
-                                "question": "How does the Harris corner detector work?",
-                                "answer": "Computes matrix of image gradients in a window; large eigenvalues indicate corners; corner response R=det(M)-k·trace²(M)."
-                            },
-                            {
-                                "category": "Lecture7(Features)",
-                                "question": "Which detector provides scale invariance and how?",
-                                "answer": "SIFT detects extrema in Difference-of-Gaussian scale space, selecting keypoints with assigned scale."
-                            },
-                            {
-                                "category": "Lecture7(Features)",
-                                "question": "What makes Haar features fast to compute?",
-                                "answer": "Integral images allow rectangular sum computation in constant time, enabling real-time detection."
-                            },
-                            {
-                                "category": "Lecture7(Features)",
-                                "question": "What does a HOG descriptor encode?",
-                                "answer": "Histogram of gradient orientations in local cells, capturing edge structure robust to illumination."
-                            },
-                            {
-                                "category": "Lecture7(Features)",
-                                "question": "What is Local Binary Pattern (LBP)?",
-                                "answer": "Binary code representing local texture: threshold neighbors against center pixel and form a bit string."
-                            },
+/* ───────────── Lecture 6 – Object Recognition & PCA ───────────── */
+{
+    "category": "Lecture6(ObjectRecognition)",
+    "question": "Differentiate between identification and categorization.",
+    "answer": "Identification matches to a specific instance; categorization assigns to a class label."
+},
+{
+        "category": "Lecture6(ObjectRecognition)",
+    "question": "How does detection differ from recognition?",
+    "answer": "Detection localizes instances of a class; recognition determines identity or class once detected."
+},
+{
+    "category": "Lecture6(ObjectRecognition)",
+    "question": "Name four challenges in visual recognition.",
+    "answer": "Appearance variation, viewpoint changes, illumination, background clutter, scale, occlusion."
+},
+{
+    "category": "Lecture6(ObjectRecognition)",
+    "question": "List stages of a typical object recognition pipeline.",
+    "answer": "1) Feature extraction 2) Training (learn classifier) 3) Testing (classification/prediction)."
+},
+{
+    "category": "Lecture6(ObjectRecognition)",
+    "question": "What does PCA achieve in object recognition?",
+    "answer": "Projects high-dimensional image data onto lower-dimensional orthogonal basis maximizing variance; used for shape/appearance modeling."
+},
+{
+    "category": "Lecture6(ObjectRecognition)",
+    "question": "How are Eigenfaces used in face recognition?",
+    "answer": "Faces are projected onto PCA subspace; recognition done by nearest neighbor in eigenface coefficients."
+},
+{
+    "category": "Lecture6(ObjectRecognition)",
+    "question": "What is a color histogram?",
+    "answer": "Distribution of pixel colors in chosen color space (e.g., HSV), used as descriptor for object recognition."
+},
+{
+    "category": "Lecture6(ObjectRecognition)",
+    "question": "Why convert RGB to HSV or CIE-XYZ for color matching?",
+    "answer": "Decouples chromaticity from intensity, making descriptors more robust to lighting changes."
+},
+{
+    "category": "Lecture6(ObjectRecognition)",
+    "question": "Describe the k-Nearest Neighbor classifier.",
+    "answer": "Classifies a sample by majority vote of its k closest training samples in feature space."
+},
+{
+    "category": "Lecture6(ObjectRecognition)",
+    "question": "What is the goal of an SVM?",
+    "answer": "Find the maximum-margin hyperplane that separates classes; can be extended with kernels for nonlinear separation."
+},
 
-                            /* ───────────── Lecture 8 – Camera Calibration ───────────── */
-                            {
-                                "category": "Lecture8(Calibration)",
-                                "question": "Why is camera calibration useful?",
-                                "answer": "It estimates intrinsic and extrinsic parameters allowing metric measurements, 3-D reconstruction, and distortion correction."
-                            },
-                            {
-                                "category": "Lecture8(Calibration)",
-                                "question": "List the five intrinsic camera parameters.",
-                                "answer": "Focal length fx, focal length fy, principal point (cx, cy), and skew s."
-                            },
-                            {
-                                "category": "Lecture8(Calibration)",
-                                "question": "What do the six extrinsic parameters represent?",
-                                "answer": "3D rotation (3 parameters) and translation (3 parameters) of camera with respect to world coordinates."
-                            },
-                            {
-                                "category": "Lecture8(Calibration)",
-                                "question": "Describe the pinhole camera model.",
-                                "answer": "Projects 3D points onto 2D image plane via straight lines through a single center of projection (camera center)."
-                            },
-                            {
-                                "category": "Lecture8(Calibration)",
-                                "question": "What is the form of the full camera projection matrix P?",
-                                "answer": "P = K [ R | t ] where K is intrinsic 3×3, R is 3×3 rotation, t is translation 3×1."
-                            },
-                            {
-                                        "category": "Lecture8(Calibration)",
-                                "question": "Write the perspective projection of 3-D point (X,Y,Z).",
-                                "answer": "In homogeneous: s [u v 1]ᵀ = K [ R | t ] [X Y Z 1]ᵀ."
-                            },
-                            {
-                                "category": "Lecture8(Calibration)",
-                                "question": "What is solved in the Direct Linear Transformation (DLT) method?",
-                                "answer": "Linear system Aq=0 for projection matrix parameters using many point correspondences."
-                            },
-                            {
-                                "category": "Lecture8(Calibration)",
-                                "question": "Name two types of radial distortion.",
-                                "answer": "Barrel distortion (magnification decreases with radius) and pincushion distortion (magnification increases with radius)."
-                            },
+/* ───────────── Lecture 7 – Feature Detection & Extraction ───────────── */
+{
+    "category": "Lecture7(Features)",
+    "question": "Why are features preferred over raw pixels for matching?",
+    "answer": "Features are repeatable, robust to illumination and viewpoint changes, and more compact."
+},
+{
+    "category": "Lecture7(Features)",
+    "question": "List three properties of good features.",
+    "answer": "Repeatability, saliency/distinctiveness, compactness/efficiency."
+},
+{
+                "category": "Lecture7(Features)",
+    "question": "What are the two steps in feature extraction?",
+    "answer": "1) Detect keypoints 2) Compute descriptors around those keypoints."
+},
+{
+    "category": "Lecture7(Features)",
+    "question": "How does the Harris corner detector work?",
+    "answer": "Computes matrix of image gradients in a window; large eigenvalues indicate corners; corner response R=det(M)-k·trace²(M)."
+},
+{
+    "category": "Lecture7(Features)",
+    "question": "Which detector provides scale invariance and how?",
+    "answer": "SIFT detects extrema in Difference-of-Gaussian scale space, selecting keypoints with assigned scale."
+},
+{
+    "category": "Lecture7(Features)",
+    "question": "What makes Haar features fast to compute?",
+    "answer": "Integral images allow rectangular sum computation in constant time, enabling real-time detection."
+},
+{
+    "category": "Lecture7(Features)",
+    "question": "What does a HOG descriptor encode?",
+    "answer": "Histogram of gradient orientations in local cells, capturing edge structure robust to illumination."
+},
+{
+    "category": "Lecture7(Features)",
+    "question": "What is Local Binary Pattern (LBP)?",
+    "answer": "Binary code representing local texture: threshold neighbors against center pixel and form a bit string."
+},
 
-                            /* ───────────── Lecture 9 – Projective Geometry ───────────── */
-                            {
-                                "category": "Lecture9(ProjectiveGeometry)",
-                                "question": "What is a vanishing point?",
-                                "answer": "Image point where projections of parallel lines in 3-D intersect under perspective projection."
-                            },
-                            {
-                                "category": "Lecture9(ProjectiveGeometry)",
-                                "question": "How is the horizon line related to vanishing points?",
-                                "answer": "The horizon is the vanishing line formed by intersection of all horizontal vanishing points from ground plane."
-                            },
-                            {
-                                "category": "Lecture9(ProjectiveGeometry)",
-                                "question": "Why use homogeneous coordinates?",
-                                "answer": "Enable representation of points at infinity and unification of translation with matrix multiplication."
-                            },
-                            {
-                                "category": "Lecture9(ProjectiveGeometry)",
-                                "question": "Why is cross-ratio important?",
-                                "answer": "It is a projective invariant preserved under perspective transformation, used for measurement."
-                            },
-                            {
-                                "category": "Lecture9(ProjectiveGeometry)",
-                                "question": "What is a homography?",
-                                "answer": "A 3×3 non-singular matrix mapping points between two views of the same plane up to scale."
-                            },
-                            {
-                                "category": "Lecture9(ProjectiveGeometry)",
-                                "question": "What is the goal of image rectification?",
-                                "answer": "Apply homographies to make corresponding epipolar lines horizontal and align image planes."
-                            },
+/* ───────────── Lecture 8 – Camera Calibration ───────────── */
+{
+    "category": "Lecture8(Calibration)",
+    "question": "Why is camera calibration useful?",
+    "answer": "It estimates intrinsic and extrinsic parameters allowing metric measurements, 3-D reconstruction, and distortion correction."
+},
+{
+    "category": "Lecture8(Calibration)",
+    "question": "List the five intrinsic camera parameters.",
+    "answer": "Focal length fx, focal length fy, principal point (cx, cy), and skew s."
+},
+{
+    "category": "Lecture8(Calibration)",
+    "question": "What do the six extrinsic parameters represent?",
+    "answer": "3D rotation (3 parameters) and translation (3 parameters) of camera with respect to world coordinates."
+},
+{
+    "category": "Lecture8(Calibration)",
+    "question": "Describe the pinhole camera model.",
+    "answer": "Projects 3D points onto 2D image plane via straight lines through a single center of projection (camera center)."
+},
+{
+    "category": "Lecture8(Calibration)",
+    "question": "What is the form of the full camera projection matrix P?",
+    "answer": "P = K [ R | t ] where K is intrinsic 3×3, R is 3×3 rotation, t is translation 3×1."
+},
+{
+            "category": "Lecture8(Calibration)",
+    "question": "Write the perspective projection of 3-D point (X,Y,Z).",
+    "answer": "In homogeneous: s [u v 1]ᵀ = K [ R | t ] [X Y Z 1]ᵀ."
+},
+{
+    "category": "Lecture8(Calibration)",
+    "question": "What is solved in the Direct Linear Transformation (DLT) method?",
+    "answer": "Linear system Aq=0 for projection matrix parameters using many point correspondences."
+},
+{
+    "category": "Lecture8(Calibration)",
+    "question": "Name two types of radial distortion.",
+    "answer": "Barrel distortion (magnification decreases with radius) and pincushion distortion (magnification increases with radius)."
+},
 
-                            /* ───────────── Lecture 10 – Stereo Reconstruction ───────────── */
-                            {
-                                "category": "Lecture10(Stereo)",
-                                "question": "Why is depth ambiguous in a single image?",
-                                "answer": "All 3-D points along a viewing ray project to the same 2-D pixel, making depth indeterminate."
-                            },
-                            {
-                                "category": "Lecture10(Stereo)",
-                                "question": "What does a random dot stereogram demonstrate?",
-                                "answer": "That disparity differences alone can convey depth perception without recognizable objects."
-                            },
-                            {
-                                        "category": "Lecture10(Stereo)",
-                                "question": "Define an epipolar line.",
-                                "answer": "The image locus of intersection of the epipolar plane with the image plane; correspondence must lie on this line."
-                            },
-                            {
-                                "category": "Lecture10(Stereo)",
-                                "question": "What relates normalized image coordinates of a calibrated stereo pair?",
-                                "answer": "Essential matrix E such that x'ᵀ E x = 0."
-                            },
-                            {
-                                "category": "Lecture10(Stereo)",
-                                "question": "What is the fundamental matrix?",
-                                "answer": "F is a 3×3 rank-2 matrix relating homogeneous pixel coordinates of uncalibrated cameras: x'ᵀ F x = 0."
-                            },
-                            {
-                                "category": "Lecture10(Stereo)",
-                                "question": "What does the eight-point algorithm compute?",
-                                "answer": "Estimates the fundamental matrix from at least eight point correspondences."
-                            },
-                            {
-                                "category": "Lecture10(Stereo)",
-                                "question": "Why perform stereo rectification?",
-                                "answer": "To simplify correspondence search to 1-D horizontal disparity by aligning epipolar lines."
-                            },
-                            {
-                                "category": "Lecture10(Stereo)",
-                                "question": "How is depth Z computed from disparity d?",
-                                "answer": "Z = (f · B) / d where f is focal length and B is baseline."
-                            },
-                            {
-                                "category": "Lecture10(Stereo)",
-                                "question": "How does a laser stripe scanner recover 3-D shape?",
-                                "answer": "Projects known stripe pattern; deformation in camera image gives triangulation for surface points."
-                            },
+/* ───────────── Lecture 9 – Projective Geometry ───────────── */
+{
+    "category": "Lecture9(Projective Geometry)",
+    "question": "What is the geometric significance of vanishing points in perspective images?",
+    "answer": "<p>Vanishing points represent the intersection points of parallel lines in 3D space when projected onto a 2D image plane. They arise due to perspective projection and hold the following significance:</p><ul><li><strong>Direction Encoding:</strong> Each vanishing point corresponds to a specific direction in 3D space.</li><li><strong>Reconstruction Tool:</strong> They are used to infer 3D geometry, orientation, and camera parameters.</li><li><strong>Multiple Points:</strong> Sets of parallel lines not aligned with the same direction yield different vanishing points.</li></ul>"
+},
+{
+    "category": "Lecture9(Projective Geometry)",
+    "question": "How is a vanishing line formed, and what is its interpretation in a scene?",
+    "answer": "<p>A <strong>vanishing line</strong> is formed by joining two or more vanishing points that lie on the same plane. It represents the horizon or the limit of visibility in that plane.</p><ul><li><strong>For horizontal ground planes:</strong> The vanishing line is the geometric horizon.</li><li><strong>In 3D understanding:</strong> It helps identify the orientation of the scene with respect to the camera.</li></ul><p>The vanishing line also plays a critical role in rectifying perspective distortion.</p>"
+},
+{
+    "category": "Lecture9(Projective Geometry)",
+    "question": "Why are homogeneous coordinates essential in projective geometry?",
+    "answer": "<p><strong>Homogeneous coordinates</strong> extend Euclidean coordinates to represent points at infinity and enable projective transformations. Their advantages include:</p><ul><li><strong>Representing Points at Infinity:</strong> Parallel lines meet at vanishing points using homogeneous coordinates.</li><li><strong>Simplifying Transformations:</strong> Translation, rotation, scaling, and projection become matrix operations.</li><li><strong>Duality:</strong> Points and lines share a unified representation.</li></ul>"
+},
+{
+    "category": "Lecture9(Projective Geometry)",
+    "question": "How do affine and projective transformations differ geometrically?",
+    "answer": "<ul><li><strong>Affine Transformation:</strong><ul><li>Preserves parallelism and collinearity</li><li>Does not preserve angles or distances</li></ul></li><li><strong>Projective Transformation:</strong><ul><li>More general; can represent perspective effects</li><li>Preserves straight lines and cross-ratio but not parallelism</li></ul></li></ul><p><strong>Conclusion:</strong> Affine is a subset of projective transformation. Projective transformation models real-world imaging more accurately.</p>"
+},
+{
+    "category": "Lecture9(Projective Geometry)",
+    "question": "What are the conditions under which two lines intersect in homogeneous coordinates?",
+    "answer": "<p>Two lines intersect at a point <code>p</code> in homogeneous coordinates if:</p><p><code>p = l₁ × l₂</code> (cross product of the two lines)</p><p>Conversely, to check if a point lies on a line:</p><p><code>lᵀ · p = 0</code></p><p>This condition ensures that the point and line are incident under projective geometry.</p>"
+},
+{
+    "category": "Lecture9(Projective Geometry)",
+    "question": "How can we determine the equation of a line through two points in homogeneous coordinates?",
+    "answer": "<p>Given two points <code>p₁ = (x₁, y₁, 1)</code> and <code>p₂ = (x₂, y₂, 1)</code>, the line <code>l</code> passing through them is given by:</p><p><code>l = p₁ × p₂</code></p><p>This cross product yields the coefficients <code>(a, b, c)</code> of the line equation <code>ax + by + c = 0</code>.</p>"
+},
+{
+    "category": "Lecture9(Projective Geometry)",
+    "question": "Explain the cross-ratio and why it is a projective invariant.",
+    "answer": "<p>The <strong>cross-ratio</strong> of four collinear points A, B, C, D is defined as:</p><p><code>(AC/AD) / (BC/BD)</code></p><p><strong>Why it is invariant:</strong></p><ul><li>It remains constant under projective transformations.</li><li>Useful in metrology: allows recovery of unknown lengths using known ratios.</li></ul><p>Only six unique cross-ratios exist due to symmetry and reordering.</p>"
+},
+{
+    "category": "Lecture9(Projective Geometry)",
+    "question": "How is the height of an object computed from a single image using vanishing points?",
+    "answer": "<ol><li>Identify a reference object with known height.</li><li>Find the vertical vanishing point.</li><li>Mark the top and bottom of both the reference and target objects.</li><li>Use similar triangles or compute metric factor using cross-ratio or projection geometry.</li></ol><p>This process uses projective geometry principles to infer metric properties from images.</p>"
+},
+{
+    "category": "Lecture9(Projective Geometry)",
+    "question": "How do you construct a vanishing line from two vanishing points?",
+    "answer": "<p>The <strong>vanishing line</strong> is computed as the cross product of two vanishing points <code>v₁</code> and <code>v₂</code>:</p><p><code>l = v₁ × v₂</code></p><p>This line lies on the image plane and represents the projection of the horizon or the plane containing the two sets of parallel lines.</p>"
+},
+{
+    "category": "Lecture9(Projective Geometry)",
+    "question": "Describe the steps involved in image rectification using homography.",
+    "answer": "<ol><li>Identify four points on the plane to be rectified.</li><li>Compute the vanishing line of the plane.</li><li>Estimate the homography matrix <code>H</code> from these points.</li><li>Apply <code>H</code> to transform the distorted image region.</li></ol><p>This process corrects perspective distortion and restores geometric properties like angles and parallelism.</p>"
+},
+{
+    "category": "Lecture9(Projective Geometry)",
+    "question": "What is the homography matrix and how is it estimated from point correspondences?",
+    "answer": "<p>The <strong>homography matrix</strong> is a 3×3 transformation matrix mapping points from one plane to another under projective geometry.</p><p><strong>Estimation:</strong> From 4 or more point correspondences, set up linear equations and solve using:</p><ul><li><strong>Direct Linear Transformation (DLT)</strong></li><li><strong>Singular Value Decomposition (SVD)</strong></li></ul><p>The solution is the eigenvector corresponding to the smallest singular value.</p>"
+},
+{
+    "category": "Lecture9(Projective Geometry)",
+    "question": "Why is perspective rectification important in computer vision applications?",
+    "answer": "<p><strong>Perspective rectification</strong> removes projective distortion caused by angled camera views. It is crucial for:</p><ul><li>Restoring metric properties (length, angle)</li><li>Measuring real-world dimensions from images</li><li>Improving feature matching accuracy</li></ul><p>It allows planar surfaces to be treated as if viewed frontally.</p>"
+},
+{
+    "category": "Lecture9(Projective Geometry)",
+    "question": "What role does the vanishing point play in height measurement using cross-ratios?",
+    "answer": "<p>The vertical vanishing point defines the direction of height in the image.</p><ul><li>Used as a reference to construct triangles or ratios</li><li>Allows computation of unknown heights based on reference height and projected distances</li></ul><p>It anchors the geometry needed for accurate metric calculations.</p>"
+},
+{
+    "category": "Lecture9(Projective Geometry)",
+    "question": "What are the geometric properties preserved by projective, affine, and Euclidean transformations?",
+    "answer": "<ul><li><strong>Euclidean:</strong> Preserves distances, angles, parallelism, collinearity</li><li><strong>Affine:</strong> Preserves parallelism, collinearity, ratios of lengths along lines</li><li><strong>Projective:</strong> Preserves collinearity, cross-ratio</li></ul><p>Understanding these invariants helps choose the right model for scene analysis.</p>"
+},
+{
+    "category": "Lecture9(Projective Geometry)",
+    "question": "Why are points at infinity important in understanding vanishing points?",
+    "answer": "<p>Points at infinity represent directions in projective geometry. When projected via a perspective transformation:</p><ul><li>They appear as <strong>vanishing points</strong> in the image</li><li>Help encode the orientation of parallel lines</li><li>Enable recovery of camera pose and scene layout</li></ul><p>They are key to projective reasoning and geometry.</p>"
+},
+{
+    "category": "Lecture9(Projective Geometry)",
+    "question": "What are the six cross-ratio permutations, and why do only a few yield unique values?",
+    "answer": "<p>The six permutations of cross-ratio <code>r</code> are:</p><ul><li><code>r</code></li><li><code>1/r</code></li><li><code>1 - r</code></li><li><code>r / (r - 1)</code></li><li><code>1 / (1 - r)</code></li><li><code>(r - 1)/r</code></li></ul><p>Due to symmetries in point ordering, only six unique values arise from the 24 permutations of four points.</p>"
+},
+{
+    "category": "Lecture9(Projective Geometry)",
+    "question": "What preprocessing is needed for precise height measurement in real images?",
+    "answer": "<p>Before measuring heights, apply these preprocessing steps:</p><ul><li><strong>Remove radial distortion</strong> from the lens</li><li><strong>Detect parallel lines</strong> using edge detectors and Hough transform</li><li><strong>Compute accurate vanishing points</strong></li></ul><p>These steps ensure geometric accuracy and reliable metric estimations.</p>"
+},
+{
+    "category": "Lecture9(Projective Geometry)",
+    "question": "What is the difference between affine and affine homography in practice?",
+    "answer": "<ul><li><strong>Affine:</strong> General transformation preserving parallelism</li><li><strong>Affine Homography:</strong> A constrained homography where the last row is fixed to simplify computations</li></ul><p>Affine homography is appropriate for small image regions or when using telephoto lenses with negligible perspective effects.</p>"
+},
+{
+    "category": "Lecture9(Projective Geometry)",
+    "question": "How does image rectification support 3D reconstruction from a single image?",
+    "answer": "<p>Image rectification restores planar geometry, which enables:</p><ul><li>Identification of multiple planes in the scene</li><li>Estimation of relative depths and orientation</li><li>Construction of approximate 3D models from 2D input</li></ul><p>This is a foundational step in <strong>single view metrology</strong> and 3D scene understanding.</p>"
+},
 
-                            /* ───────────── Lecture 11 – Optical Flow, Tracking & 3-D Shape ───────────── */
 
-                            {
-                                "category": "Lecture11(Optical Flow and Motion)",
-                                "question": "What are the key assumptions underlying optical flow computation, and how do they interact?",
-                                "answer": "<p>Optical flow estimation relies on three major assumptions:</p><ul><li><strong>Brightness constancy:</strong> The intensity of a point remains constant between frames: <code>I(x, y, t) = I(x + u, y + v, t + 1)</code>.</li><li><strong>Small motion:</strong> The motion between frames is small enough to permit linear approximation (via Taylor series expansion).</li><li><strong>Spatial smoothness:</strong> Neighboring pixels are likely to have similar motion vectors due to continuity of surfaces.</li></ul><p>These assumptions interact to constrain the underdetermined optical flow problem and enable estimation of motion fields.</p>"
-                            },
-                            {
-                                "category": "Lecture11(Optical Flow and Motion)",
-                                "question": "Explain the optical flow constraint equation and its significance.",
-                                "answer": "<p>The optical flow constraint equation is derived from brightness constancy and small motion assumptions using a first-order Taylor expansion:</p><p><code>I_x u + I_y v + I_t = 0</code></p><ul><li><code>I_x</code>, <code>I_y</code>: Spatial gradients</li><li><code>I_t</code>: Temporal gradient</li><li><code>u, v</code>: Flow vectors (horizontal and vertical motion)</li></ul><p>This equation provides a linear constraint for each pixel, but is underconstrained, motivating use of additional constraints like smoothness (as in Lucas-Kanade).</p>"
-                            },
-                            {
-                                "category": "Lecture11(Optical Flow and Motion)",
-                                "question": "What is the aperture problem in motion estimation, and how can it be resolved?",
-                                "answer": "<p><strong>Aperture problem:</strong> When observing motion through a small aperture (like a pixel window), only motion perpendicular to edges can be detected, leading to ambiguity.</p><p>Solution strategies:</p><ul><li>Use corner features where gradients exist in multiple directions.</li><li>Apply methods like <em>Lucas-Kanade</em> that use larger patches assuming constant motion to gather more constraints.</li></ul>"
-                            },
-                            {
-                                "category": "Lecture11(Optical Flow and Motion)",
-                                "question": "Why is it important for the matrix <code>A<sup>T</sup>A</code> in Lucas-Kanade method to be well-conditioned?",
-                                "answer": "<p>In Lucas-Kanade, we solve:</p><p><code>A<sup>T</sup>A v = A<sup>T</sup>b</code></p><p>If <code>A<sup>T</sup>A</code> is ill-conditioned or nearly singular, the solution becomes unstable and sensitive to noise.</p><p>Good conditioning requires:</p><ul><li>Two strong, independent gradients (non-zero eigenvalues)</li><li><code>λ₁ / λ₂</code> not too large</li></ul><p>This implies corners are better than edges or flat regions for reliable flow estimation.</p>"
-                            },
-                            {
-                                "category": "Lecture11(Optical Flow and Motion)",
-                                "question": "How does coarse-to-fine optical flow estimation overcome the small motion assumption?",
-                                "answer": "<p>Large motions violate the small displacement assumption used in Taylor expansion.</p><p><strong>Coarse-to-fine estimation</strong> uses image pyramids:</p><ol><li>Downsample images to get coarser levels.</li><li>Estimate flow at coarser levels where motion appears smaller.</li><li>Iteratively refine flow at finer levels using upsampled initial estimates.</li></ol><p>This allows robust handling of large displacements.</p>"
-                            },
-                            {
-                                "category": "Lecture11(Optical Flow and Motion)",
-                                "question": "Describe how spatial and temporal gradients are computed in practice for optical flow.",
-                                "answer": "<p>To compute the gradients needed for optical flow constraint equation:</p><ul><li><strong>Spatial gradients (<code>I_x</code>, <code>I_y</code>):</strong><ul><li>Use filters like Sobel, Prewitt, or derivative-of-Gaussian</li></ul></li><li><strong>Temporal gradient (<code>I_t</code>):</strong><ul><li>Use frame differencing between consecutive images</li></ul></li></ul><p>Gradient estimation is critical for accuracy and stability of optical flow methods.</p>"
-                            },
-                            {
-                                "category": "Lecture11(Optical Flow and Motion)",
-                                "question": "Explain how the Lucas-Kanade method converts an underdetermined optical flow problem into an overdetermined one.",
-                                "answer": "<p>Optical flow constraint provides one equation per pixel with two unknowns (<code>u</code>, <code>v</code>).</p><p><strong>Lucas-Kanade approach:</strong></p><ul><li>Assumes flow is constant over a window (e.g., 5x5 patch)</li><li>This yields 25 equations for 2 unknowns</li><li>Solves using least squares: <code>A<sup>T</sup>A v = A<sup>T</sup>b</code></li></ul><p>This aggregation resolves ambiguity and increases robustness.</p>"
-                            },
-                            {
-                                "category": "Lecture11(Optical Flow and Motion)",
-                                "question": "Why do flow algorithms often fail at object boundaries, and what does this imply?",
-                                "answer": "<p>At object boundaries:</p><ul><li>Brightness constancy may be violated due to occlusion or disocclusion.</li><li>Flow is discontinuous, violating smoothness assumption.</li></ul><p><strong>Implication:</strong> Flow estimation is least reliable where motion segmentation would be most informative. This paradox motivates more sophisticated models (e.g., with motion discontinuity priors).</p>"
-                            },
-                            {
-                                "category": "Lecture11(Optical Flow and Motion)",
-                                "question": "Contrast motion field and optical flow. Why is the distinction important?",
-                                "answer": "<p><strong>Motion field:</strong> True 3D motion projected to 2D image plane, depends on scene geometry and camera motion.</p><p><strong>Optical flow:</strong> Apparent motion of brightness patterns, inferred from image sequences.</p><p>The difference matters because:</p><ul><li>Optical flow may be misleading due to lighting changes or non-rigid motion.</li><li>Motion field is often unobservable, but more physically meaningful.</li></ul>"
-                            },
-                            {
-                                "category": "Lecture11(Optical Flow and Motion)",
-                                "question": "Give two real-world applications of optical flow in different domains.",
-                                "answer": "<ul><li><strong>Video compression:</strong><ul><li>Motion estimation is used to encode frame differences efficiently using motion vectors.</li></ul></li><li><strong>Biological imaging:</strong><ul><li>Used to track cell or heart wall motion in medical videos for diagnostics.</li></ul></li></ul><p>These highlight the diverse utility of motion estimation in both engineered and scientific domains.</p>"
-                            },
-                            {
-                                "category": "Lecture11(Optical Flow and Motion)",
-                                "question": "Explain how a laser stripe scanner estimates 3D shape using a single camera.",
-                                "answer": "<p><strong>Laser stripe scanning:</strong> Projects a laser line orthogonal to epipolar lines.</p><p>As the stripe moves:</p><ul><li>Camera captures position of the line in image space</li><li>Using known geometry (e.g., triangulation), the depth at each pixel along the stripe is computed</li></ul><p>This builds up a dense 3D surface model from multiple stripe positions.</p>"
-                            },
-                            {
-                                "category": "Lecture11(Optical Flow and Motion)",
-                                "question": "How does structured light differ from laser stripe scanning in 3D reconstruction?",
-                                "answer": "<p><strong>Structured light:</strong> Projects multiple patterns (stripes, dots) onto the object surface.</p><p><strong>Differences from laser stripe:</strong></p><ul><li>Simultaneous projection of many points (vs. sequential stripe sweep)</li><li>Uses coding (e.g., time, color, spatial) to disambiguate pattern correspondence</li><li>Enables faster and denser 3D acquisition</li></ul><p>Example: Kinect 1 uses structured IR dot patterns to estimate depth.</p>"
-                            },
-                            {
-                                "category": "Lecture11(Optical Flow and Motion)",
-                                "question": "Describe how Kinect 2 uses time-of-flight for depth sensing.",
-                                "answer": "<p><strong>Time-of-flight (ToF) scanning:</strong> Fires a modulated laser beam and measures the time (or phase shift) it takes to reflect back.</p><p>Kinect 2 uses ToF to:</p><ul><li>Compute distance from each pixel to the object surface</li><li>Produce high-resolution depth maps</li></ul><p>Compared to Kinect 1 (structured light), Kinect 2 has improved spatial and depth resolution.</p>"
-                            },
-                            {
-                                "category": "Lecture11(Optical Flow and Motion)",
-                                "question": "What is a pointcloud, and how is it converted into a surface mesh?",
-                                "answer": "<p>A <strong>pointcloud</strong> is a set of 3D points (<code>X, Y, Z</code>) typically stored as a <code>3 x N</code> matrix.</p><p>Conversion to surface mesh:</p><ul><li>Find nearest neighbors</li><li>Connect them into triangles or polygons</li><li>Render using shading for surface appearance</li></ul><p>Mesh representation allows realistic rendering and further geometric analysis.</p>"
-                            },
-                            {
-                                "category": "Lecture11(Optical Flow and Motion)",
-                                "question": "Why is surface normal estimation important in 3D rendering?",
-                                "answer": "<p>Surface normals are vectors perpendicular to the surface at each point.</p><p><strong>Importance:</strong></p><ul><li>Used in lighting models (e.g., Phong shading) for realistic rendering</li><li>Required for estimating curvature, segmenting objects, and aligning surfaces</li></ul><p>Normals are computed from mesh triangle orientations or local pointcloud neighborhoods.</p>"
-                            },
-                            {
-                                "category": "Lecture11(Optical Flow and Motion)",
-                                "question": "How can Kinect's depth data be used for full 3D object reconstruction?",
-                                "answer": "<p>Steps for full 3D reconstruction using Kinect:</p><ol><li><strong>Rotate object</strong> or sensor to capture from multiple angles</li><li><strong>Capture depth maps</strong> at 30 fps</li><li><strong>Register</strong> all views into a common frame</li><li><strong>Integrate</strong> point clouds to form complete 3D model</li></ol><p>Software like OpenCV, MATLAB, or Kinect SDK is used for this pipeline.</p>"
-                            },
-                            {
-                                "category": "Lecture11(Optical Flow and Motion)",
-                                "question": "How is motion information used to segment objects in a scene?",
-                                "answer": "<p>Two motion-based segmentation methods:</p><ul><li><strong>Background subtraction:</strong> Assumes static background; detects moving foreground using temporal differences.</li><li><strong>Motion segmentation:</strong> Groups pixels into clusters with coherent motion patterns, useful in dynamic scenes with multiple objects.</li></ul><p>Motion cues reveal object boundaries even when visual appearance is similar.</p>"
-                            },
-                            {
-                                "category": "Lecture11(Optical Flow and Motion)",
-                                "question": "What makes corners ideal features for motion tracking and flow estimation?",
-                                "answer": "<p><strong>Corners</strong> have high spatial variation in both directions, providing strong image gradients.</p><p>Benefits:</p><ul><li>Resolve aperture problem</li><li>Yield well-conditioned <code>A<sup>T</sup>A</code> matrices in Lucas-Kanade</li><li>Enable precise and stable tracking</li></ul><p>Hence, feature tracking algorithms (e.g., KLT) often prioritize corner-like structures.</p>"
-                            },
 
-                            /* ───────────── Lecture 12 – Deep Learning (CNNs) ───────────── */
-                            {
-                                "category": "Lecture12(DeepLearning)",
-                                "question": "Why replace fully connected layers with convolutions for images?",
-                                "answer": "Exploits spatial locality, weight sharing, and greatly reduces parameters."
-                            },
-                            {
-                                "category": "Lecture12(DeepLearning)",
-                                "question": "What are learned parameters in a conv layer?",
-                                "answer": "Filter (kernel) weights and optional bias for each output channel."
-                            },
-                            {
-                                "category": "Lecture12(DeepLearning)",
-                                "question": "Why is ReLU popular in CNNs?",
-                                "answer": "Introduces non-linearity, mitigates vanishing gradients, and is computationally cheap (max(0,x))."
-                            },
-                            {
-                                "category": "Lecture12(DeepLearning)",
-                                "question": "What benefits does max pooling provide?",
-                                "answer": "Down-samples feature maps, introduces translation invariance, reduces computation."
-                            },
-                            {
-                                "category": "Lecture12(DeepLearning)",
-                                "question": "What problem does batch normalization address?",
-                                "answer": "Internal covariate shift; it normalizes layer inputs to stabilize and accelerate training."
-                            },
-                            {
-                                 "category": "Lecture12(DeepLearning)",
-                                "question": "What do early CNN layers typically learn?",
-                                "answer": "Low-level features such as edges and simple textures."
-                            },
-                            {
-                                "category": "Lecture12(DeepLearning)",
-                                "question": "What key factors made AlexNet successful on ImageNet 2012?",
-                                "answer": "Deep CNN architecture, ReLU activations, dropout, data augmentation, GPU training."
-                            },
-                            {
-                                "category": "Lecture12(DeepLearning)",
-                                "question": "What is a hallmark of VGGNet architecture?",
-                                "answer": "Uses uniform 3×3 conv filters stacked deep, doubling channels after each max pool."
-                            },
-                            {
-                                "category": "Lecture12(DeepLearning)",
-                                "question": "How does GoogLeNet reduce parameters?",
-                                "answer": "Uses 'bottleneck' 1×1 convolutions before 3×3/5×5 filters and parallel branch concatenation."
-                            },
-                            {
-                                "category": "Lecture12(DeepLearning)",
-                                "question": "What is the core idea of ResNet?",
-                                "answer": "Learn residual functions via identity shortcut connections to ease optimization of very deep networks."
-                            },
-                            {
-                                "category": "Lecture12(DeepLearning)",
-                                "question": "When is Group Normalization preferable to BatchNorm?",
-                                "answer": "For small batch sizes where batch statistics are unreliable."
-                            },
-                            {
-                                "category": "Lecture12(DeepLearning)",
-                                "question": "Outline a typical deep-learning vision pipeline.",
-                                "answer": "Input image → convolution+ReLU+pool ×N → flatten → fully connected → softmax output."
-                            },
-        
-        ];
+/* ───────────── Lecture 10 – Stereo Reconstruction ───────────── */
+{
+    "category": "Lecture10(Stereo)",
+    "question": "Why is depth ambiguous in a single image?",
+    "answer": "All 3-D points along a viewing ray project to the same 2-D pixel, making depth indeterminate."
+},
+{
+    "category": "Lecture10(Stereo)",
+    "question": "What does a random dot stereogram demonstrate?",
+    "answer": "That disparity differences alone can convey depth perception without recognizable objects."
+},
+{
+            "category": "Lecture10(Stereo)",
+    "question": "Define an epipolar line.",
+    "answer": "The image locus of intersection of the epipolar plane with the image plane; correspondence must lie on this line."
+},
+{
+    "category": "Lecture10(Stereo)",
+    "question": "What relates normalized image coordinates of a calibrated stereo pair?",
+    "answer": "Essential matrix E such that x'ᵀ E x = 0."
+},
+{
+    "category": "Lecture10(Stereo)",
+    "question": "What is the fundamental matrix?",
+    "answer": "F is a 3×3 rank-2 matrix relating homogeneous pixel coordinates of uncalibrated cameras: x'ᵀ F x = 0."
+},
+{
+    "category": "Lecture10(Stereo)",
+    "question": "What does the eight-point algorithm compute?",
+    "answer": "Estimates the fundamental matrix from at least eight point correspondences."
+},
+{
+    "category": "Lecture10(Stereo)",
+    "question": "Why perform stereo rectification?",
+    "answer": "To simplify correspondence search to 1-D horizontal disparity by aligning epipolar lines."
+},
+{
+    "category": "Lecture10(Stereo)",
+    "question": "How is depth Z computed from disparity d?",
+    "answer": "Z = (f · B) / d where f is focal length and B is baseline."
+},
+{
+    "category": "Lecture10(Stereo)",
+    "question": "How does a laser stripe scanner recover 3-D shape?",
+    "answer": "Projects known stripe pattern; deformation in camera image gives triangulation for surface points."
+},
+
+/* ───────────── Lecture 11 – Optical Flow, Tracking & 3-D Shape ───────────── */
+
+{
+    "category": "Lecture11(Optical Flow and Motion)",
+    "question": "What are the key assumptions underlying optical flow computation, and how do they interact?",
+    "answer": "<p>Optical flow estimation relies on three major assumptions:</p><ul><li><strong>Brightness constancy:</strong> The intensity of a point remains constant between frames: <code>I(x, y, t) = I(x + u, y + v, t + 1)</code>.</li><li><strong>Small motion:</strong> The motion between frames is small enough to permit linear approximation (via Taylor series expansion).</li><li><strong>Spatial smoothness:</strong> Neighboring pixels are likely to have similar motion vectors due to continuity of surfaces.</li></ul><p>These assumptions interact to constrain the underdetermined optical flow problem and enable estimation of motion fields.</p>"
+},
+{
+    "category": "Lecture11(Optical Flow and Motion)",
+    "question": "Explain the optical flow constraint equation and its significance.",
+    "answer": "<p>The optical flow constraint equation is derived from brightness constancy and small motion assumptions using a first-order Taylor expansion:</p><p><code>I_x u + I_y v + I_t = 0</code></p><ul><li><code>I_x</code>, <code>I_y</code>: Spatial gradients</li><li><code>I_t</code>: Temporal gradient</li><li><code>u, v</code>: Flow vectors (horizontal and vertical motion)</li></ul><p>This equation provides a linear constraint for each pixel, but is underconstrained, motivating use of additional constraints like smoothness (as in Lucas-Kanade).</p>"
+},
+{
+    "category": "Lecture11(Optical Flow and Motion)",
+    "question": "What is the aperture problem in motion estimation, and how can it be resolved?",
+    "answer": "<p><strong>Aperture problem:</strong> When observing motion through a small aperture (like a pixel window), only motion perpendicular to edges can be detected, leading to ambiguity.</p><p>Solution strategies:</p><ul><li>Use corner features where gradients exist in multiple directions.</li><li>Apply methods like <em>Lucas-Kanade</em> that use larger patches assuming constant motion to gather more constraints.</li></ul>"
+},
+{
+    "category": "Lecture11(Optical Flow and Motion)",
+    "question": "Why is it important for the matrix <code>A<sup>T</sup>A</code> in Lucas-Kanade method to be well-conditioned?",
+    "answer": "<p>In Lucas-Kanade, we solve:</p><p><code>A<sup>T</sup>A v = A<sup>T</sup>b</code></p><p>If <code>A<sup>T</sup>A</code> is ill-conditioned or nearly singular, the solution becomes unstable and sensitive to noise.</p><p>Good conditioning requires:</p><ul><li>Two strong, independent gradients (non-zero eigenvalues)</li><li><code>λ₁ / λ₂</code> not too large</li></ul><p>This implies corners are better than edges or flat regions for reliable flow estimation.</p>"
+},
+{
+    "category": "Lecture11(Optical Flow and Motion)",
+    "question": "How does coarse-to-fine optical flow estimation overcome the small motion assumption?",
+    "answer": "<p>Large motions violate the small displacement assumption used in Taylor expansion.</p><p><strong>Coarse-to-fine estimation</strong> uses image pyramids:</p><ol><li>Downsample images to get coarser levels.</li><li>Estimate flow at coarser levels where motion appears smaller.</li><li>Iteratively refine flow at finer levels using upsampled initial estimates.</li></ol><p>This allows robust handling of large displacements.</p>"
+},
+{
+    "category": "Lecture11(Optical Flow and Motion)",
+    "question": "Describe how spatial and temporal gradients are computed in practice for optical flow.",
+    "answer": "<p>To compute the gradients needed for optical flow constraint equation:</p><ul><li><strong>Spatial gradients (<code>I_x</code>, <code>I_y</code>):</strong><ul><li>Use filters like Sobel, Prewitt, or derivative-of-Gaussian</li></ul></li><li><strong>Temporal gradient (<code>I_t</code>):</strong><ul><li>Use frame differencing between consecutive images</li></ul></li></ul><p>Gradient estimation is critical for accuracy and stability of optical flow methods.</p>"
+},
+{
+    "category": "Lecture11(Optical Flow and Motion)",
+    "question": "Explain how the Lucas-Kanade method converts an underdetermined optical flow problem into an overdetermined one.",
+    "answer": "<p>Optical flow constraint provides one equation per pixel with two unknowns (<code>u</code>, <code>v</code>).</p><p><strong>Lucas-Kanade approach:</strong></p><ul><li>Assumes flow is constant over a window (e.g., 5x5 patch)</li><li>This yields 25 equations for 2 unknowns</li><li>Solves using least squares: <code>A<sup>T</sup>A v = A<sup>T</sup>b</code></li></ul><p>This aggregation resolves ambiguity and increases robustness.</p>"
+},
+{
+    "category": "Lecture11(Optical Flow and Motion)",
+    "question": "Why do flow algorithms often fail at object boundaries, and what does this imply?",
+    "answer": "<p>At object boundaries:</p><ul><li>Brightness constancy may be violated due to occlusion or disocclusion.</li><li>Flow is discontinuous, violating smoothness assumption.</li></ul><p><strong>Implication:</strong> Flow estimation is least reliable where motion segmentation would be most informative. This paradox motivates more sophisticated models (e.g., with motion discontinuity priors).</p>"
+},
+{
+    "category": "Lecture11(Optical Flow and Motion)",
+    "question": "Contrast motion field and optical flow. Why is the distinction important?",
+    "answer": "<p><strong>Motion field:</strong> True 3D motion projected to 2D image plane, depends on scene geometry and camera motion.</p><p><strong>Optical flow:</strong> Apparent motion of brightness patterns, inferred from image sequences.</p><p>The difference matters because:</p><ul><li>Optical flow may be misleading due to lighting changes or non-rigid motion.</li><li>Motion field is often unobservable, but more physically meaningful.</li></ul>"
+},
+{
+    "category": "Lecture11(Optical Flow and Motion)",
+    "question": "Give two real-world applications of optical flow in different domains.",
+    "answer": "<ul><li><strong>Video compression:</strong><ul><li>Motion estimation is used to encode frame differences efficiently using motion vectors.</li></ul></li><li><strong>Biological imaging:</strong><ul><li>Used to track cell or heart wall motion in medical videos for diagnostics.</li></ul></li></ul><p>These highlight the diverse utility of motion estimation in both engineered and scientific domains.</p>"
+},
+{
+    "category": "Lecture11(Optical Flow and Motion)",
+    "question": "Explain how a laser stripe scanner estimates 3D shape using a single camera.",
+    "answer": "<p><strong>Laser stripe scanning:</strong> Projects a laser line orthogonal to epipolar lines.</p><p>As the stripe moves:</p><ul><li>Camera captures position of the line in image space</li><li>Using known geometry (e.g., triangulation), the depth at each pixel along the stripe is computed</li></ul><p>This builds up a dense 3D surface model from multiple stripe positions.</p>"
+},
+{
+    "category": "Lecture11(Optical Flow and Motion)",
+    "question": "How does structured light differ from laser stripe scanning in 3D reconstruction?",
+    "answer": "<p><strong>Structured light:</strong> Projects multiple patterns (stripes, dots) onto the object surface.</p><p><strong>Differences from laser stripe:</strong></p><ul><li>Simultaneous projection of many points (vs. sequential stripe sweep)</li><li>Uses coding (e.g., time, color, spatial) to disambiguate pattern correspondence</li><li>Enables faster and denser 3D acquisition</li></ul><p>Example: Kinect 1 uses structured IR dot patterns to estimate depth.</p>"
+},
+{
+    "category": "Lecture11(Optical Flow and Motion)",
+    "question": "Describe how Kinect 2 uses time-of-flight for depth sensing.",
+    "answer": "<p><strong>Time-of-flight (ToF) scanning:</strong> Fires a modulated laser beam and measures the time (or phase shift) it takes to reflect back.</p><p>Kinect 2 uses ToF to:</p><ul><li>Compute distance from each pixel to the object surface</li><li>Produce high-resolution depth maps</li></ul><p>Compared to Kinect 1 (structured light), Kinect 2 has improved spatial and depth resolution.</p>"
+},
+{
+    "category": "Lecture11(Optical Flow and Motion)",
+    "question": "What is a pointcloud, and how is it converted into a surface mesh?",
+    "answer": "<p>A <strong>pointcloud</strong> is a set of 3D points (<code>X, Y, Z</code>) typically stored as a <code>3 x N</code> matrix.</p><p>Conversion to surface mesh:</p><ul><li>Find nearest neighbors</li><li>Connect them into triangles or polygons</li><li>Render using shading for surface appearance</li></ul><p>Mesh representation allows realistic rendering and further geometric analysis.</p>"
+},
+{
+    "category": "Lecture11(Optical Flow and Motion)",
+    "question": "Why is surface normal estimation important in 3D rendering?",
+    "answer": "<p>Surface normals are vectors perpendicular to the surface at each point.</p><p><strong>Importance:</strong></p><ul><li>Used in lighting models (e.g., Phong shading) for realistic rendering</li><li>Required for estimating curvature, segmenting objects, and aligning surfaces</li></ul><p>Normals are computed from mesh triangle orientations or local pointcloud neighborhoods.</p>"
+},
+{
+    "category": "Lecture11(Optical Flow and Motion)",
+    "question": "How can Kinect's depth data be used for full 3D object reconstruction?",
+    "answer": "<p>Steps for full 3D reconstruction using Kinect:</p><ol><li><strong>Rotate object</strong> or sensor to capture from multiple angles</li><li><strong>Capture depth maps</strong> at 30 fps</li><li><strong>Register</strong> all views into a common frame</li><li><strong>Integrate</strong> point clouds to form complete 3D model</li></ol><p>Software like OpenCV, MATLAB, or Kinect SDK is used for this pipeline.</p>"
+},
+{
+    "category": "Lecture11(Optical Flow and Motion)",
+    "question": "How is motion information used to segment objects in a scene?",
+    "answer": "<p>Two motion-based segmentation methods:</p><ul><li><strong>Background subtraction:</strong> Assumes static background; detects moving foreground using temporal differences.</li><li><strong>Motion segmentation:</strong> Groups pixels into clusters with coherent motion patterns, useful in dynamic scenes with multiple objects.</li></ul><p>Motion cues reveal object boundaries even when visual appearance is similar.</p>"
+},
+{
+    "category": "Lecture11(Optical Flow and Motion)",
+    "question": "What makes corners ideal features for motion tracking and flow estimation?",
+    "answer": "<p><strong>Corners</strong> have high spatial variation in both directions, providing strong image gradients.</p><p>Benefits:</p><ul><li>Resolve aperture problem</li><li>Yield well-conditioned <code>A<sup>T</sup>A</code> matrices in Lucas-Kanade</li><li>Enable precise and stable tracking</li></ul><p>Hence, feature tracking algorithms (e.g., KLT) often prioritize corner-like structures.</p>"
+},
+
+/* ───────────── Lecture 12 – Deep Learning (CNNs) ───────────── */
+{
+    "category": "Lecture12(Deep Learning)",
+    "question": "Why do Convolutional Neural Networks (CNNs) have significantly fewer parameters compared to fully connected networks?",
+    "answer": "<p>CNNs reduce the number of parameters by leveraging two key strategies:</p><ul><li><strong>Local Receptive Fields:</strong> Each filter in a convolutional layer only connects to a small region of the input, not the entire input volume.</li><li><strong>Weight Sharing:</strong> The same filter (weights) is applied across different spatial positions of the input, drastically reducing the number of unique weights.</li></ul><p>This design improves efficiency and generalization, making CNNs scalable for high-dimensional data like images.</p>"
+},
+{
+    "category": "Lecture12(Deep Learning)",
+    "question": "How does a convolutional layer work in a CNN, and what are its main components?",
+    "answer": "<p>A convolutional layer performs the following operations:</p><ol><li>Applies <strong>filters</strong> (kernels) across the input volume using a sliding window (controlled by <em>stride</em>).</li><li>Computes the <strong>dot product</strong> between the filter and local regions of the input.</li><li>Outputs a <strong>feature map</strong> for each filter, capturing specific patterns like edges or textures.</li></ol><p>Main components include:</p><ul><li><code>Filters</code>: Learnable weight matrices</li><li><code>Stride</code>: Controls the step size of the sliding filter</li><li><code>Padding</code>: Adds borders to control output size</li></ul>"
+},
+{
+    "category": "Lecture12(Deep Learning)",
+    "question": "Explain how the concept of shared weights contributes to translation invariance in CNNs.",
+    "answer": "<p>Shared weights mean that the same filter is applied across different spatial regions of the input. This enables the network to:</p><ul><li><strong>Detect the same pattern</strong> regardless of its location in the image</li><li>Encourage <strong>translation invariance</strong>, where the CNN recognizes an object even if it appears in different places</li></ul><p>This property is crucial for visual tasks, as objects can appear at any location within the field of view.</p>"
+},
+{
+    "category": "Lecture12(Deep Learning)",
+    "question": "Why is max pooling used in CNNs, and what are its effects?",
+    "answer": "<p>Max pooling serves several important functions:</p><ul><li><strong>Dimensionality Reduction:</strong> Reduces the spatial size of feature maps, lowering computational cost.</li><li><strong>Translation Invariance:</strong> Captures the most prominent feature in a local region, making detection less sensitive to small translations.</li><li><strong>Prevents Overfitting:</strong> Fewer parameters mean less chance to memorize noise.</li></ul><p>It acts as a form of downsampling while preserving critical spatial features.</p>"
+},
+{
+    "category": "Lecture12(Deep Learning)",
+    "question": "What is the role of the ReLU activation function in CNNs?",
+    "answer": "<p><strong>ReLU (Rectified Linear Unit)</strong> introduces non-linearity into the network by applying the function:</p><p><code>f(x) = max(0, x)</code></p><ul><li>Helps in learning complex patterns</li><li>Accelerates convergence during training</li><li>Reduces the likelihood of vanishing gradients compared to sigmoid or tanh</li></ul><p>It enables CNNs to model non-linear decision boundaries efficiently.</p>"
+},
+{
+    "category": "Lecture12(Deep Learning)",
+    "question": "In CNNs, what is the significance of feature maps and how are they formed?",
+    "answer": "<p><strong>Feature maps</strong> are 2D outputs resulting from applying filters across the input volume. Each feature map represents:</p><ul><li><strong>Spatial activation</strong> for a specific pattern (e.g., edge, corner)</li><li>One channel of output per filter</li></ul><p>They are formed by sliding a filter over the input and computing dot products at each location, producing a map of pattern responses.</p>"
+},
+{
+    "category": "Lecture12(Deep Learning)",
+    "question": "Compare convolution and fully connected layers in terms of connections and parameters.",
+    "answer": "<ul><li><strong>Convolutional Layers:</strong><ul><li>Sparse connections: filter connects to a local patch</li><li>Shared weights across space</li><li>Fewer parameters, better scalability</li></ul></li><li><strong>Fully Connected Layers:</strong><ul><li>Every neuron connects to all inputs</li><li>More parameters, higher risk of overfitting</li></ul></li></ul><p>Convolutional layers are more efficient and suitable for spatial data like images.</p>"
+},
+{
+    "category": "Lecture12(Deep Learning)",
+    "question": "What is the process of flattening in CNNs and why is it necessary?",
+    "answer": "<p><strong>Flattening</strong> transforms the multi-dimensional feature maps into a 1D vector, enabling their use as input for fully connected layers.</p><p>This is necessary because:</p><ul><li>Fully connected layers expect 1D vectors</li><li>It aggregates extracted features across spatial dimensions for final classification</li></ul><p>It marks the transition from feature extraction to decision making in a CNN.</p>"
+},
+{
+    "category": "Lecture12(Deep Learning)",
+    "question": "How does batch normalization improve training in CNNs?",
+    "answer": "<p><strong>Batch Normalization</strong> normalizes the inputs of a layer across a mini-batch to have zero mean and unit variance.</p><p>Benefits include:</p><ul><li><strong>Accelerates training</strong> by reducing internal covariate shift</li><li><strong>Allows higher learning rates</strong></li><li><strong>Acts as regularization</strong> by adding noise from batch statistics</li></ul><p>This stabilizes the network and helps in faster convergence.</p>"
+},
+{
+    "category": "Lecture12(Deep Learning)",
+    "question": "What are residual connections and how do they help deep CNNs?",
+    "answer": "<p><strong>Residual connections</strong> add the input of a layer to its output before applying non-linearity:</p><p><code>y = F(x) + x</code></p><p>They help by:</p><ul><li>Allowing <strong>gradient flow</strong> through identity paths</li><li>Mitigating <strong>vanishing gradient</strong> issues</li><li>Making it easier to train very deep networks</li></ul><p>This is the core idea behind <strong>ResNet</strong>.</p>"
+},
+{
+    "category": "Lecture12(Deep Learning)",
+    "question": "In the context of CNNs, how does increasing depth affect feature representation?",
+    "answer": "<p>Increasing the depth of a CNN allows for learning:</p><ul><li><strong>Low-level features</strong> (e.g., edges, textures) in early layers</li><li><strong>Mid-level features</strong> (e.g., object parts) in intermediate layers</li><li><strong>High-level features</strong> (e.g., full objects) in deeper layers</li></ul><p>This hierarchical representation improves the model's capacity to understand complex structures in images.</p>"
+},
+{
+    "category": "Lecture12(Deep Learning)",
+    "question": "How does AlexNet process an image from input to the first pooling layer?",
+    "answer": "<p><strong>AlexNet</strong> pipeline:</p><ol><li><strong>Input:</strong> 227x227x3 image</li><li><strong>Conv1:</strong> 96 filters of size 11x11 with stride 4 → output: 55x55x96</li><li><strong>Pool1:</strong> 3x3 filters with stride 2 → output: 27x27x96</li></ol><p>It drastically reduces spatial dimensions while increasing feature abstraction.</p>"
+},
+{
+    "category": "Lecture12(Deep Learning)",
+    "question": "Why does the first convolutional layer in AlexNet have over 35K parameters?",
+    "answer": "<p><p>Each filter in Conv1 has:</p><ul><li>Size: 11x11x3 (RGB channels)</li><li>+1 bias parameter</li></ul><p>Total parameters per filter: <code>11*11*3 + 1 = 364</code><br>Total filters: 96<br><strong>Total parameters: 364 * 96 = 34,944 (~35K)</strong></p>"
+},
+{
+    "category": "Lecture12(Deep Learning)",
+    "question": "Why are there zero parameters in the pooling layers of AlexNet?",
+    "answer": "<p><strong>Pooling layers</strong> (e.g., max pooling) apply a fixed operation like max or average within a window and do not learn weights.</p><p>Hence, they contain <strong>no trainable parameters</strong>.</p><p>They serve to reduce spatial dimensions and retain dominant features.</p>"
+},
+{
+    "category": "Lecture12(Deep Learning)",
+    "question": "How does VGGNet differ architecturally from AlexNet?",
+    "answer": "<ul><li><strong>VGGNet:</strong> Uses multiple small filters (3x3) stacked deeper</li><li><strong>AlexNet:</strong> Uses larger filters (11x11, 5x5) with fewer layers</li></ul><p><strong>Impact:</strong> VGGNet captures more fine-grained details through successive non-linearities, while AlexNet reduces dimensions more aggressively in early layers.</p>"
+},
+{
+    "category": "Lecture12(Deep Learning)",
+    "question": "What architectural innovation is introduced in GoogleNet (Inception)?",
+    "answer": "<p><strong>GoogleNet</strong> introduces <em>Inception modules</em> which:</p><ul><li>Apply multiple filters (1x1, 3x3, 5x5) in parallel</li><li>Use <strong>1x1 convolutions</strong> as bottlenecks to reduce channel size before expensive operations</li></ul><p>This enables deep and wide architectures while controlling computational cost.</p>"
+},
+{
+    "category": "Lecture12(Deep Learning)",
+    "question": "What key problem does ResNet solve, and how?",
+    "answer": "<p><strong>ResNet</strong> solves the degradation problem in deep networks by using <strong>residual blocks</strong>:</p><ul><li>Prevents accuracy degradation in deeper networks</li><li>Enables very deep models (e.g., 152 layers) to be trained effectively</li></ul><p>This is achieved through identity mappings that help gradients flow backward during training.</p>"
+},
+{
+    "category": "Lecture12(Deep Learning)",
+    "question": "What does a CNN learn at various depths, and how is this useful for transfer learning?",
+    "answer": "<p><ul><li><strong>Early layers:</strong> Generic features (edges, textures)</li><li><strong>Middle layers:</strong> Abstract shapes (object parts)</li><li><strong>Deep layers:</strong> Task-specific concepts (objects)</li></ul><p><strong>Transfer learning</strong> uses pretrained lower layers as general feature extractors, saving training time and improving performance on small datasets.</p>"
+},
+{
+    "category": "Lecture12(Deep Learning)",
+    "question": "Why is it important to understand the shape of outputs at each CNN layer?",
+    "answer": "<p>Understanding output shapes helps to:</p><ul><li><strong>Diagnose model errors</strong></li><li><strong>Optimize memory usage</strong></li><li><strong>Align dimensions</strong> between layers (e.g., flattening, reshaping)</li></ul><p>It is critical when designing or debugging custom architectures.</p>"
+}
+];
 
         // ─────────── FILTERING & MODE STATE ───────────
         let currentIndex = 0;
