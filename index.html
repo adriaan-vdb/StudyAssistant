@@ -518,7 +518,7 @@
           <select id="templateSelect" style="padding:6px 12px;border-radius:6px;font-size:1rem;background:#15182a;color:#fff;border:none;outline:none;">
             <option value="DeepContent" selected>Exam-Style (HTML, detailed)</option>
             <option value="MCQs">Multiple Choice</option>
-            <option value="tbc">Basic</option>
+            <option value="ComputerVision">Computer Vision Template</option>
           </select>
         </div>
         <textarea id="uploadJsonTextarea" rows="10" style="width:100%;border-radius:8px;padding:16px;font-size:1.08rem;background:#15182a;color:#fff;border:none;resize:vertical;margin-top:16px;max-height:300px;overflow-y:auto;"></textarea>
@@ -549,107 +549,60 @@
         const flashcards = [
 /* ───────────── Lecture 2 – Image Basics, Thresholding & Morphology ───────────── */
 {
-    "category": "Lecture2(Binary Image Analysis)",
-    "question": "Which of the following best explains why Otsu's thresholding minimizes intra-class variance?",
-    "answer": "<p>Otsu's method selects a threshold that <strong>minimizes the within-class variance</strong>, which is the weighted sum of variances of the foreground and background.</p><ul><li><strong>A:</strong> It minimizes the absolute difference between pixel intensities.</li><li><strong>B:</strong> It maximizes the number of edge pixels.</li><li><strong>C:</strong> It maximizes the <em>between-class</em> variance, which is equivalent to minimizing the <em>within-class</em> variance. ✅</li><li><strong>D:</strong> It equalizes the histogram of the image.</li></ul><p><strong>Correct Answer:</strong> C</p>"
+"category": "Lecture02(Binary Image Analysis)",
+"question": "What is the relationship between spatial resolution and image size, and how does pixel representation affect memory usage?",
+"answer": "<p>An image is represented as a matrix where each entry corresponds to a pixel's grey-level intensity (ranging from 0 to 255). The <strong>spatial resolution</strong> is defined by the matrix dimensions, e.g., a 512×512 image has higher resolution than a 128×128 one.</p><ul><li><strong>Spatial resolution:</strong> Determined by the number of pixels in width and height.</li><li><strong>Memory usage:</strong> Each pixel uses 8 bits (1 byte) for greyscale; so, a 512×512 image uses 512×512×8 = 2,097,152 bits (262,144 bytes).</li></ul><p>Reducing resolution or grey levels can significantly affect both storage and perceived image quality.</p>"
 },
 {
-    "category": "Lecture2(Binary Image Analysis)",
-    "question": "Why might local thresholding be preferred over global thresholding in certain applications?",
-    "answer": "<p>Local thresholding is more effective when:</p><ul><li><strong>A:</strong> The image has uniform illumination.</li><li><strong>B:</strong> The histogram is bimodal and well-separated.</li><li><strong>C:</strong> The image has significant local variations in lighting. ✅</li><li><strong>D:</strong> The image contains only one object of interest.</li></ul><p><strong>Correct Answer:</strong> C</p>"
+"category": "Lecture02(Binary Image Analysis)",
+"question": "What is image binarization and why is it used in computer vision?",
+"answer": "<p><strong>Image binarization</strong> converts a greyscale image into a binary image using thresholding, resulting in two levels: foreground (often white) and background (often black).</p><p><strong>Applications:</strong></p><ul><li>Pre-processing for OCR (Optical Character Recognition)</li><li>License plate recognition</li><li>Fingerprint and palm print identification</li><li>Signature recognition</li><li>Digit recognition and edge map processing</li></ul><p>Though some detail is lost, binary images are simpler and faster to analyze.</p>"
 },
 {
-    "category": "Lecture2(Binary Image Analysis)",
-    "question": "Which operation is defined as dilation followed by erosion using the same structuring element?",
-    "answer": "<ul><li><strong>A:</strong> Opening</li><li><strong>B:</strong> Closing ✅</li><li><strong>C:</strong> Erosion</li><li><strong>D:</strong> Distance Transform</li></ul><p><p><strong>Correct Answer:</strong> B</p><p>Closing smooths contours, fuses narrow breaks, and fills small holes.</p>"
+"category": "Lecture02(Binary Image Analysis)",
+"question": "Describe Otsu’s thresholding method and explain how it determines the optimal threshold.",
+"answer": "<p><strong>Otsu's method</strong> is a global thresholding algorithm that finds the threshold minimizing intra-class variance (within foreground and background).</p><ol><li>Compute histogram and intensity probabilities.</li><li>For every possible threshold <code>t</code>, compute class probabilities <code>w1</code>, <code>w2</code> and means <code>μ1</code>, <code>μ2</code>.</li><li>Calculate between-class variance <code>σ²_b(t) = w1(t) * w2(t) * (μ1 - μ2)²</code>.</li><li>Select the threshold <code>t</code> that maximizes <code>σ²_b</code>.</li></ol><p>Otsu’s method is suitable for images with bimodal histograms and operates on global statistics.</p>"
 },
 {
-    "category": "Lecture2(Binary Image Analysis)",
-    "question": "In the context of connected component analysis, when do two adjacent foreground pixels share a label in a 4-neighbourhood system?",
-    "answer": "<ul><li><strong>A:</strong> If they share a corner</li><li><strong>B:</strong> If they are vertically or horizontally adjacent ✅</li><li><strong>C:</strong> If they share either a corner or edge</li><li><strong>D:</strong> Only if they are diagonally adjacent</li></ul><p><p><strong>Correct Answer:</strong> B</p><p>In 4-neighbourhood, connectivity is based on horizontal and vertical adjacency only.</p>"
+"category": "Lecture02(Binary Image Analysis)",
+"question": "Compare global and local thresholding methods. When should one be preferred over the other?",
+"answer": "<ul><li><strong>Global Thresholding:</strong><ul><li>Applies a single threshold value to the entire image.</li><li>Fast and effective under uniform illumination.</li><li>Fails under variable lighting conditions.</li></ul></li><li><strong>Local Thresholding:</strong><ul><li>Threshold depends on local statistics (e.g., mean and standard deviation in a window).</li><li>Handles non-uniform illumination well.</li><li>Slower due to per-region computation.</li></ul></li></ul><p>Use <strong>global</strong> for well-lit scenes; <strong>local</strong> when dealing with shadows, gradients, or document scans.</p>"
 },
 {
-    "category": "Lecture2(Binary Image Analysis)",
-    "question": "Which morphological operation removes small protrusions and breaks narrow connections in a binary shape?",
-    "answer": "<ul><li><strong>A:</strong> Erosion</li><li><strong>B:</strong> Dilation</li><li><strong>C:</strong> Opening ✅</li><li><strong>D:</strong> Closing</li></ul><p><strong>Correct Answer:</strong> C</p><p>Opening is erosion followed by dilation, and it smooths shapes by removing small noise elements.</p>"
+"category": "Lecture02(Binary Image Analysis)",
+"question": "How does Niblack’s method work and how does it compare to Sauvola’s method?",
+"answer": "<p><strong>Niblack’s method</strong> calculates a local threshold <code>t</code> using:</p><p><code>t = μ - kσ</code>, where:</p><ul><li><code>μ</code>: local mean (e.g., in a 15×15 window)</li><li><code>σ</code>: local standard deviation</li><li><code>k</code>: typically -0.2</li></ul><p><strong>Sauvola’s method</strong> refines this to:</p><p><code>t = μ * (1 + k(σ/r - 1))</code>, where:</p><ul><li><code>k</code>: e.g., 0.5</li><li><code>r</code>: dynamic range of standard deviation (e.g., 128)</li></ul><p><strong>Comparison:</strong> Sauvola is more adaptive, especially in noisy and highly variable lighting.</p>"
 },
 {
-    "category": "Lecture2(Binary Image Analysis)",
-    "question": "What property of Otsu's method ensures it works without prior knowledge of class distributions?",
-    "answer": "<ul><li><strong>A:</strong> It uses a trained model for classification</li><li><strong>B:</strong> It assumes Gaussian distributions</li><li><strong>C:</strong> It performs exhaustive search over all thresholds ✅</li><li><strong>D:</strong> It uses clustering of intensity values</li></ul><p><strong>Correct Answer:</strong> C</p><p>Otsu’s method tests each possible threshold to find the one that maximizes between-class variance.</p>"
+"category": "Lecture02(Binary Image Analysis)",
+"question": "What is Connected Component Analysis (CCA) and how does it work in binary image processing?",
+"answer": "<p><strong>Connected Component Analysis (CCA)</strong> identifies and labels distinct connected regions in a binary image.</p><ol><li>Scan the image row-by-row.</li><li>Assign a new label to a foreground pixel if left and upper neighbors are background.</li><li>Copy the label from neighbors if already foreground.</li><li>Merge labels if necessary (i.e., upper and left neighbors have different labels).</li></ol><p>Choice of <strong>4- or 8-neighbourhood</strong> affects connectivity assumptions.</p>"
 },
 {
-    "category": "Lecture2(Binary Image Analysis)",
-    "question": "In morphological processing, what effect does erosion have on a binary shape?",
-    "answer": "<ul><li><strong>A:</strong> It expands the shape</li><li><strong>B:</strong> It smooths and connects broken parts</li><li><strong>C:</strong> It shrinks the shape and removes small details ✅</li><li><strong>D:</strong> It fills small gaps inside the shape</li></ul><p><strong>Correct Answer:</strong> C</p>"
+"category": "Lecture02(Binary Image Analysis)",
+"question": "What are morphological operations in image processing, and what is their purpose?",
+"answer": "<p><strong>Morphological operations</strong> manipulate the structure of binary images using a structuring element.</p><ul><li><strong>Dilation:</strong> Expands objects; fills holes.</li><li><strong>Erosion:</strong> Shrinks objects; removes noise.</li><li><strong>Opening:</strong> <em>Erosion followed by Dilation</em>; removes protrusions.</li><li><strong>Closing:</strong> <em>Dilation followed by Erosion</em>; fills gaps and smoothens boundaries.</li><li><strong>Boundary Extraction:</strong> Uses subtraction: <code>Boundary(A) = A - Erosion(A)</code></li></ul><p>They are foundational for cleaning, segmenting, and extracting meaningful regions.</p>"
 },
 {
-    "category": "Lecture2(Binary Image Analysis)",
-    "question": "Which feature is <strong>not</strong> guaranteed to be invariant under rotation for connected components?",
-    "answer": "<ul><li><strong>A:</strong> Area</li><li><strong>B:</strong> Compactness</li><li><strong>C:</strong> Bounding box ✅</li><li><strong>D:</strong> Translation</li></ul><p><strong>Correct Answer:</strong> C</p><p>The bounding box changes with rotation, unlike area or compactness (if appropriately defined).</p>"
+"category": "Lecture02(Binary Image Analysis)",
+"question": "What is the Distance Transform and how is it computed in binary images?",
+"answer": "<p>The <strong>Distance Transform</strong> replaces each foreground pixel with its distance to the nearest background pixel.</p><ol><li>Use a <strong>two-pass algorithm</strong> (standard scan and reverse scan).</li><li>Each pixel's distance is updated based on neighboring pixels that precede or follow it in scan order.</li><li>Distance can be computed in L1 (Manhattan) or L2 (Euclidean) metrics.</li></ol><p>Applications include: shape analysis, skeletonization, and thickness estimation.</p>"
 },
 {
-    "category": "Lecture2(Binary Image Analysis)",
-    "question": "Which distance measure uses diagonal neighbours in the distance transform?",
-    "answer": "<ul><li><strong>A:</strong> L0</li><li><strong>B:</strong> L1 (Manhattan)</li><li><strong>C:</strong> L2 (Euclidean)</li><li><strong>D:</strong> L∞</li><li><strong>E:</strong> Both L2 and 8-neighbourhood methods ✅</li></ul><p><strong>Correct Answer:</strong> E</p><p>8-neighbourhood and L2 incorporate diagonal connectivity.</p>"
+"category": "Lecture02(Binary Image Analysis)",
+"question": "How do you compute the compactness of a binary shape, and what does it tell you?",
+"answer": "<p><strong>Compactness</strong> is defined as:</p><p><code>Compactness = Area / (Boundary Length)<sup>2</sup></code></p><ul><li>Measures how closely packed the shape is.</li><li>Higher compactness = more circular/regular shape.</li><li>Useful for shape classification and object recognition.</li></ul>"
 },
 {
-    "category": "Lecture2(Binary Image Analysis)",
-    "question": "Which gradient vector is perpendicular to a given 2D gradient <code>[gₓ, gᵧ]</code>?",
-    "answer": "<ul><li><strong>A:</strong> [−gₓ, −gᵧ]</li><li><strong>B:</strong> [gᵧ, −gₓ] ✅</li><li><strong>C:</strong> [−gᵧ, gₓ]</li><li><strong>D:</strong> [gₓ, gᵧ]</li></ul><p><strong>Correct Answer:</strong> B</p><p>This direction is orthogonal and represents contours of constant elevation.</p>"
+"category": "Lecture02(Binary Image Analysis)",
+"question": "What are 2D gradients in image analysis and how do they relate to image surfaces?",
+"answer": "<p>A 2D gradient of an image <code>f(x, y)</code> is a vector:</p><p><code>∇f = [df/dx, df/dy]</code></p><ul><li>Points in the direction of steepest ascent (brightest increase).</li><li>Magnitude shows rate of intensity change.</li><li>Used in edge detection, surface analysis, segmentation.</li></ul><p>At peaks/valleys: <code>∇f = 0</code>. Perpendicular vectors describe level curves (contours).</p>"
 },
 {
-    "category": "Lecture2(Binary Image Analysis)",
-    "question": "Which combination of operations best describes the boundary extraction process in morphology?",
-    "answer": "<ul><li><strong>A:</strong> Original image minus its erosion ✅</li><li><strong>B:</strong> Erosion minus dilation</li><li><strong>C:</strong> Closing minus opening</li><li><strong>D:</strong> Dilation minus erosion</li></ul><p><strong>Correct Answer:</strong> A</p><p>Boundary = A − (A ⊖ B), where ⊖ denotes erosion.</p>"
+"category": "Lecture02(Binary Image Analysis)",
+"question": "Why are gradients considered more informative than pixel intensities in grayscale image analysis?",
+"answer": "<p>Gradients capture <strong>local intensity changes</strong> rather than absolute values.</p><ul><li>Highlight <strong>edges, boundaries, and textures</strong>.</li><li>Invariance to constant brightness shifts.</li><li>Provide directional cues for <em>shape, depth, and object boundaries</em>.</li></ul><p>In surface view, gradients reveal terrain-like features—slope, orientation, and curvature.</p>"
 },
-{
-    "category": "Lecture2(Binary Image Analysis)",
-    "question": "In gradient analysis of grayscale images, what does a zero-gradient vector indicate?",
-    "answer": "<ul><li><strong>A:</strong> Edge</li><li><strong>B:</strong> Region of high curvature</li><li><strong>C:</strong> Peak or valley ✅</li><li><strong>D:</strong> Contour line</li></ul><p><strong>Correct Answer:</strong> C</p><p>At peaks or valleys, there's no ascent in any direction—hence gradient is zero.</p>"
-},
-{
-    "category": "Lecture2(Binary Image Analysis)",
-    "question": "Why is the distance transform useful in image analysis?",
-    "answer": "<ul><li><strong>A:</strong> It smooths intensity values</li><li><strong>B:</strong> It computes contour gradients</li><li><strong>C:</strong> It encodes distances from each foreground pixel to the nearest background pixel ✅</li><li><strong>D:</strong> It labels connected components</li></ul><p><strong>Correct Answer:</strong> C</p>"
-},
-{
-    "category": "Lecture2(Binary Image Analysis)",
-    "question": "Which of the following operations is the inverse of dilation?",
-    "answer": "<ul><li><strong>A:</strong> Opening</li><li><strong>B:</strong> Erosion ✅</li><li><strong>C:</strong> Closing</li><li><strong>D:</strong> Boundary extraction</li></ul><p><strong>Correct Answer:</strong> B</p><p>Erosion shrinks shapes, which is the opposite of dilation.</p>"
-},
-{
-    "category": "Lecture2(Binary Image Analysis)",
-    "question": "Which structuring element size would be most appropriate for removing tiny objects without altering larger ones?",
-    "answer": "<ul><li><strong>A:</strong> Very small (e.g., 1×1)</li><li><strong>B:</strong> Moderate (e.g., 3×3)</li><li><strong>C:</strong> Large enough to cover unwanted noise but smaller than main objects ✅</li><li><strong>D:</strong> As large as the image itself</li></ul><p><strong>Correct Answer:</strong> C</p>"
-},
-{
-    "category": "Lecture2(Binary Image Analysis)",
-    "question": "Which combination of features would best distinguish different shapes in a binary image?",
-    "answer": "<ul><li><strong>A:</strong> Area only</li><li><strong>B:</strong> Bounding box and centroid</li><li><strong>C:</strong> Compactness and boundary length ✅</li><li><strong>D:</strong> Threshold level and pixel intensity</li></ul><p><strong>Correct Answer:</strong> C</p><p>Compactness captures shape roundness, and boundary length reflects complexity.</p>"
-},
-{
-    "category": "Lecture2(Binary Image Analysis)",
-    "question": "What challenge does varying illumination present in thresholding?",
-    "answer": "<ul><li><strong>A:</strong> Makes object boundaries clearer</li><li><strong>B:</strong> Enhances histogram contrast</li><li><strong>C:</strong> Causes inconsistent threshold results across regions ✅</li><li><strong>D:</strong> Has no effect on thresholding</li></ul><p><strong>Correct Answer:</strong> C</p>"
-},
-{
-    "category": "Lecture2(Binary Image Analysis)",
-    "question": "What is the effect of using too large a structuring element during erosion?",
-    "answer": "<ul><li><strong>A:</strong> Small features are preserved</li><li><strong>B:</strong> Entire object may disappear ✅</li><li><strong>C:</strong> Shape becomes more defined</li><li><strong>D:</strong> No visible effect</li></ul><p><strong>Correct Answer:</strong> B</p>"
-},
-{
-    "category": "Lecture2(Binary Image Analysis)",
-    "question": "Which thresholding method adapts based on both local mean and standard deviation?",
-    "answer": "<ul><li><strong>A:</strong> Otsu's method</li><li><strong>B:</strong> Global thresholding</li><li><strong>C:</strong> Sauvola's method ✅</li><li><strong>D:</strong> Manual thresholding</li></ul><p><strong>Correct Answer:</strong> C</p>"
-},
-{
-    "category": "Lecture2(Binary Image Analysis)",
-    "question": "Which aspect of the 2D gradient vector indicates the direction of constant intensity?",
-    "answer": "<ul><li><strong>A:</strong> The vector [−gₓ, −gᵧ]</li><li><strong>B:</strong> The vector [gₓ, gᵧ]</li><li><strong>C:</strong> The vector perpendicular to [gₓ, gᵧ] ✅</li><li><strong>D:</strong> The negative gradient direction</li></ul><p><strong>Correct Answer:</strong> C</p><p>This direction is tangent to the intensity contours.</p>"
-},
-
-
 /* ───────────── Lecture 3 – Fourier Transform & Frequency Analysis ───────────── */
 {
     "category": "Lecture3(FourierTransform)",
@@ -899,45 +852,106 @@
 },
 
 /* ───────────── Lecture 7 – Feature Detection & Extraction ───────────── */
+
 {
-    "category": "Lecture7(Features)",
-    "question": "Why are features preferred over raw pixels for matching?",
-    "answer": "Features are repeatable, robust to illumination and viewpoint changes, and more compact."
+"category": "Lecture07(Feature Detection and Extraction)",
+"question": "Why are pixel values not suitable for robust feature matching across images?",
+"answer": "<p>Pixel values are highly sensitive to:</p><ul><li><strong>Lighting conditions:</strong> Illumination changes affect pixel intensities.</li><li><strong>Color variations:</strong> Different camera settings or scenes cause value inconsistencies.</li><li><strong>Viewpoint shifts:</strong> Camera orientation changes can significantly alter pixel arrangements.</li></ul><p>These instabilities make direct pixel comparison unreliable for tasks like image matching or object recognition.</p>"
 },
 {
-    "category": "Lecture7(Features)",
-    "question": "List three properties of good features.",
-    "answer": "Repeatability, saliency/distinctiveness, compactness/efficiency."
+"category": "Lecture07(Feature Detection and Extraction)",
+"question": "How does the Harris Corner Detector achieve rotation invariance but not scale invariance?",
+"answer": "<ul><li><strong>Rotation Invariance:</strong> Harris computes a <code>corner response R</code> based on the eigenvalues of the matrix M, which remain stable under rotation.</li><li><strong>Scale Sensitivity:</strong> The fixed-size window used in Harris fails to detect corners at different image scales. A corner at one scale may not appear as one at another.</li></ul><p>Thus, Harris requires a fixed scale set by the user and does not adapt automatically to scale changes.</p>"
 },
 {
-                "category": "Lecture7(Features)",
-    "question": "What are the two steps in feature extraction?",
-    "answer": "1) Detect keypoints 2) Compute descriptors around those keypoints."
+"category": "Lecture07(Feature Detection and Extraction)",
+"question": "What are the two main steps in feature extraction, and how do they relate?",
+"answer": "<ol><li><strong>Feature Detection:</strong> Determines <em>where</em> in the image features should be extracted (e.g., corners).</li><li><strong>Feature Description:</strong> Defines <em>how</em> to describe the detected point, typically using gradients or histogram information.</li></ol><p>Detection identifies informative regions, while description encodes them for comparison. Both steps must be tuned to maintain invariance to transformations like rotation or scale.</p>"
 },
 {
-    "category": "Lecture7(Features)",
-    "question": "How does the Harris corner detector work?",
-    "answer": "Computes matrix of image gradients in a window; large eigenvalues indicate corners; corner response R=det(M)-k·trace²(M)."
+"category": "Lecture07(Feature Detection and Extraction)",
+"question": "What makes a feature 'good' for detection and matching tasks?",
+"answer": "<ul><li><strong>Repeatability:</strong> Detectable under various viewing conditions (illumination, perspective).</li><li><strong>Saliency:</strong> Should be distinctive enough to distinguish between points.</li><li><strong>Compactness:</strong> Few and small features make matching faster.</li></ul><p>Effective features offer consistency across transformations and computational efficiency.</p>"
 },
 {
-    "category": "Lecture7(Features)",
-    "question": "Which detector provides scale invariance and how?",
-    "answer": "SIFT detects extrema in Difference-of-Gaussian scale space, selecting keypoints with assigned scale."
+"category": "Lecture07(Feature Detection and Extraction)",
+"question": "Compare Haar features with LBP and HOG in terms of detection and representation.",
+"answer": "<ul><li><strong>Haar:</strong> Use rectangular differences, fast via integral images, used in face detection.</li><li><strong>LBP:</strong> Texture-based binary encoding; robust to illumination but not rotation unless modified.</li><li><strong>HOG:</strong> Gradient-based descriptor emphasizing edge direction; effective for object detection.</li></ul><p>Each method offers trade-offs between computation cost and descriptive power.</p>"
 },
 {
-    "category": "Lecture7(Features)",
-    "question": "What makes Haar features fast to compute?",
-    "answer": "Integral images allow rectangular sum computation in constant time, enabling real-time detection."
+"category": "Lecture07(Feature Detection and Extraction)",
+"question": "Why does HOG compute histograms on small patches (e.g., 8×8 cells) instead of globally?",
+"answer": "<p>Dividing the image into <strong>localized cells</strong> ensures:</p><ul><li>Capture of spatial structure and object shape.</li><li>Better representation of object parts.</li><li>Robustness to minor translations or occlusions.</li></ul><p>Local histograms allow for detailed structural encoding that would be lost with global features.</p>"
 },
 {
-    "category": "Lecture7(Features)",
-    "question": "What does a HOG descriptor encode?",
-    "answer": "Histogram of gradient orientations in local cells, capturing edge structure robust to illumination."
+"category": "Lecture07(Feature Detection and Extraction)",
+"question": "Explain how the integral image speeds up Haar feature computation.",
+"answer": "<p>The <strong>integral image</strong> at a location (x, y) stores the sum of all pixels above and to the left of (x, y). Using it:</p><ul><li>Any rectangular region's sum can be computed in <strong>constant time</strong> using just 4 lookups.</li><li>Eliminates need for per-pixel summation during feature evaluation.</li></ul><p>This drastically reduces computation, enabling real-time detection systems.</p>"
 },
 {
-    "category": "Lecture7(Features)",
-    "question": "What is Local Binary Pattern (LBP)?",
-    "answer": "Binary code representing local texture: threshold neighbors against center pixel and form a bit string."
+"category": "Lecture07(Feature Detection and Extraction)",
+"question": "How does SIFT ensure invariance to rotation?",
+"answer": "<ul><li><strong>Gradient Histogram:</strong> For each keypoint, SIFT computes a histogram of local gradient directions.</li><li><strong>Orientation Assignment:</strong> Dominant direction is identified and used to rotate the patch to a canonical orientation.</li></ul><p>This normalization makes descriptors rotation-invariant by aligning all features relative to the same direction.</p>"
+},
+{
+"category": "Lecture07(Feature Detection and Extraction)",
+"question": "What is the Difference of Gaussian (DoG) and how does it help SIFT achieve scale invariance?",
+"answer": "<p>DoG is computed by subtracting two blurred images at different scales:</p><ul><li>Highlights changes in image structure at various levels.</li><li><strong>Keypoints</strong> are detected where maxima/minima persist across scales.</li></ul><p>This allows SIFT to find features that are stable regardless of image resolution.</p>"
+},
+{
+"category": "Lecture07(Feature Detection and Extraction)",
+"question": "Why are LBP features more robust to illumination than raw intensity values?",
+"answer": "<ul><li>LBP compares <strong>local intensity patterns</strong> rather than absolute values.</li><li>Binary encoding reduces the impact of gradual lighting changes.</li></ul><p>This encoding makes LBP effective for texture classification in varying light conditions.</p>"
+},
+{
+"category": "Lecture07(Feature Detection and Extraction)",
+"question": "Describe the structure of a SIFT keypoint descriptor.",
+"answer": "<p>Each SIFT descriptor is a <strong>128-dimensional vector</strong> constructed as follows:</p><ul><li>Divide 16×16 window into 16 (4×4) blocks.</li><li>Compute 8-bin gradient histogram per block.</li></ul><p>This yields 4×4×8 = 128 values, capturing local gradient structure in a compact, robust form.</p>"
+},
+{
+"category": "Lecture07(Feature Detection and Extraction)",
+"question": "What is the mathematical condition for detecting corners using the Harris response <code>R</code>?",
+"answer": "<p>The cornerness measure is:</p><p><code>R = det(M) - k × (trace(M))²</code></p><ul><li><strong>R &gt; 0:</strong> Corner</li><li><strong>R &lt; 0:</strong> Edge</li><li><strong>|R| small:</strong> Flat region</li></ul><p>Where M is the second-moment matrix of gradients and k is an empirical constant (typically 0.04–0.06).</p>"
+},
+{
+"category": "Lecture07(Feature Detection and Extraction)",
+"question": "Why is non-maximum suppression essential in corner detection?",
+"answer": "<ul><li><strong>R values</strong> may be high in a region around a corner.</li><li>To localize true corners, retain only the <strong>local maxima</strong> of R.</li><li>Eliminates redundant and noisy detections.</li></ul><p>This step sharpens localization and reduces overlap among nearby detections.</p>"
+},
+{
+"category": "Lecture07(Feature Detection and Extraction)",
+"question": "How do SIFT and Harris differ in handling scale and orientation?",
+"answer": "<ul><li><strong>Harris:</strong> Rotation-invariant but <em>not</em> scale-invariant. Uses fixed-size window.</li><li><strong>SIFT:</strong> Fully scale and rotation-invariant. Uses DoG and gradient alignment.</li></ul><p>SIFT is thus preferred in applications with variable object sizes or camera angles.</p>"
+},
+{
+"category": "Lecture07(Feature Detection and Extraction)",
+"question": "What is the role of gradient magnitude in HOG descriptors?",
+"answer": "<p>Gradient magnitude:</p><ul><li><strong>Weights</strong> the contribution of a pixel's orientation in the histogram.</li><li>Enhances the impact of strong edges over weak or noisy gradients.</li></ul><p>This improves robustness and emphasizes prominent object boundaries.</p>"
+},
+{
+"category": "Lecture07(Feature Detection and Extraction)",
+"question": "Why do HOG features include normalization steps after cell histograms?",
+"answer": "<ul><li><strong>Lighting sensitivity:</strong> Raw gradients vary with brightness.</li><li><strong>Normalization:</strong> Combine histograms in 16×16 blocks (4 cells) into 36×1 vector and normalize.</li></ul><p>This reduces effects of illumination changes, producing more stable features.</p>"
+},
+{
+"category": "Lecture07(Feature Detection and Extraction)",
+"question": "How does SIFT avoid selecting features from flat or edge-only regions?",
+"answer": "<ul><li><strong>Contrast Thresholding:</strong> Removes low-contrast keypoints.</li><li><strong>Principal Curvature Check:</strong> Suppresses keypoints with large eigenvalue ratios (edges).</li></ul><p>This ensures that retained features are both <strong>distinctive</strong> and <strong>localizable</strong>.</p>"
+},
+{
+"category": "Lecture07(Feature Detection and Extraction)",
+"question": "How does the SIFT algorithm achieve invariance to affine transformations?",
+"answer": "<ul><li><strong>Scale invariance:</strong> Through DoG-based scale-space analysis.</li><li><strong>Rotation invariance:</strong> By assigning dominant gradient orientation.</li><li><strong>Affine robustness:</strong> Extracts keypoints that are distinctive across different viewpoints.</li></ul><p>These steps collectively ensure resilience to typical affine transformations.</p>"
+},
+{
+"category": "Lecture07(Feature Detection and Extraction)",
+"question": "Compare the HOG and SIFT descriptors in terms of computation and robustness.",
+"answer": "<ul><li><strong>HOG:</strong><ul><li>Faster to compute.</li><li>Effective for shape-based tasks (e.g., pedestrian detection).</li></ul></li><li><strong>SIFT:</strong><ul><li>Computationally heavier.</li><li>Robust to scale, rotation, illumination changes.</li></ul></li></ul><p>HOG is simpler but SIFT is more versatile for complex recognition tasks.</p>"
+},
+{
+"category": "Lecture07(Feature Detection and Extraction)",
+"question": "What is the intuition behind using eigenvalues of the structure tensor in corner detection?",
+"answer": "<p>The structure tensor captures local gradient variation:</p><ul><li><strong>Both large eigenvalues:</strong> High variation in two directions → corner.</li><li><strong>One large, one small:</strong> Edge.</li><li><strong>Both small:</strong> Flat region.</li></ul><p>This enables robust detection of corners as points of high local complexity.</p>"
 },
 
 /* ───────────── Lecture 8 – Camera Calibration ───────────── */
@@ -1681,9 +1695,36 @@ Example output:
         const templateExamples = {
             DeepContent: `Generate 20 flashcards for my exam with difficult questions from the uploaded lecture material.\nTarget my understanding of complex topics and how they tie together, not just rote learning but testing my true understanding. Give sufficiently detailed answers for an exam. \nOutput exactly in the following JSON format, with each card as an object with keys: category, question, and answer. Group all questions from the same lecture into the same category name.\n\nThe "answer" field must contain clean, valid HTML embedded inside a JSON string. Follow these formatting rules strictly:\n- Escape all double quotes (e.g., use \").\n- Do NOT use \n or other escaped newlines unless part of an HTML tag (e.g., <br>).\n- Make full and thoughtful use of HTML formatting to improve clarity and structure:\n  - Use <p> for paragraphs\n  - Use <ul>, <ol>, and <li> for lists\n  - Use <strong> or <em> to emphasize key ideas\n  - Use <code> for inline code or tag names\n- Avoid plain text blobs. Structure answers to be skimmable and readable.\n- Do NOT include comments, markdown, or extra output—only return a valid JSON array.\n\nExample output:\n[\n  {\n    "category": "Lecture1(HTML Basics)",\n    "question": "What is the purpose of the <code>&lt;head&gt;</code> tag in HTML?",\n    "answer": "<p>The <code>&lt;head&gt;</code> tag contains metadata and links to scripts, stylesheets, and other resources needed before rendering the body of the document.</p>"\n  },\n  {\n    "category": "Lecture1(HTML Basics)",\n    "question": "Explain the difference between <code>&lt;div&gt;</code> and semantic tags.",\n    "answer": "<ul><li><strong>&lt;div&gt;:</strong><ul><li>Non-semantic, used purely for layout or styling.</li><li>Flexible, but less informative to assistive technologies.</li></ul></li><li><strong>Semantic tags (e.g., &lt;main&gt;, &lt;nav&gt;, &lt;section&gt;):</strong><ul><li>Semantic meaning improves accessibility and search visibility.</li><li>Encourages cleaner, more maintainable structure.</li></ul></li><li><strong>Trade-off:</strong><ul><li>Divs are easier when layout logic dominates.</li><li>Semantic tags require thoughtful use but offer long-term clarity and benefits.</li></ul></li></ul>"}]`,
             MCQs: `Generate 20 difficult flashcards for my exam with tricky multiple choice style questions from the uploaded lecture material.\nTarget my understanding of complex topics and how they tie together, not just rote learning but testing my true understanding. Give sufficiently detailed answers for an exam. \nOutput exactly in the following JSON format, with each card as an object with keys: category, question, and answer. Group all questions from the same lecture into the same category name.\n\nThe "answer" field must contain clean, valid HTML embedded inside a JSON string. Follow these formatting rules strictly:\n- Escape all double quotes (e.g., use \").\n- Do NOT use \n or other escaped newlines unless part of an HTML tag (e.g., <br>).\n- Make full and thoughtful use of HTML formatting to improve clarity and structure:\n  - Use <p> for paragraphs\n  - Use <ul>, <ol>, and <li> for lists\n  - Use <strong> or <em> to emphasize key ideas\n  - Use <code> for inline code or tag names\n- Avoid plain text blobs. Structure answers to be skimmable and readable.\n- Do NOT include comments, markdown, or extra output—only return a valid JSON array.\n\nExample output:\n[\n  {\n    "category": "Lecture1(HTML Basics)",\n    "question": "What is the purpose of the <code>&lt;head&gt;</code> tag in HTML?",\n    "answer": "<p>The <code>&lt;head&gt;</code> tag contains metadata and links to scripts, stylesheets, and other resources needed before rendering the body of the document.</p>"\n  },\n  {\n    "category": "Lecture1(HTML Basics)",\n    "question": "Explain the difference between <code>&lt;div&gt;</code> and semantic tags.",\n    "answer": "<ul><li><strong>&lt;div&gt;:</strong><ul><li>Non-semantic, used purely for layout or styling.</li><li>Flexible, but less informative to assistive technologies.</li></ul></li><li><strong>Semantic tags (e.g., &lt;main&gt;, &lt;nav&gt;, &lt;section&gt;):</strong><ul><li>Semantic meaning improves accessibility and search visibility.</li><li>Encourages cleaner, more maintainable structure.</li></ul></li><li><strong>Trade-off:</strong><ul><li>Divs are easier when layout logic dominates.</li><li>Semantic tags require thoughtful use but offer long-term clarity and benefits.</li></ul></li></ul>"}]`,
-            tbc: `Generate 5 flashcards for my exam with difficult questions from the uploaded lecture material.\nTarget my understanding of complex topics and how they tie together, not just rote learning but testing my true understanding. Give sufficiently detailed answers for an exam. \nOutput exactly in the following JSON format, with each card as an object with keys: category, question, and answer. Group all questions from the same lecture into the same category name.\n\nThe "answer" field must contain clean, valid HTML embedded inside a JSON string. Follow these formatting rules strictly:\n- Escape all double quotes (e.g., use \").\n- Do NOT use \n or other escaped newlines unless part of an HTML tag (e.g., <br>).\n- Make full and thoughtful use of HTML formatting to improve clarity and structure:\n  - Use <p> for paragraphs\n  - Use <ul>, <ol>, and <li> for lists\n  - Use <strong> or <em> to emphasize key ideas\n  - Use <code> for inline code or tag names\n- Avoid plain text blobs. Structure answers to be skimmable and readable.\n- Do NOT include comments, markdown, or extra output—only return a valid JSON array.\n\nExample output:\n[\n  {\n    "category": "Lecture1(HTML Basics)",\n    "question": "What is the purpose of the <code>&lt;head&gt;</code> tag in HTML?",\n    "answer": "<p>The <code>&lt;head&gt;</code> tag contains metadata and links to scripts, stylesheets, and other resources needed before rendering the body of the document.</p>"\n  },\n  {\n    "category": "Lecture1(HTML Basics)",\n    "question": "Explain the difference between <code>&lt;div&gt;</code> and semantic tags.",\n    "answer": "<ul><li><strong>&lt;div&gt;:</strong><ul><li>Non-semantic, used purely for layout or styling.</li><li>Flexible, but less informative to assistive technologies.</li></ul></li><li><strong>Semantic tags (e.g., &lt;main&gt;, &lt;nav&gt;, &lt;section&gt;):</strong><ul><li>Semantic meaning improves accessibility and search visibility.</li><li>Encourages cleaner, more maintainable structure.</li></ul></li><li><strong>Trade-off:</strong><ul><li>Divs are easier when layout logic dominates.</li><li>Semantic tags require thoughtful use but offer long-term clarity and benefits.</li></ul></li></ul>"}]`,
-        };
+            ComputerVision: 
+`Generate a comprehensive flashcard for every numbered point in the document "Lecture 02 - What you need to know.pdf". Rely (as much as possible) solely on the material in the lecture slides.
+Add 5 extra flashcards to target my understanding of complex topics and how they tie together to test my understanding. Give sufficiently detailed answers for an exam. 
+Output exactly in the following JSON format, with each card as an object with keys: category, question, and answer. Group all questions from the same lecture into the same category name.
 
+The "answer" field must contain clean, valid HTML embedded inside a JSON string. Follow these formatting rules strictly:
+- Escape all double quotes (e.g., use ").
+- Do NOT use 
+ or other escaped newlines unless part of an HTML tag (e.g., <br>).
+- Make full and thoughtful use of HTML formatting to improve clarity and structure:
+  - Use <p> for paragraphs
+  - Use <ul>, <ol>, and <li> for lists
+  - Use <strong> or <em> to emphasize key ideas
+  - Use <code> for inline code or tag names
+- Avoid plain text blobs. Structure answers to be skimmable and readable.
+- Do NOT include comments, markdown, or extra output—only return a valid JSON array.
+
+Example output:
+[
+  {
+    "category": "Lecture1(HTML Basics)",
+    "question": "What is the purpose of the <code>&lt;head&gt;</code> tag in HTML?",
+    "answer": "<p>The <code>&lt;head&gt;</code> tag contains metadata and links to scripts, stylesheets, and other resources needed before rendering the body of the document.</p>"
+  },
+  {
+    "category": "Lecture1(HTML Basics)",
+    "question": "Explain the difference between <code>&lt;div&gt;</code> and semantic tags.",
+    "answer": "<ul><li><strong>&lt;div&gt;:</strong><ul><li>Non-semantic, used purely for layout or styling.</li><li>Flexible, but less informative to assistive technologies.</li></ul></li><li><strong>Semantic tags (e.g., &lt;main&gt;, &lt;nav&gt;, &lt;section&gt;):</strong><ul><li>Semantic meaning improves accessibility and search visibility.</li><li>Encourages cleaner, more maintainable structure.</li></ul></li><li><strong>Trade-off:</strong><ul><li>Divs are easier when layout logic dominates.</li><li>Semantic tags require thoughtful use but offer long-term clarity and benefits.</li></ul></li></ul>"}]`
+
+};
         const templateSelect = document.getElementById('templateSelect');
         if (templateSelect) {
           templateSelect.addEventListener('change', function() {
