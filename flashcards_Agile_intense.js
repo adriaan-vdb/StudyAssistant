@@ -3,62 +3,62 @@ const flashcards = [
   {
     "category": "Definitions",
     "question": "Define: TCP, IP, UDP, DNS.",
-    "answer": "<ul><li><strong>TCP (Transmission Control Protocol):</strong> Breaks big messages into pieces, makes sure they all arrive, and puts them back together.</li><li><strong>IP (Internet Protocol):</strong> Gives every computer an address and moves data packets toward that address.</li><li><strong>UDP (User Datagram Protocol):</strong> Sends packets fast without checking if any go missing—good for games or live calls.</li><li><strong>DNS (Domain Name System):</strong> Works like the Internet’s phone book, turning names such as google.com into IP numbers.</li></ul>"
+    "answer": "<ul><li><strong>TCP (Transmission Control Protocol):</strong> Reliable, connection-oriented transport that chops data into numbered segments, resends lost ones and reassembles them in order.</li><li><strong>IP (Internet Protocol):</strong> Best-effort network layer that gives every device a unique address and forwards self-contained packets hop-by-hop.</li><li><strong>UDP (User Datagram Protocol):</strong> Lightweight, connectionless alternative to TCP that sends packets without acknowledgements—perfect for speed-critical apps like games or VoIP.</li><li><strong>DNS (Domain Name System):</strong> The Internet’s distributed “phone book” that translates human-friendly names such as example.com into numerical IP addresses.</li></ul>"
   },
   {
     "category": "Definitions",
     "question": "Define: HTTP, HTTPS, URL, URI.",
-    "answer": "<ul><li><strong>HTTP (Hypertext Transfer Protocol):</strong> The set of rules browsers use to ask for and receive web pages.</li><li><strong>HTTPS:</strong> The same rules as HTTP but wrapped in encryption for privacy and trust.</li><li><strong>URL (Uniform Resource Locator):</strong> The full web address you type into the browser.</li><li><strong>URI (Uniform Resource Identifier):</strong> Any string that names or points to something on the Internet—every URL is a URI.</li></ul>"
+    "answer": "<ul><li><strong>HTTP (Hypertext Transfer Protocol):</strong> Text-based request/response protocol used by browsers to fetch web resources.</li><li><strong>HTTPS:</strong> HTTP sent through an encrypted TLS tunnel to guarantee confidentiality and authenticity.</li><li><strong>URL (Uniform Resource Locator):</strong> A complete web address that tells the browser which protocol, server and path to use.</li><li><strong>URI (Uniform Resource Identifier):</strong> Broader term covering any string that uniquely names or locates a resource—every URL is a URI, but not vice versa.</li></ul>"
   },
   {
     "category": "Definitions",
     "question": "Define: HTML, CSS, JavaScript.",
-    "answer": "<ul><li><strong>HTML:</strong> Gives a page its structure—headings, paragraphs, images and links.</li><li><strong>CSS:</strong> Styles the page—colours, fonts, sizes and layouts.</li><li><strong>JavaScript:</strong> Adds behaviour—responds to clicks, fetches data and changes the page without reloading.</li></ul>"
+    "answer": "<ul><li><strong>HTML (HyperText Markup Language):</strong> Gives web pages their semantic structure—headings, lists, forms, images and links.</li><li><strong>CSS (Cascading Style Sheets):</strong> Controls presentation—layout, colours, fonts and responsive behaviour—separate from content.</li><li><strong>JavaScript:</strong> The in-browser programming language that adds interactivity, fetches data asynchronously and manipulates the DOM.</li></ul>"
   },
   {
     "category": "Definitions",
     "question": "Define: DOM, BOM, AJAX, JSON.",
-    "answer": "<ul><li><strong>DOM (Document Object Model):</strong> The browser’s tree-like model of the page that scripts can read and change.</li><li><strong>BOM (Browser Object Model):</strong> Extra objects that describe the whole browser window (history, screen size, etc.).</li><li><strong>AJAX:</strong> JavaScript technique for making background HTTP requests and updating the page without a full reload.</li><li><strong>JSON (JavaScript Object Notation):</strong> A simple text format for sending data—looks like JavaScript objects.</li></ul>"
+    "answer": "<ul><li><strong>DOM (Document Object Model):</strong> Tree representation of the loaded HTML that scripts can query and modify.</li><li><strong>BOM (Browser Object Model):</strong> JavaScript-accessible objects that describe the wider browser environment like window, history and navigator.</li><li><strong>AJAX (Asynchronous JavaScript And XML):</strong> Pattern where JavaScript makes background HTTP requests and updates the page without reloads.</li><li><strong>JSON (JavaScript Object Notation):</strong> Lightweight, language-agnostic text format for structured data—arrays and key-value pairs.</li></ul>"
   },
   {
     "category": "Definitions",
     "question": "Define: MVC, ORM, CRUD, REST.",
-    "answer": "<ul><li><strong>MVC:</strong> Separates an app into <em>Models</em> (data), <em>Views</em> (HTML) and <em>Controllers</em> (logic).</li><li><strong>ORM:</strong> Library that lets you work with database rows as normal language objects.</li><li><strong>CRUD:</strong> The four basic data actions—Create, Read, Update, Delete.</li><li><strong>REST:</strong> Style of API that uses clear URLs and HTTP verbs (GET, POST, etc.) to work with resources.</li></ul>"
+    "answer": "<ul><li><strong>MVC (Model-View-Controller):</strong> Architectural pattern that separates data, presentation and user-request handling.</li><li><strong>ORM (Object-Relational Mapper):</strong> Library that turns database rows into language objects so you can query with code instead of SQL.</li><li><strong>CRUD:</strong> The four basic data operations—Create, Read, Update, Delete.</li><li><strong>REST (Representational State Transfer):</strong> Web-service style that uses stateless HTTP methods (GET, POST, etc.) and resource URLs to expose data.</li></ul>"
   },
   {
     "category": "Definitions",
     "question": "Define: SPA, CSR, SSR, CDN.",
-    "answer": "<ul><li><strong>SPA (Single-Page Application):</strong> Site that loads once and then swaps content with JavaScript.</li><li><strong>CSR (Client-Side Rendering):</strong> Browser builds the page using JavaScript after the first load.</li><li><strong>SSR (Server-Side Rendering):</strong> Server sends ready-to-display HTML for each page.</li><li><strong>CDN (Content Delivery Network):</strong> Worldwide cache servers that serve static files from locations close to users.</li></ul>"
+    "answer": "<ul><li><strong>SPA (Single-Page Application):</strong> Site that loads one HTML shell then rewrites the page dynamically without full refreshes.</li><li><strong>CSR (Client-Side Rendering):</strong> Approach where JavaScript in the browser builds the UI after the initial load.</li><li><strong>SSR (Server-Side Rendering):</strong> Server produces the full HTML for every route before sending it to the browser.</li><li><strong>CDN (Content Delivery Network):</strong> Globally distributed cache servers that serve static assets from the edge to cut latency.</li></ul>"
   },
   {
     "category": "Definitions",
     "question": "Define: SQL, Primary Key, Foreign Key, SQLAlchemy.",
-    "answer": "<ul><li><strong>SQL:</strong> Language used to ask and change data in relational databases.</li><li><strong>Primary Key:</strong> Column whose value is unique for each row.</li><li><strong>Foreign Key:</strong> Column that points to a primary key in another table, linking the rows.</li><li><strong>SQLAlchemy:</strong> Python ORM that turns SQL queries into Python method calls.</li></ul>"
+    "answer": "<ul><li><strong>SQL (Structured Query Language):</strong> Declarative language used to create, read, update and delete data in relational databases.</li><li><strong>Primary Key:</strong> Column (or set) whose value uniquely identifies each table row.</li><li><strong>Foreign Key:</strong> Column that holds the primary-key value from another table, linking related records.</li><li><strong>SQLAlchemy:</strong> Python ORM that hides raw SQL behind Python classes and handles migrations via Alembic.</li></ul>"
   },
   {
     "category": "Definitions",
     "question": "Define: XSS, CSRF, Hashing, Salting.",
-    "answer": "<ul><li><strong>XSS (Cross-Site Scripting):</strong> Attack where injected scripts run in a victim’s browser; fix it by escaping output.</li><li><strong>CSRF (Cross-Site Request Forgery):</strong> Tricks a logged-in user’s browser into sending unwanted requests; stop it with CSRF tokens or same-site cookies.</li><li><strong>Hashing:</strong> One-way function that turns any input into a short fingerprint.</li><li><strong>Salting:</strong> Adding random data to a password before hashing so identical passwords get different hashes.</li></ul>"
+    "answer": "<ul><li><strong>XSS (Cross-Site Scripting):</strong> Attack where injected scripts run in the victim’s browser; stopped by output escaping and CSP.</li><li><strong>CSRF (Cross-Site Request Forgery):</strong> Attack tricking a logged-in user’s browser into issuing unwanted requests; mitigated with CSRF tokens and SameSite cookies.</li><li><strong>Hashing:</strong> One-way transformation that turns any input into a fixed-length fingerprint.</li><li><strong>Salting:</strong> Adding unique random data to each password before hashing to foil pre-computed attacks.</li></ul>"
   },
   {
     "category": "Definitions",
     "question": "Define: TDD, CI/CD, Git, Branch.",
-    "answer": "<ul><li><strong>TDD (Test-Driven Development):</strong> Write failing tests first, then code until they pass.</li><li><strong>CI/CD:</strong> Automatic pipeline that builds, tests and (often) deploys code on every push.</li><li><strong>Git:</strong> Popular tool that records every change to a project.</li><li><strong>Branch:</strong> Separate line of work in Git so features can be developed without touching main code.</li></ul>"
+    "answer": "<ul><li><strong>TDD (Test-Driven Development):</strong> Practice of writing failing tests first, coding until they pass, then refactoring.</li><li><strong>CI/CD (Continuous Integration/Continuous Delivery):</strong> Automated pipeline that builds, tests and deploys every code change.</li><li><strong>Git:</strong> Distributed version-control system that records snapshots (commits) of your project.</li><li><strong>Branch:</strong> Movable pointer in Git that lets you develop features independently of the main line.</li></ul>"
   },
   {
     "category": "Definitions",
     "question": "Define: TLS, WebSocket, BGP, IXP.",
-    "answer": "<ul><li><strong>TLS (Transport Layer Security):</strong> Encryption that secures HTTPS traffic.</li><li><strong>WebSocket:</strong> Opens a long-lived two-way connection for real-time messages.</li><li><strong>BGP (Border Gateway Protocol):</strong> System ISPs use to tell each other which IP ranges they can reach.</li><li><strong>IXP (Internet Exchange Point):</strong> Physical site where networks swap traffic directly.</li></ul>"
+    "answer": "<ul><li><strong>TLS (Transport Layer Security):</strong> Cryptographic protocol that encrypts and authenticates data sent over networks—foundation of HTTPS.</li><li><strong>WebSocket:</strong> Browser API that upgrades an HTTP connection to a persistent, full-duplex channel for real-time messaging.</li><li><strong>BGP (Border Gateway Protocol):</strong> Routing protocol through which Internet providers announce which IP prefixes they can reach.</li><li><strong>IXP (Internet eXchange Point):</strong> Physical facility where multiple networks interconnect and swap traffic directly, cutting transit costs and latency.</li></ul>"
   },
   {
     "category": "Definitions",
     "question": "Define: SSL, CSP, JWT, SQLi, WAF.",
-    "answer": "<ul><li><strong>SSL:</strong> Older name for TLS encryption.</li><li><strong>CSP (Content Security Policy):</strong> HTTP header that tells the browser which sources of scripts, CSS and images are allowed.</li><li><strong>JWT (JSON Web Token):</strong> Signed text token that carries user info so servers can verify identity without storing session data.</li><li><strong>SQLi (SQL Injection):</strong> Attack that sneaks SQL into queries; stop it with parameterised statements or an ORM.</li><li><strong>WAF (Web Application Firewall):</strong> Filter in front of a site that blocks suspicious HTTP traffic.</li></ul>"
+    "answer": "<ul><li><strong>SSL (Secure Sockets Layer):</strong> Older name for the encryption protocol now standardised as TLS; it secures data in transit between browser and server.</li><li><strong>CSP (Content Security Policy):</strong> HTTP response header that tells the browser which script, style and image sources are allowed, blocking many XSS attacks.</li><li><strong>JWT (JSON Web Token):</strong> Compact, URL-safe string that carries signed user claims (e.g., id, roles) so servers can verify identity without storing session state.</li><li><strong>SQLi (SQL injection):</strong> Attack that tricks an app into running malicious SQL; prevented by parameterised queries or ORM binding.</li><li><strong>WAF (Web Application Firewall):</strong> Reverse-proxy filter that inspects HTTP traffic and blocks suspicious patterns before they reach the web application.</li></ul>"
   },
   {
     "category": "Definitions",
     "question": "Define: LAN, WAN, MAN, TTL.",
-    "answer": "<ul><li><strong>LAN (Local Area Network):</strong> Small network inside a room, building or campus.</li><li><strong>WAN (Wide Area Network):</strong> Network covering large distances—links many LANs together.</li><li><strong>MAN (Metropolitan Area Network):</strong> City-sized network connecting organisations across a metro area.</li><li><strong>TTL (Time To Live):</strong> Number that limits how many hops a packet or a DNS record can take before it’s discarded.</li></ul>"
+    "answer": "<ul><li><strong>LAN (Local Area Network):</strong> Short-range network—within a room, building or campus—using Ethernet or Wi-Fi.</li><li><strong>WAN (Wide Area Network):</strong> Long-distance network that links multiple LANs over leased lines, fibre or satellite—e.g., the Internet itself.</li><li><strong>MAN (Metropolitan Area Network):</strong> City-scale network interconnecting many LANs across a metropolitan region, often run by ISPs or councils.</li><li><strong>TTL (Time To Live):</strong> Field in IP packets and DNS records that limits how long a packet is forwarded or a record is cached before expiry.</li></ul>"
   },
                     {
                       "category": "Lecture 1 (Networks & WWW)",
