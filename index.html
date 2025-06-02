@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<script src="flashcards_CV.js"></script>
+<script src="flashcards_Agile.js"></script>
 <!-- <script src="flashcards_Agile.js"></script> -->
 <head>
     <meta charset="UTF-8">
@@ -464,9 +464,9 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎓 Custom UNI Flashcards</h1>
+            <h1>🎓 Custom UNI Flashcards 🎓</h1>
             <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-                <p style="margin: 0;">CITS 4402</p>
+                <p style="margin: 0;">CITS 4402/CITS 3403</p>
                 <label id="uploadIconLabel" title="Paste Flashcards JSON" style="cursor:pointer;display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.12);border-radius:50%;padding:7px;transition:background 0.2s;">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                 </label>
@@ -584,6 +584,7 @@
             <option value="DeepContent" selected>Exam-Style (HTML, detailed)</option>
             <option value="MCQs">Multiple Choice</option>
             <option value="ComputerVision">Computer Vision Template</option>
+            <option value="AgileWebDev">Agile Web Development Template</option>
           </select>
         </div>
         <textarea id="uploadJsonTextarea" rows="10" style="width:100%;border-radius:8px;padding:16px;font-size:1.08rem;background:#15182a;color:#fff;border:none;resize:vertical;margin-top:16px;max-height:300px;overflow-y:auto;"></textarea>
@@ -860,8 +861,8 @@ Target my understanding of complex topics and how they tie together, not just ro
 Output exactly in the following JSON format, with each card as an object with keys: category, question, and answer. Group all questions from the same lecture into the same category name.
 
 The "answer" field must contain clean, valid HTML embedded inside a JSON string. Follow these formatting rules strictly:
-- Escape all double quotes (e.g., use \").
-- Do NOT use \n or other escaped newlines unless part of an HTML tag (e.g., <br>).
+- Escape all double quotes, always have a back slash before a "
+- Do NOT use \\n or other escaped newlines unless part of an HTML tag (e.g., <br>).
 - Make full and thoughtful use of HTML formatting to improve clarity and structure:
   - Use <p> for paragraphs
   - Use <ul>, <ol>, and <li> for lists
@@ -967,17 +968,68 @@ Example output:
         }
 
         const templateExamples = {
-            DeepContent: `Generate 20 flashcards for my exam with difficult questions from the uploaded lecture material.\nTarget my understanding of complex topics and how they tie together, not just rote learning but testing my true understanding. Give sufficiently detailed answers for an exam. \nOutput exactly in the following JSON format, with each card as an object with keys: category, question, and answer. Group all questions from the same lecture into the same category name.\n\nThe "answer" field must contain clean, valid HTML embedded inside a JSON string. Follow these formatting rules strictly:\n- Escape all double quotes (e.g., use \").\n- Do NOT use \n or other escaped newlines unless part of an HTML tag (e.g., <br>).\n- Make full and thoughtful use of HTML formatting to improve clarity and structure:\n  - Use <p> for paragraphs\n  - Use <ul>, <ol>, and <li> for lists\n  - Use <strong> or <em> to emphasize key ideas\n  - Use <code> for inline code or tag names\n- Avoid plain text blobs. Structure answers to be skimmable and readable.\n- Do NOT include comments, markdown, or extra output—only return a valid JSON array.\n\nExample output:\n[\n  {\n    "category": "Lecture1(HTML Basics)",\n    "question": "What is the purpose of the <code>&lt;head&gt;</code> tag in HTML?",\n    "answer": "<p>The <code>&lt;head&gt;</code> tag contains metadata and links to scripts, stylesheets, and other resources needed before rendering the body of the document.</p>"\n  },\n  {\n    "category": "Lecture1(HTML Basics)",\n    "question": "Explain the difference between <code>&lt;div&gt;</code> and semantic tags.",\n    "answer": "<ul><li><strong>&lt;div&gt;:</strong><ul><li>Non-semantic, used purely for layout or styling.</li><li>Flexible, but less informative to assistive technologies.</li></ul></li><li><strong>Semantic tags (e.g., &lt;main&gt;, &lt;nav&gt;, &lt;section&gt;):</strong><ul><li>Semantic meaning improves accessibility and search visibility.</li><li>Encourages cleaner, more maintainable structure.</li></ul></li><li><strong>Trade-off:</strong><ul><li>Divs are easier when layout logic dominates.</li><li>Semantic tags require thoughtful use but offer long-term clarity and benefits.</li></ul></li></ul>"}]`,
-            MCQs: `Generate 20 difficult flashcards for my exam with tricky multiple choice style questions from the uploaded lecture material.\nTarget my understanding of complex topics and how they tie together, not just rote learning but testing my true understanding. Give sufficiently detailed answers for an exam. \nOutput exactly in the following JSON format, with each card as an object with keys: category, question, and answer. Group all questions from the same lecture into the same category name.\n\nThe "answer" field must contain clean, valid HTML embedded inside a JSON string. Follow these formatting rules strictly:\n- Escape all double quotes (e.g., use \").\n- Do NOT use \n or other escaped newlines unless part of an HTML tag (e.g., <br>).\n- Make full and thoughtful use of HTML formatting to improve clarity and structure:\n  - Use <p> for paragraphs\n  - Use <ul>, <ol>, and <li> for lists\n  - Use <strong> or <em> to emphasize key ideas\n  - Use <code> for inline code or tag names\n- Avoid plain text blobs. Structure answers to be skimmable and readable.\n- Do NOT include comments, markdown, or extra output—only return a valid JSON array.\n\nExample output:\n[\n  {\n    "category": "Lecture1(HTML Basics)",\n    "question": "What is the purpose of the <code>&lt;head&gt;</code> tag in HTML?",\n    "answer": "<p>The <code>&lt;head&gt;</code> tag contains metadata and links to scripts, stylesheets, and other resources needed before rendering the body of the document.</p>"\n  },\n  {\n    "category": "Lecture1(HTML Basics)",\n    "question": "Explain the difference between <code>&lt;div&gt;</code> and semantic tags.",\n    "answer": "<ul><li><strong>&lt;div&gt;:</strong><ul><li>Non-semantic, used purely for layout or styling.</li><li>Flexible, but less informative to assistive technologies.</li></ul></li><li><strong>Semantic tags (e.g., &lt;main&gt;, &lt;nav&gt;, &lt;section&gt;):</strong><ul><li>Semantic meaning improves accessibility and search visibility.</li><li>Encourages cleaner, more maintainable structure.</li></ul></li><li><strong>Trade-off:</strong><ul><li>Divs are easier when layout logic dominates.</li><li>Semantic tags require thoughtful use but offer long-term clarity and benefits.</li></ul></li></ul>"}]`,
+            DeepContent: `Generate 20 flashcards for my exam with difficult questions from the uploaded lecture material.\nTarget my understanding of complex topics and how they tie together, not just rote learning but testing my true understanding. Give sufficiently detailed answers for an exam. \nOutput exactly in the following JSON format, with each card as an object with keys: category, question, and answer. Group all questions from the same lecture into the same category name.\n\nThe "answer" field must contain clean, valid HTML embedded inside a JSON string. Follow these formatting rules strictly:\n- Escape all double quotes (use back slash).\n- Do NOT use \\n or other escaped newlines unless part of an HTML tag (e.g., <br>).\n- Make full and thoughtful use of HTML formatting to improve clarity and structure:\n  - Use <p> for paragraphs\n  - Use <ul>, <ol>, and <li> for lists\n  - Use <strong> or <em> to emphasize key ideas\n  - Use <code> for inline code or tag names\n- Avoid plain text blobs. Structure answers to be skimmable and readable.\n- Do NOT include comments, markdown, or extra output—only return a valid JSON array.\n\nExample output:\n[\n  {\n    "category": "Lecture1(HTML Basics)",\n    "question": "What is the purpose of the <code>&lt;head&gt;</code> tag in HTML?",\n    "answer": "<p>The <code>&lt;head&gt;</code> tag contains metadata and links to scripts, stylesheets, and other resources needed before rendering the body of the document.</p>"\n  },\n  {\n    "category": "Lecture1(HTML Basics)",\n    "question": "Explain the difference between <code>&lt;div&gt;</code> and semantic tags.",\n    "answer": "<ul><li><strong>&lt;div&gt;:</strong><ul><li>Non-semantic, used purely for layout or styling.</li><li>Flexible, but less informative to assistive technologies.</li></ul></li><li><strong>Semantic tags (e.g., &lt;main&gt;, &lt;nav&gt;, &lt;section&gt;):</strong><ul><li>Semantic meaning improves accessibility and search visibility.</li><li>Encourages cleaner, more maintainable structure.</li></ul></li><li><strong>Trade-off:</strong><ul><li>Divs are easier when layout logic dominates.</li><li>Semantic tags require thoughtful use but offer long-term clarity and benefits.</li></ul></li></ul>"}]`,
+            MCQs: `Generate 20 difficult flashcards for my exam with tricky multiple choice style questions from the uploaded lecture material.\nTarget my understanding of complex topics and how they tie together, not just rote learning but testing my true understanding. Give sufficiently detailed answers for an exam. \nOutput exactly in the following JSON format, with each card as an object with keys: category, question, and answer. Group all questions from the same lecture into the same category name.\n\nThe "answer" field must contain clean, valid HTML embedded inside a JSON string. Follow these formatting rules strictly:\n- Escape all double quotes (use back slash).\n- Do NOT use \\n or other escaped newlines unless part of an HTML tag (e.g., <br>).\n- Make full and thoughtful use of HTML formatting to improve clarity and structure:\n  - Use <p> for paragraphs\n  - Use <ul>, <ol>, and <li> for lists\n  - Use <strong> or <em> to emphasize key ideas\n  - Use <code> for inline code or tag names\n- Avoid plain text blobs. Structure answers to be skimmable and readable.\n- Do NOT include comments, markdown, or extra output—only return a valid JSON array.\n\nExample output:\n[\n  {\n    "category": "Lecture1(HTML Basics)",\n    "question": "What is the purpose of the <code>&lt;head&gt;</code> tag in HTML?",\n    "answer": "<p>The <code>&lt;head&gt;</code> tag contains metadata and links to scripts, stylesheets, and other resources needed before rendering the body of the document.</p>"\n  },\n  {\n    "category": "Lecture1(HTML Basics)",\n    "question": "Explain the difference between <code>&lt;div&gt;</code> and semantic tags.",\n    "answer": "<ul><li><strong>&lt;div&gt;:</strong><ul><li>Non-semantic, used purely for layout or styling.</li><li>Flexible, but less informative to assistive technologies.</li></ul></li><li><strong>Semantic tags (e.g., &lt;main&gt;, &lt;nav&gt;, &lt;section&gt;):</strong><ul><li>Semantic meaning improves accessibility and search visibility.</li><li>Encourages cleaner, more maintainable structure.</li></ul></li><li><strong>Trade-off:</strong><ul><li>Divs are easier when layout logic dominates.</li><li>Semantic tags require thoughtful use but offer long-term clarity and benefits.</li></ul></li></ul>"}]`,
             ComputerVision: 
 `Generate a comprehensive flashcard for every numbered point in the document "Lecture 02 - What you need to know.pdf". Rely (as much as possible) solely on the material in the lecture slides.
 Add 5 extra flashcards to target my understanding of complex topics and how they tie together to test my understanding. Give sufficiently detailed answers for an exam. 
 Output exactly in the following JSON format, with each card as an object with keys: category, question, and answer. Group all questions from the same lecture into the same category name.
 
 The "answer" field must contain clean, valid HTML embedded inside a JSON string. Follow these formatting rules strictly:
-- Escape all double quotes (e.g., use ").
-- Do NOT use 
- or other escaped newlines unless part of an HTML tag (e.g., <br>).
+- Escape all double quotes, always have a back slash before a "
+- Do NOT use \\n or other escaped newlines unless part of an HTML tag (e.g., <br>).
+- Make full and thoughtful use of HTML formatting to improve clarity and structure:
+  - Use <p> for paragraphs
+  - Use <ul>, <ol>, and <li> for lists
+  - Use <strong> or <em> to emphasize key ideas
+  - Use <code> for inline code or tag names
+- Avoid plain text blobs. Structure answers to be skimmable and readable.
+- Do NOT include comments, markdown, or extra output—only return a valid JSON array.
+
+Example output:
+[
+  {
+    "category": "Lecture1(HTML Basics)",
+    "question": "What is the purpose of the <code>&lt;head&gt;</code> tag in HTML?",
+    "answer": "<p>The <code>&lt;head&gt;</code> tag contains metadata and links to scripts, stylesheets, and other resources needed before rendering the body of the document.</p>"
+  },
+  {
+    "category": "Lecture1(HTML Basics)",
+    "question": "Explain the difference between <code>&lt;div&gt;</code> and semantic tags.",
+    "answer": "<ul><li><strong>&lt;div&gt;:</strong><ul><li>Non-semantic, used purely for layout or styling.</li><li>Flexible, but less informative to assistive technologies.</li></ul></li><li><strong>Semantic tags (e.g., &lt;main&gt;, &lt;nav&gt;, &lt;section&gt;):</strong><ul><li>Semantic meaning improves accessibility and search visibility.</li><li>Encourages cleaner, more maintainable structure.</li></ul></li><li><strong>Trade-off:</strong><ul><li>Divs are easier when layout logic dominates.</li><li>Semantic tags require thoughtful use but offer long-term clarity and benefits.</li></ul></li></ul>"}]`,
+AgileWebDev:`Generate comprehensive flashcards for my exam, targeting the uploaded lecture material. Give sufficiently detailed answers for an exam.
+
+Fully prepare me for all of the following topics, and have at least one flashcard for each point below.
+
+Lecture 4
+• Purpose of CSS frameworks
+• What is meant by a “responsive design”
+You will not be expected to read, write or fix Bootstrap code.
+Lecture 5
+• Purpose of JavaScript
+• How JavaScript can be used in the browser
+• All of the language features covered in the lecture.
+You are expected to be able to read and fix JavaScript code, but you will not be expected to
+write it.
+Lecture 6
+• The purpose and overall structure of the DOM (but not the keywords)
+• The purpose and overall structure of the BOM
+• The different ways that the DOM may be used to edit the page (again, you do not
+have to remember the specific keywords)
+• Web storage and cookies
+• Purpose and structure of event driven programming
+• How event driven programming is implemented in the browser, i.e. event
+registration, event flow
+• Understand the purpose of some common events
+• Purpose of JQuery
+• You are expected to be able to read and fix JavaScript DOM/BOM code, but you will not be
+expected to write it. You will not be expected to read, fix or write JQuery code.
+
+Output exactly in the following JSON format, with each card as an object with keys: category, question, and answer. Group all questions from the same lecture into the same category name.
+
+The "answer" field must contain clean, valid HTML embedded inside a JSON string. Follow these formatting rules strictly:
+- Escape all double quotes, always have a back slash before a "
+- Do NOT use \\n or other escaped newlines unless part of an HTML tag (e.g., <br>).
 - Make full and thoughtful use of HTML formatting to improve clarity and structure:
   - Use <p> for paragraphs
   - Use <ul>, <ol>, and <li> for lists
