@@ -232,6 +232,47 @@ const flashcards = [
                       "question": "Create an Express.js endpoint <code>/hello</code> that replies with “Hello, world!” and explain how to run it.",
                       "answer": "<pre><code>import express from \"express\";\nconst app = express();\napp.get(\"/hello\", (req,res)=>res.send(\"Hello, world!\"));\napp.listen(3000);</code></pre><p>Run with <code>node index.mjs</code> after <code>npm i express</code>.</p>"
                     },
+
+        {
+          "category": "Lecture 6 (DOM, BOM & Events)",
+          "question": "Explain the purpose and overall structure of the DOM.",
+          "answer": "<p>The <strong>Document Object Model (DOM)</strong> is a language-neutral tree representation of an HTML (or XML) document that exposes each node as an object so scripts can read and manipulate content, structure and style.</p><ul><li><strong>Hierarchy:</strong> root <code>document</code> node → element nodes → text/attribute nodes.</li><li><strong>Interfaces:</strong> properties like <code>innerHTML</code>, methods like <code>getElementById</code>, traversal pointers (<code>parentNode</code>, <code>childNodes</code>).</li><li>Acts as an API bridge between markup and JavaScript.</li></ul>"
+          },
+          {
+          "category": "Lecture 6 (DOM, BOM & Events)",
+          "question": "Describe the purpose and overall structure of the BOM.",
+          "answer": "<p>The <strong>Browser Object Model (BOM)</strong> extends beyond the current document to describe the browser environment.</p><ul><li>Root <code>window</code> object contains sub-objects such as <code>navigator</code> (browser info), <code>screen</code> (resolution), <code>history</code>, <code>location</code>, <code>console</code>.</li><li>Provides APIs for geolocation, alerts, opening new windows and managing tabs.</li><li>Unlike the DOM, the BOM lacks a strict standard but common properties are widely supported.</li></ul>"
+          },
+          {
+          "category": "Lecture 6 (DOM, BOM & Events)",
+          "question": "List the main ways JavaScript can modify the DOM.",
+          "answer": "<ul><li><strong>Property updates:</strong> change text via <code>element.textContent</code> or classes via <code>classList.add</code>.</li><li><strong>Structural methods:</strong> <code>appendChild</code>, <code>insertBefore</code>, <code>removeChild</code>, <code>replaceChild</code>.</li><li><strong>Document writing:</strong> legacy <code>document.write</code> / <code>writeln</code> to stream HTML during load.</li><li><strong>Attribute methods:</strong> <code>setAttribute</code>, <code>removeAttribute</code> for dynamic data-binding.</li></ul><p>These tools let scripts build or reshape pages without reloading.</p>"
+          },
+          {
+          "category": "Lecture 6 (DOM, BOM & Events)",
+          "question": "Compare web storage and cookies.",
+          "answer": "<ul><li><strong>Cookies:</strong> up to 4 KB per key, sent with every HTTP request, optional expiry, suited to server-side sessions.</li><li><strong>Web Storage:</strong> <code>localStorage</code> and <code>sessionStorage</code> give 5–10 MB key–value space, never auto-transmitted to servers, string-only values, same-origin rule.</li><li>Both allow state persistence across page loads; storage is preferred for larger, purely client data, cookies for server authentication.</li></ul>"
+          },
+          {
+          "category": "Lecture 6 (DOM, BOM & Events)",
+          "question": "What is event-driven programming and why is it important in the browser?",
+          "answer": "<p><strong>Event-driven programming</strong> structures code around <em>handlers</em> that run when external actions occur (user input, network replies, timers).</p><ul><li>Browser maintains an internal loop detecting events and dispatching them, freeing developers from polling.</li><li>Enables asynchronous UX where the page remains responsive while waiting for user actions or server responses.</li></ul>"
+          },
+          {
+          "category": "Lecture 6 (DOM, BOM & Events)",
+          "question": "Explain how event handling is implemented: registration and event flow.",
+          "answer": "<p><strong>Registration:</strong> attach a listener via HTML attributes, assign to <code>element.on *</code> properties, or (best) call <code>addEventListener(eventType, handler, useCapture)</code>.</p><p><strong>Event flow:</strong> once triggered, the event travels <em>capturing</em> (document→target), <em>target</em>, then <em>bubbling</em> (target→document). Handlers can inspect <code>event.target</code>, stop propagation with <code>event.stopPropagation()</code> or prevent default behaviour.</p>"
+          },
+          {
+          "category": "Lecture 6 (DOM, BOM & Events)",
+          "question": "Give examples of common browser events and their purposes.",
+          "answer": "<ul><li><code>load</code> – fires when the entire page (including images) has finished loading.</li><li><code>click</code> – user presses and releases the primary mouse button.</li><li><code>mouseover</code>/<code>mouseout</code> – mouse enters or leaves an element, useful for tooltips.</li><li><code>keydown</code>/<code>keyup</code> – keyboard interaction, critical for accessibility.</li><li><code>focus</code>/<code>blur</code> – element gains or loses input focus, handy for form validation.</li></ul>"
+          },
+          {
+          "category": "Lecture 6 (DOM, BOM & Events)",
+          "question": "What problem does jQuery aim to solve and how does it help developers?",
+          "answer": "<p><strong>jQuery</strong> streamlines client-side development by wrapping verbose DOM APIs with concise, chainable syntax and normalising cross-browser inconsistencies.</p><ul><li><strong>Selection:</strong> CSS-like queries <code>$(\"div.notice\")</code>.</li><li><strong>Manipulation:</strong> easy <code>.html()</code>, <code>.attr()</code>, <code>.append()</code> calls.</li><li><strong>Events:</strong> unified <code>.on()</code> for binding listeners, plus <code>$(document).ready()</code> for safe execution after load.</li><li><strong>Effects & AJAX:</strong> built-in animation helpers and AJAX wrappers reduce boilerplate.</li></ul>"
+          },
                   
                     /* ---------------- Agile & Git ---------------- */
                     {
