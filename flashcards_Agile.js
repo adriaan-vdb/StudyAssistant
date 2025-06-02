@@ -49,6 +49,16 @@ const flashcards = [
     "question": "Define: TLS, WebSocket, BGP, IXP.",
     "answer": "<ul><li><strong>TLS (Transport Layer Security):</strong> Cryptographic protocol that encrypts and authenticates data sent over networks—foundation of HTTPS.</li><li><strong>WebSocket:</strong> Browser API that upgrades an HTTP connection to a persistent, full-duplex channel for real-time messaging.</li><li><strong>BGP (Border Gateway Protocol):</strong> Routing protocol through which Internet providers announce which IP prefixes they can reach.</li><li><strong>IXP (Internet eXchange Point):</strong> Physical facility where multiple networks interconnect and swap traffic directly, cutting transit costs and latency.</li></ul>"
   },
+  {
+    "category": "Definitions",
+    "question": "Define: SSL, CSP, JWT, SQLi, WAF.",
+    "answer": "<ul><li><strong>SSL (Secure Sockets Layer):</strong> Older name for the encryption protocol now standardised as TLS; it secures data in transit between browser and server.</li><li><strong>CSP (Content Security Policy):</strong> HTTP response header that tells the browser which script, style and image sources are allowed, blocking many XSS attacks.</li><li><strong>JWT (JSON Web Token):</strong> Compact, URL-safe string that carries signed user claims (e.g., id, roles) so servers can verify identity without storing session state.</li><li><strong>SQLi (SQL injection):</strong> Attack that tricks an app into running malicious SQL; prevented by parameterised queries or ORM binding.</li><li><strong>WAF (Web Application Firewall):</strong> Reverse-proxy filter that inspects HTTP traffic and blocks suspicious patterns before they reach the web application.</li></ul>"
+  },
+  {
+    "category": "Definitions",
+    "question": "Define: LAN, WAN, MAN, TTL.",
+    "answer": "<ul><li><strong>LAN (Local Area Network):</strong> Short-range network—within a room, building or campus—using Ethernet or Wi-Fi.</li><li><strong>WAN (Wide Area Network):</strong> Long-distance network that links multiple LANs over leased lines, fibre or satellite—e.g., the Internet itself.</li><li><strong>MAN (Metropolitan Area Network):</strong> City-scale network interconnecting many LANs across a metropolitan region, often run by ISPs or councils.</li><li><strong>TTL (Time To Live):</strong> Field in IP packets and DNS records that limits how long a packet is forwarded or a record is cached before expiry.</li></ul>"
+  },
                     {
                       "category": "Lecture 1 (Networks & WWW)",
                       "question": "What is a computer network?",
