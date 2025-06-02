@@ -1,4 +1,4 @@
-const flashcards =[{
+const flashcards_Agile_old =[{
     "category": "Lecture 1 (Networks & WWW)",
     "question": "What is a computer network?",
     "answer": "<p><strong>Definition:</strong> A computer network is a collection of interconnected devices (nodes) linked by communication channels (edges) that permit the exchange of data and sharing of resources. It can be modelled as a graph, where nodes communicate using agreed protocols regardless of physical medium (copper, fibre, Wi-Fi, satellite).</p><ul><li><strong>Key goals:</strong> resource sharing, reliability, scalability.</li><li><strong>Examples:</strong> LAN, WAN, Internet.</li></ul>"

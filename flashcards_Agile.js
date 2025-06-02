@@ -1,4 +1,54 @@
 const flashcards = [
+  {
+    "category": "Definitions",
+    "question": "Define: TCP, IP, UDP, DNS.",
+    "answer": "<ul><li><strong>TCP (Transmission Control Protocol):</strong> Reliable, connection-oriented transport that chops data into numbered segments, resends lost ones and reassembles them in order.</li><li><strong>IP (Internet Protocol):</strong> Best-effort network layer that gives every device a unique address and forwards self-contained packets hop-by-hop.</li><li><strong>UDP (User Datagram Protocol):</strong> Lightweight, connectionless alternative to TCP that sends packets without acknowledgements—perfect for speed-critical apps like games or VoIP.</li><li><strong>DNS (Domain Name System):</strong> The Internet’s distributed “phone book” that translates human-friendly names such as example.com into numerical IP addresses.</li></ul>"
+  },
+  {
+    "category": "Definitions",
+    "question": "Define: HTTP, HTTPS, URL, URI.",
+    "answer": "<ul><li><strong>HTTP (Hypertext Transfer Protocol):</strong> Text-based request/response protocol used by browsers to fetch web resources.</li><li><strong>HTTPS:</strong> HTTP sent through an encrypted TLS tunnel to guarantee confidentiality and authenticity.</li><li><strong>URL (Uniform Resource Locator):</strong> A complete web address that tells the browser which protocol, server and path to use.</li><li><strong>URI (Uniform Resource Identifier):</strong> Broader term covering any string that uniquely names or locates a resource—every URL is a URI, but not vice versa.</li></ul>"
+  },
+  {
+    "category": "Definitions",
+    "question": "Define: HTML, CSS, JavaScript.",
+    "answer": "<ul><li><strong>HTML (HyperText Markup Language):</strong> Gives web pages their semantic structure—headings, lists, forms, images and links.</li><li><strong>CSS (Cascading Style Sheets):</strong> Controls presentation—layout, colours, fonts and responsive behaviour—separate from content.</li><li><strong>JavaScript:</strong> The in-browser programming language that adds interactivity, fetches data asynchronously and manipulates the DOM.</li></ul>"
+  },
+  {
+    "category": "Definitions",
+    "question": "Define: DOM, BOM, AJAX, JSON.",
+    "answer": "<ul><li><strong>DOM (Document Object Model):</strong> Tree representation of the loaded HTML that scripts can query and modify.</li><li><strong>BOM (Browser Object Model):</strong> JavaScript-accessible objects that describe the wider browser environment like window, history and navigator.</li><li><strong>AJAX (Asynchronous JavaScript And XML):</strong> Pattern where JavaScript makes background HTTP requests and updates the page without reloads.</li><li><strong>JSON (JavaScript Object Notation):</strong> Lightweight, language-agnostic text format for structured data—arrays and key-value pairs.</li></ul>"
+  },
+  {
+    "category": "Definitions",
+    "question": "Define: MVC, ORM, CRUD, REST.",
+    "answer": "<ul><li><strong>MVC (Model-View-Controller):</strong> Architectural pattern that separates data, presentation and user-request handling.</li><li><strong>ORM (Object-Relational Mapper):</strong> Library that turns database rows into language objects so you can query with code instead of SQL.</li><li><strong>CRUD:</strong> The four basic data operations—Create, Read, Update, Delete.</li><li><strong>REST (Representational State Transfer):</strong> Web-service style that uses stateless HTTP methods (GET, POST, etc.) and resource URLs to expose data.</li></ul>"
+  },
+  {
+    "category": "Definitions",
+    "question": "Define: SPA, CSR, SSR, CDN.",
+    "answer": "<ul><li><strong>SPA (Single-Page Application):</strong> Site that loads one HTML shell then rewrites the page dynamically without full refreshes.</li><li><strong>CSR (Client-Side Rendering):</strong> Approach where JavaScript in the browser builds the UI after the initial load.</li><li><strong>SSR (Server-Side Rendering):</strong> Server produces the full HTML for every route before sending it to the browser.</li><li><strong>CDN (Content Delivery Network):</strong> Globally distributed cache servers that serve static assets from the edge to cut latency.</li></ul>"
+  },
+  {
+    "category": "Definitions",
+    "question": "Define: SQL, Primary Key, Foreign Key, SQLAlchemy.",
+    "answer": "<ul><li><strong>SQL (Structured Query Language):</strong> Declarative language used to create, read, update and delete data in relational databases.</li><li><strong>Primary Key:</strong> Column (or set) whose value uniquely identifies each table row.</li><li><strong>Foreign Key:</strong> Column that holds the primary-key value from another table, linking related records.</li><li><strong>SQLAlchemy:</strong> Python ORM that hides raw SQL behind Python classes and handles migrations via Alembic.</li></ul>"
+  },
+  {
+    "category": "Definitions",
+    "question": "Define: XSS, CSRF, Hashing, Salting.",
+    "answer": "<ul><li><strong>XSS (Cross-Site Scripting):</strong> Attack where injected scripts run in the victim’s browser; stopped by output escaping and CSP.</li><li><strong>CSRF (Cross-Site Request Forgery):</strong> Attack tricking a logged-in user’s browser into issuing unwanted requests; mitigated with CSRF tokens and SameSite cookies.</li><li><strong>Hashing:</strong> One-way transformation that turns any input into a fixed-length fingerprint.</li><li><strong>Salting:</strong> Adding unique random data to each password before hashing to foil pre-computed attacks.</li></ul>"
+  },
+  {
+    "category": "Definitions",
+    "question": "Define: TDD, CI/CD, Git, Branch.",
+    "answer": "<ul><li><strong>TDD (Test-Driven Development):</strong> Practice of writing failing tests first, coding until they pass, then refactoring.</li><li><strong>CI/CD (Continuous Integration/Continuous Delivery):</strong> Automated pipeline that builds, tests and deploys every code change.</li><li><strong>Git:</strong> Distributed version-control system that records snapshots (commits) of your project.</li><li><strong>Branch:</strong> Movable pointer in Git that lets you develop features independently of the main line.</li></ul>"
+  },
+  {
+    "category": "Definitions",
+    "question": "Define: TLS, WebSocket, BGP, IXP.",
+    "answer": "<ul><li><strong>TLS (Transport Layer Security):</strong> Cryptographic protocol that encrypts and authenticates data sent over networks—foundation of HTTPS.</li><li><strong>WebSocket:</strong> Browser API that upgrades an HTTP connection to a persistent, full-duplex channel for real-time messaging.</li><li><strong>BGP (Border Gateway Protocol):</strong> Routing protocol through which Internet providers announce which IP prefixes they can reach.</li><li><strong>IXP (Internet eXchange Point):</strong> Physical facility where multiple networks interconnect and swap traffic directly, cutting transit costs and latency.</li></ul>"
+  },
                     {
                       "category": "Lecture 1 (Networks & WWW)",
                       "question": "What is a computer network?",
