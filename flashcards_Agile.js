@@ -121,7 +121,7 @@ const flashcards = [
             },
             {
             "category": "Lecture 4 (CSS Frameworks)",
-            "question": "What is meant by a \\u201cresponsive design\\u201d?",
+            "question": "What is meant by a  responsive design ?",
             "answer": "<p><strong>Responsive design</strong> is the practice of building a single site that automatically reshapes its layout, typography and media to give an optimal experience on any screen size.</p><ul><li><strong>Fluid grids:</strong> content arranged in percentage-based columns that grow or shrink with the viewport.</li><li><strong>Breakpoints:</strong> CSS media queries apply different rules at widths such as 576 px, 768 px, 992 px, etc.</li><li><strong>Flexible media:</strong> images and videos use <code>max-width:100%;</code> so they never overflow their container.</li><li><strong>Mobile-first strategy:</strong> default styles target phones, then progressively enhance for larger screens.</li></ul>"
             },
             {
@@ -130,9 +130,9 @@ const flashcards = [
             "answer": "<p><strong>JavaScript</strong> adds <em>behaviour</em> to HTML + CSS, enabling pages to react to user input, fetch data, validate forms and modify the document in real time, all without round-tripping to the server.</p><ul><li>Improves <strong>interactivity</strong> (menus, drag-and-drop, games).</li><li>Supports <strong>client-side validation</strong> to reduce server load.</li><li>Allows <strong>dynamic DOM updates</strong> for single-page applications.</li><li>Enables <strong>offline logic</strong> and rich UX by leveraging the browser’s execution engine.</li></ul>"
             },
             {
-            "category": "Lecture 5 (Core JavaScript)",
-            "question": "How can JavaScript be included and executed in the browser?",
-            "answer": "<ul><li><strong>Inline handlers:</strong> small snippets in HTML attributes, e.g., <code><button onclick=\"alert('hi')\"></code>.</li><li><strong><script> blocks:</strong> embed code directly inside the HTML document.</li><li><strong>External files:</strong> reference a <code><script src=\"app.js\"></code> so browsers cache and reuse the code.</li><li><strong>DevTools console:</strong> run ad-hoc statements and debug.</li><li>Scripts execute in the <strong>window</strong> context, access the <code>document</code> object, register event listeners and manipulate the DOM or BOM.</li></ul>"
+                "category": "Lecture 5 (Core JavaScript)",
+                "question": "How can JavaScript be included and executed in the browser?",
+                "answer": "<ul><li><strong>Inline handlers:</strong> small snippets in HTML attributes, e.g., <code>&lt;button onclick=&quot;alert('hi')&quot;&gt;</code>.</li><li><strong>&lt;script&gt; blocks:</strong> embed code directly inside the HTML document.</li><li><strong>External files:</strong> reference a <code>&lt;script src=&quot;app.js&quot;&gt;</code> so browsers cache and reuse the code.</li><li><strong>DevTools console:</strong> run ad-hoc statements and debug.</li><li>Scripts execute in the <strong>window</strong> context, access the <code>document</code> object, register event listeners and manipulate the DOM or BOM.</li></ul>"
             },
             {
             "category": "Lecture 5 (Core JavaScript)",
@@ -178,16 +178,17 @@ const flashcards = [
             "category": "Lecture 6 (DOM, BOM & Events)",
             "question": "What problem does jQuery aim to solve and how does it help developers?",
             "answer": "<p><strong>jQuery</strong> streamlines client-side development by wrapping verbose DOM APIs with concise, chainable syntax and normalising cross-browser inconsistencies.</p><ul><li><strong>Selection:</strong> CSS-like queries <code>$(\"div.notice\")</code>.</li><li><strong>Manipulation:</strong> easy <code>.html()</code>, <code>.attr()</code>, <code>.append()</code> calls.</li><li><strong>Events:</strong> unified <code>.on()</code> for binding listeners, plus <code>$(document).ready()</code> for safe execution after load.</li><li><strong>Effects & AJAX:</strong> built-in animation helpers and AJAX wrappers reduce boilerplate.</li></ul>"
-            }
-            ,{
-            "category": "Lecture 5 (Core JavaScript)",
-            "question": "How do you link an external JavaScript file to an HTML page?",
-            "answer": "<p>Add a <code><script></code> element that references your file, ideally just before the closing <code></body></code> so the page renders first.</p><pre><code><!-- load and execute after HTML is parsed --><br><script src=\"app.js\" defer></script><br></code></pre><p><strong>Why:</strong> the <code>defer</code> attribute tells the browser to download the script in parallel and run it after the DOM is ready, preventing render-blocking.</p>"
             },
+            {
+                "category": "Lecture 5 (Core JavaScript)",
+                "question": "How do you link an external JavaScript file to an HTML page?",
+                "answer": "<p>Add a <code>< script ></code> element that references your file, ideally just before the closing <code></body></code> so the page renders first.</p><pre><code><!-- load and execute after HTML is parsed --><br><script src=\"app.js\" defer></script></code></pre><p><strong>Why:</strong> the <code>defer</code> attribute tells the browser to download the script in parallel and run it after the DOM is ready, preventing render-blocking.</p>"
+                },
+
             {
             "category": "Lecture 5 (Core JavaScript)",
             "question": "Show a basic client-side example that hides an element when a button is clicked.",
-            "answer": "<pre><code><button id=\"toggle\">Hide text</button><br><p id=\"msg\">Secret message</p><br><script><br>const btn = document.getElementById(\"toggle\");<br>const msg = document.getElementById(\"msg\");<br>btn.addEventListener(\"click\", () => {<br>  msg.classList.toggle(\"hidden\");<br>});<br></script><br></code></pre><p>Add a rule <code>.hidden{display:none;}</code> in CSS. The snippet demonstrates DOM queries, event registration and class manipulation.</p>"
+            "answer": "<pre><code><button id=\"toggle\">Hide text</button><br><p id=\"msg\">Secret message</p><br> < script ><br>const btn = document.getElementById(\"toggle\");<br>const msg = document.getElementById(\"msg\");<br>btn.addEventListener(\"click\", () => {<br>  msg.classList.toggle(\"hidden\");<br>});<br></script><br></code></pre><p>Add a rule <code>.hidden{display:none;}</code> in CSS. The snippet demonstrates DOM queries, event registration and class manipulation.</p>"
             },
             {
             "category": "Lecture 5 (Core JavaScript)",
@@ -257,7 +258,7 @@ const flashcards = [
                 {
                 "category": "Lecture8(HTTP & AJAX)",
                 "question": "How do HTTP requests enable communication between the browser and a server?",
-                "answer": "<p>The browser (\\u201cclient\\u201d) opens a TCP connection, sends an HTTP request, the server processes it, returns a response and closes the connection. Each exchange is stateless, but cookies or tokens let multiple requests share context.</p>"
+                "answer": "<p>The browser ( client ) opens a TCP connection, sends an HTTP request, the server processes it, returns a response and closes the connection. Each exchange is stateless, but cookies or tokens let multiple requests share context.</p>"
                 },
                 {
                 "category": "Lecture8(HTTP & AJAX)",
