@@ -1,5 +1,5 @@
 // flashcards.js
-const flashcards_CV_old = [
+const flashcards = [
     /* ───────────── Lecture 2 – Image Basics, Thresholding & Morphology ───────────── */
     {
     "category": "Lecture02(Binary Image Analysis)",

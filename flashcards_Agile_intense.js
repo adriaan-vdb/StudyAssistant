@@ -1,4 +1,4 @@
-const flashcards = [
+const flashcards_new = [
   
   {
     "category": "Definitions",
