@@ -2,6 +2,8 @@
 
 A modern, interactive flashcard web app for studying Computer Vision (CITS4402) concepts. Designed for fast review, keyboard navigation, efficient search, and full customization.
 
+`https://adriaan-vdb.github.io/StudyAssistant.github.io/`
+
 ## Features
 
 - **Category Filtering:**
