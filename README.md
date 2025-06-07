@@ -39,7 +39,7 @@ A modern, interactive flashcard web app for studying Computer Vision (CITS4402) 
 
 ## Setup & Usage
 
-1. **No installation or server required!**
+1. **No installation or server required**
 2. Open `index.html` in your web browser (or deploy to any static web host).
 3. Use the on-screen controls, keyboard shortcuts, or command palette to study efficiently.
 
@@ -73,10 +73,6 @@ A modern, interactive flashcard web app for studying Computer Vision (CITS4402) 
 - Add or modify prompt templates in the app for different flashcard generation styles.
 
 ## Advanced
-- **External Data:** Place your flashcards in `flashcards.js` as a JS array and include it before your main script in `index.html`.
 - **JSON Upload:** Use the upload modal to load any valid flashcard JSON array at runtime.
 - **Dynamic Height:** The card wrapper will always fit the tallest face, with a buffer for comfort.
 
----
-
-**Enjoy fast, focused revision for Computer Vision!** 
